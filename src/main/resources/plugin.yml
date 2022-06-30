@@ -1,0 +1,10 @@
+name: NullValkyrie
+version: '${project.version}'
+main: com.night.nullvalkyrie.Main
+api-version: 1.18
+authors: [ NightKaly, Leocthl ]
+description: Null Valkyrie
+website: https://github.com/night0721/nullvalkyrie
+commands:
+  test:
+    description: "Test"
