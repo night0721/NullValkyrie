@@ -5,7 +5,6 @@ import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -17,10 +16,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
 
 public final class Main extends JavaPlugin implements Listener {
     private BossBar bossbar;
@@ -33,6 +32,8 @@ public final class Main extends JavaPlugin implements Listener {
         getCommand("vanish").setExecutor(new VanishCommand());
         getCommand("armor").setExecutor(new ArmorCommand());
         getCommand("gun").setExecutor(new GunCommand());
+        getCommand("msg").setExecutor(new MessageCommand());
+        getCommand("menu").setExecutor(new MenuCommand());
         bossbar = Bukkit.createBossBar(
                 ChatColor.GOLD + "Kuudra",
                 BarColor.RED,
@@ -65,9 +66,30 @@ public final class Main extends JavaPlugin implements Listener {
         bossbar.addPlayer(e.getPlayer());
         e.getPlayer().setPlayerListHeaderFooter(ChatColor.AQUA + "You are playing on " + ChatColor.GREEN + "127.0.0.1", ChatColor.GOLD + "Ranks, boosters, & more!" + ChatColor.AQUA + "127.0.0.1");
     }
+    public String centerText(String text, int lineLength) {
+        StringBuilder builder = new StringBuilder();
+        char space = ' ';
+        int distance = (lineLength - text.length()) / 2;
+        for (int ii = 0; ii < distance; ii++) {
+            builder.append(space);
+        }
+        builder.append(text);
+        for (int i = 0; i < distance; ++i) {
+            builder.append(space);
+        }
+        return builder.toString();
+    }
+    @EventHandler
+    public void onPing(ServerListPingEvent e) {
+        e.setMaxPlayers(8964);
+        String s = centerText("Operation Valkyrie [1.18.1 & 1.8.9]\n", 45);
+        String s2 = centerText("Support 1.18 & 1.8.9",45);
+        e.setMotd(ChatColor.AQUA.toString()  + ChatColor.BOLD + s + ChatColor.GOLD + ChatColor.BOLD + s2);
+        try {
+            e.setServerIcon(Bukkit.loadServerIcon(new File("nuke.png")));
+        } catch (Exception ee) {
+            ee.printStackTrace();
+        }
 
-    @Override
-    public void onDisable() {
-        // Plugin shutdown logic
     }
 }

@@ -9,5 +9,12 @@ commands:
   test:
     description: "Test"
   vanish:
+    description: "Turn yourself into invisible"
   armor:
+    description: "Give you a set of armor"
   gun:
+    description: "Give you a gun"
+  msg:
+    description: "Send message to someone"
+  menu:
+    description: "Open the menu"
