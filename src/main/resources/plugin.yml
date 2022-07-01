@@ -8,3 +8,6 @@ website: https://github.com/night0721/nullvalkyrie
 commands:
   test:
     description: "Test"
+  vanish:
+  armor:
+  gun:

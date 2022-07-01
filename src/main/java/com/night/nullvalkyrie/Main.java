@@ -11,8 +11,11 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
@@ -27,7 +30,9 @@ public final class Main extends JavaPlugin implements Listener {
         System.out.println("PREPARING TO DESTROY HYPIXEL");
 
         getCommand("test").setExecutor(new TestCommand());
-
+        getCommand("vanish").setExecutor(new VanishCommand());
+        getCommand("armor").setExecutor(new ArmorCommand());
+        getCommand("gun").setExecutor(new GunCommand());
         bossbar = Bukkit.createBossBar(
                 ChatColor.GOLD + "Kuudra",
                 BarColor.RED,
@@ -35,26 +40,25 @@ public final class Main extends JavaPlugin implements Listener {
         );
         Bukkit.getPluginManager().registerEvents(this, this);
     }
-    @EventHandler
-    public void onPlayerMove(PlayerMoveEvent e) {
-        // e.setCancelled(true);
-        // e.getPlayer().sendMessage(ChatColor.RED + "STOP UR MOM");
-    }
 
+    @EventHandler
+    public void onPlayerInteract(PlayerInteractEvent e) {
+        Player player = e.getPlayer();
+        if(e.hasItem()) {
+            if(e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+                if (player.getInventory().getItemInMainHand()!= null && player.getInventory().getItemInMainHand().getType().equals(Material.DIAMOND_HOE)) {
+                    player.launchProjectile(Snowball.class, player.getLocation().getDirection());
+
+                }
+            }
+        }
+
+    }
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         e.setJoinMessage(ChatColor.RED+"[ADMIN] " + e.getPlayer().getName() + ChatColor.WHITE + " joined the server!");
-        ItemStack helmet = new ItemStack(Material.LEATHER_HELMET);
-        LeatherArmorMeta helmetMeta = (LeatherArmorMeta) helmet.getItemMeta();
-        helmetMeta.setColor(Color.ORANGE);
-        helmet.setItemMeta(helmetMeta);
-        e.getPlayer().getInventory().addItem(helmet);
-        ItemStack cp = new ItemStack(Material.LEATHER_CHESTPLATE);
-        LeatherArmorMeta cpdata =  (LeatherArmorMeta) cp.getItemMeta();
-        cpdata.setColor(org.bukkit.Color.fromRGB(2,2,58));
-        cp.setItemMeta(cpdata);
-        e.getPlayer().getInventory().addItem(cp);
+
         e.getPlayer().sendTitle(ChatColor.RED +"Welcome to Operation Valkyrie!", ChatColor.GREEN + "LOL", 20, 100, 20);
         e.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText("§1NOT ENOUGH MANNER"));
 
