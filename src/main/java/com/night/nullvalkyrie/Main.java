@@ -40,6 +40,7 @@ public final class Main extends JavaPlugin implements Listener {
                 BarStyle.SEGMENTED_12
         );
         Bukkit.getPluginManager().registerEvents(this, this);
+        Bukkit.getPluginManager().registerEvents(new MenuListener(), this);
     }
 
     @EventHandler

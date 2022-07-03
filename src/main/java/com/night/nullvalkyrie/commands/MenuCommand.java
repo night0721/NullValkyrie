@@ -14,11 +14,13 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.Arrays;
 
 public class MenuCommand implements CommandExecutor {
+    public static Inventory inv = Bukkit.createInventory(null, 45, ChatColor.DARK_BLUE.toString() + ChatColor.BOLD + "Valkyrie Menu");
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+
         if(sender instanceof Player) {
             Player player = (Player) sender;
-            Inventory inv = Bukkit.createInventory(player,45, ChatColor.DARK_BLUE.toString() + ChatColor.BOLD + "Valkyrie Menu");
+            inv = Bukkit.createInventory(player,45, ChatColor.DARK_BLUE.toString() + ChatColor.BOLD + "Valkyrie Menu");
 
             ItemStack KYS = new ItemStack(Material.WOODEN_SWORD);
             ItemMeta KYSmeta = KYS.getItemMeta();
