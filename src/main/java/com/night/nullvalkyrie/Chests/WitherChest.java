@@ -1,4 +1,4 @@
-package com.night.nullvalkyrie;
+package com.night.nullvalkyrie.Chests;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

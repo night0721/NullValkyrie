@@ -18,3 +18,5 @@ commands:
     description: "Send message to someone"
   menu:
     description: "Open the menu"
+  rank:
+    description: "Set rank of players"
