@@ -20,3 +20,5 @@ commands:
     description: "Open the menu"
   rank:
     description: "Set rank of players"
+  hologram:
+    description: "Spawn a hologram"

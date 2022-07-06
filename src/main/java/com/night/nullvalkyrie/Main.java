@@ -21,6 +21,7 @@ import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityInteractEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.server.ServerListPingEvent;
@@ -52,6 +53,7 @@ public final class Main extends JavaPlugin implements Listener {
         getCommand("msg").setExecutor(new MessageCommand());
         getCommand("menu").setExecutor(new MenuCommand());
         getCommand("rank").setExecutor(new RankCommand(this));
+        getCommand("hologram").setExecutor(new HologramCommand());
         bossbar = Bukkit.createBossBar(
                 ChatColor.GOLD + "Kuudra",
                 BarColor.RED,
@@ -130,6 +132,11 @@ public final class Main extends JavaPlugin implements Listener {
         }
 
     }
-
+//    For hologram clicks to change page
+//    @EventHandler
+//    public void onEntityInteract(EntityInteractEvent e) {
+//        System.out.println(e.getEntity().getLocation());
+//        e.getEntity().setCustomName(ChatColor.RED + "Changed name since you ust clicked lol");
+//    }
 
 }
