@@ -1,19 +1,32 @@
 package com.night.nullvalkyrie.commands;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class CraftCommand implements CommandExecutor {
+import java.util.List;
+
+public class CraftCommand extends Command {
+
+    public CraftCommand() {
+        super(
+                "craft",
+                new String[]{"ct", "crafting", "craftingtable"},
+                "Open crafting table",
+                ""
+        );
+    }
+
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public void onCommand(CommandSender sender, String[] args) {
         if(sender instanceof Player) {
             Player player = (Player) sender;
             player.openWorkbench(null, true);
         }
+    }
 
-
-        return false;
+    @Override
+    public List<String> onTabComplete(CommandSender sender, String[] args) {
+        return null;
     }
 }

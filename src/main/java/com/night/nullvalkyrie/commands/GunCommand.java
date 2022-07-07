@@ -2,19 +2,29 @@ package com.night.nullvalkyrie.commands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 import java.util.Arrays;
+import java.util.List;
 
-public class GunCommand implements CommandExecutor {
+public class GunCommand extends Command {
+
+    public GunCommand() {
+        super(
+                "gun",
+                new String[]{},
+                "Give you a gun",
+                ""
+
+        );
+    }
+
+
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public void onCommand(CommandSender sender, String[] args) {
         Player player = (Player) sender;
         ItemStack hoe = new ItemStack(Material.DIAMOND_HOE);
         ItemMeta hoedata = hoe.getItemMeta();
@@ -23,6 +33,10 @@ public class GunCommand implements CommandExecutor {
         hoedata.setLore(Arrays.asList(ChatColor.GOLD + "Shoot Snowball!"));
         hoe.setItemMeta(hoedata);
         player.getInventory().addItem(hoe);
-        return false;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, String[] args) {
+        return null;
     }
 }

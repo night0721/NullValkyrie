@@ -2,15 +2,23 @@ package com.night.nullvalkyrie.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class MessageCommand implements CommandExecutor {
+import java.util.List;
+
+public class MessageCommand extends Command {
+    public MessageCommand() {
+        super(
+                "message",
+                new String[]{"msg"},
+                "Send message to someone",
+                ""
+        );
+    }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public void onCommand(CommandSender sender, String[] args) {
         if(sender instanceof Player) {
             Player player = (Player) sender;
             if (args.length >= 2) {
@@ -29,7 +37,10 @@ public class MessageCommand implements CommandExecutor {
                 player.sendMessage(ChatColor.RED + "Invalid parameter, use /msg <Player> <Message>");
             }
         }
+    }
 
-        return false;
+    @Override
+    public List<String> onTabComplete(CommandSender sender, String[] args) {
+        return null;
     }
 }

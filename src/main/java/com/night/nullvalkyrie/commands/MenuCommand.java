@@ -3,8 +3,6 @@ package com.night.nullvalkyrie.commands;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -12,12 +10,22 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
+import java.util.List;
 
-public class MenuCommand implements CommandExecutor {
+public class MenuCommand extends Command {
     public static Inventory inv = Bukkit.createInventory(null, 45, ChatColor.DARK_BLUE.toString() + ChatColor.BOLD + "Valkyrie Menu");
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
+    public MenuCommand() {
+        super(
+                "menu",
+                new String[]{"m"},
+                "Open the menu",
+                ""
+        );
+    }
+
+    @Override
+    public void onCommand(CommandSender sender, String[] args) {
         if(sender instanceof Player) {
             Player player = (Player) sender;
             inv = Bukkit.createInventory(player,45, ChatColor.DARK_BLUE.toString() + ChatColor.BOLD + "Valkyrie Menu");
@@ -58,6 +66,10 @@ public class MenuCommand implements CommandExecutor {
             player.openInventory(inv);
 
         }
-        return false;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, String[] args) {
+        return null;
     }
 }

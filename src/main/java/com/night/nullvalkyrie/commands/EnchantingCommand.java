@@ -1,21 +1,30 @@
 package com.night.nullvalkyrie.commands;
 
-        import org.bukkit.Bukkit;
-        import org.bukkit.command.Command;
-        import org.bukkit.command.CommandExecutor;
-        import org.bukkit.command.CommandSender;
-        import org.bukkit.entity.Player;
-        import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
-public class EnchantingCommand implements CommandExecutor {
+import java.util.List;
+
+public class EnchantingCommand extends Command {
+    public EnchantingCommand() {
+        super(
+                "enchant",
+                new String[]{"et", "enchanting", "enchantingtable"},
+                "Open enchanting table",
+                ""
+        );
+    }
+
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public void onCommand(CommandSender sender, String[] args) {
         if(sender instanceof Player) {
             Player player = (Player) sender;
             player.openEnchanting(null, true);
         }
+    }
 
-
-        return false;
+    @Override
+    public List<String> onTabComplete(CommandSender sender, String[] args) {
+        return null;
     }
 }

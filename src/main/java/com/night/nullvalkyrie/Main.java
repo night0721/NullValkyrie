@@ -44,21 +44,8 @@ public final class Main extends JavaPlugin implements Listener {
     public SideBarManager getSideBarManager() { return  sideBarManager; }
     @Override
     public void onEnable() {
-        // Plugin startup logic
-        System.out.println("PREPARING TO DESTROY HYPIXEL");
-
-        getCommand("test").setExecutor(new TestCommand());
-        getCommand("vanish").setExecutor(new VanishCommand());
-        getCommand("armor").setExecutor(new ArmorCommand());
-        getCommand("armor").setTabCompleter(new ArmorTab());
-        getCommand("gun").setExecutor(new GunCommand());
-        getCommand("msg").setExecutor(new MessageCommand());
-        getCommand("menu").setExecutor(new MenuCommand());
-        getCommand("rank").setExecutor(new RankCommand(this));
-        getCommand("hologram").setExecutor(new HologramCommand());
-        getCommand("craft").setExecutor(new CraftCommand());
-        getCommand("anvil").setExecutor(new AnvilCommand());
-        getCommand("enchant").setExecutor(new EnchantingCommand());
+        new VanishCommand();new TestCommand();new GunCommand();new AnvilCommand();new ArmorCommand();new MenuCommand();new RankCommand(this);
+        new MessageCommand();new HologramCommand();new CraftCommand();new EnchantingCommand();
         bossbar = Bukkit.createBossBar(
                 ChatColor.GOLD + "Kuudra",
                 BarColor.RED,
@@ -105,7 +92,7 @@ public final class Main extends JavaPlugin implements Listener {
     public void onJoin(PlayerJoinEvent e) {
         e.setJoinMessage(rankManager.getRank(e.getPlayer().getUniqueId()).getDisplay() + " " + e.getPlayer().getName() + ChatColor.WHITE + " joined the server!");
 
-        e.getPlayer().sendTitle(ChatColor.RED +"Welcome to Operation Valkyrie!", ChatColor.GREEN + "LOL", 20, 100, 20);
+        e.getPlayer().sendTitle(ChatColor.RED +"Welcome to Apache!", ChatColor.GREEN + "LOL", 20, 100, 20);
         e.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText("§1NOT ENOUGH MANNER"));
 
         bossbar.addPlayer(e.getPlayer());
@@ -127,8 +114,8 @@ public final class Main extends JavaPlugin implements Listener {
     @EventHandler
     public void onPing(ServerListPingEvent e) {
         e.setMaxPlayers(8964);
-        String s = centerText("Operation Valkyrie\n", 45);
-        String s2 = centerText("Support 1.18 & 1.8.9",45);
+        String s = centerText("Apache\n", 45);
+        String s2 = centerText("Support 1.18 & 1.8.9",15);
         e.setMotd(ChatColor.AQUA.toString() + ChatColor.BOLD + s + ChatColor.GOLD + ChatColor.BOLD + s2);
         try {
             e.setServerIcon(Bukkit.loadServerIcon(new File("nuke.png")));

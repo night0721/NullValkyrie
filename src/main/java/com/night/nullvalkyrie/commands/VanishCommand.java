@@ -2,8 +2,6 @@ package com.night.nullvalkyrie.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -11,10 +9,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class VanishCommand implements CommandExecutor {
+public class VanishCommand extends Command {
     private List<UUID> vanished = new ArrayList<>();
+    public VanishCommand() {
+        super(
+                "vanish",
+                new String[]{},
+                "Turn yourself into invisible",
+                ""
+                );
+    }
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public void onCommand(CommandSender sender, String[] args) {
         Player player = (Player) sender;
         if(sender instanceof Player) {
             if(vanished.contains(player.getUniqueId())) {
@@ -31,8 +37,10 @@ public class VanishCommand implements CommandExecutor {
                 player.sendMessage(ChatColor.GREEN + "You are now vanished");
             }
         }
+    }
 
-
-        return false;
+    @Override
+    public List<String> onTabComplete(CommandSender sender, String[] args) {
+        return null;
     }
 }

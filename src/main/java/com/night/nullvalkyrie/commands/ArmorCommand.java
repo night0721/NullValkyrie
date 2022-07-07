@@ -2,17 +2,29 @@ package com.night.nullvalkyrie.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.util.StringUtil;
 
-public class ArmorCommand implements CommandExecutor {
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class ArmorCommand extends Command {
+
+    public ArmorCommand() {
+        super(
+                "armor",
+                new String[]{},
+                "Give you a set of armor",
+                ""
+        );
+    }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public void onCommand(CommandSender sender, String[] args) {
         if(sender instanceof Player) {
             Player player = (Player) sender;
             ItemStack helmet = new ItemStack(Material.LEATHER_HELMET);
@@ -47,8 +59,19 @@ public class ArmorCommand implements CommandExecutor {
             boot.setItemMeta(legdata);
             player.getInventory().addItem(boot);
         }
+    }
 
-
-        return false;
+    @Override
+    public List<String> onTabComplete(CommandSender sender, String[] args) {
+        if(args.length == 1) {
+            return StringUtil.copyPartialMatches(args[0], Arrays.asList("angeles", "widow"), new ArrayList<>());
+        } else if(args.length == 2) {
+            List<String> names = new ArrayList<>();
+            for(Player player: Bukkit.getOnlinePlayers()) {
+                names.add(player.getName());
+            }
+            return StringUtil.copyPartialMatches(args[1], names, new ArrayList<>());
+        }
+        return new ArrayList<>();
     }
 }

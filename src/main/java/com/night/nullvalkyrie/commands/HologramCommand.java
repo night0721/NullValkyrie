@@ -2,16 +2,24 @@ package com.night.nullvalkyrie.commands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
-public class HologramCommand implements CommandExecutor {
+import java.util.List;
+
+public class HologramCommand extends Command {
+    public HologramCommand() {
+        super(
+                "hologram",
+                new String[]{},
+                "Spawn a hologram",
+                ""
+        );
+    }
+
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public void onCommand(CommandSender sender, String[] args) {
         if(sender instanceof Player) {
             Player player = (Player) sender;
             String[] ar = new String[]{
@@ -30,7 +38,10 @@ public class HologramCommand implements CommandExecutor {
                 stand.setCustomName(line);
             }
         }
+    }
 
-        return false;
+    @Override
+    public List<String> onTabComplete(CommandSender sender, String[] args) {
+        return null;
     }
 }
