@@ -50,11 +50,15 @@ public final class Main extends JavaPlugin implements Listener {
         getCommand("test").setExecutor(new TestCommand());
         getCommand("vanish").setExecutor(new VanishCommand());
         getCommand("armor").setExecutor(new ArmorCommand());
+        getCommand("armor").setTabCompleter(new ArmorTab());
         getCommand("gun").setExecutor(new GunCommand());
         getCommand("msg").setExecutor(new MessageCommand());
         getCommand("menu").setExecutor(new MenuCommand());
         getCommand("rank").setExecutor(new RankCommand(this));
         getCommand("hologram").setExecutor(new HologramCommand());
+        getCommand("craft").setExecutor(new CraftCommand());
+        getCommand("anvil").setExecutor(new AnvilCommand());
+        getCommand("enchant").setExecutor(new EnchantingCommand());
         bossbar = Bukkit.createBossBar(
                 ChatColor.GOLD + "Kuudra",
                 BarColor.RED,

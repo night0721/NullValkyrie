@@ -32,6 +32,6 @@ public class MenuListener implements Listener {
 
 
             player.closeInventory();
-        }
+         }else { return; }
     }
 }

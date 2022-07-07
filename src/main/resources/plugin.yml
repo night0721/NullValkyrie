@@ -22,3 +22,12 @@ commands:
     description: "Set rank of players"
   hologram:
     description: "Spawn a hologram"
+  craft:
+    aliases: ["ct", "crafting", "craftingtable"]
+    description: "Open crafting table"
+  anvil:
+    aliases: [ "av", "anvil" ]
+    description: "Open anvil"
+  enchant:
+    aliases: [ "et", "enchanting", "enchantingtable"]
+    description: "Open enchanting table"
