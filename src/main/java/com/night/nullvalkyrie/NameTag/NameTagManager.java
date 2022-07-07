@@ -15,11 +15,12 @@ public class NameTagManager {
     public NameTagManager(Main main) {
         this.main = main;
     }
+    @SuppressWarnings("deprecation")
     public void setNametags(Player player) {
         Scoreboard newScoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
         Objective obj = newScoreboard.registerNewObjective("TabList", "dummy");
         obj.setDisplaySlot(DisplaySlot.PLAYER_LIST);
-        player.setScoreboard(obj.getScoreboard());
+        player.setScoreboard(newScoreboard);
         for (Rank rank : Rank.values()) {
             Team team = player.getScoreboard().registerNewTeam(rank.name());
             team.setPrefix(rank.getDisplay() + " ");

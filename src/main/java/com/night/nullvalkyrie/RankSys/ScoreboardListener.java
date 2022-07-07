@@ -6,14 +6,18 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-public class RankListener implements Listener {
+import java.util.HashMap;
+import java.util.UUID;
+
+public class ScoreboardListener implements Listener {
 
     private Main main;
-    public RankListener(Main main) {
+    public ScoreboardListener(Main main) {
         this.main = main;
     }
 
@@ -25,12 +29,14 @@ public class RankListener implements Listener {
         }
         main.getNameTagManager().setNametags(player);
         main.getNameTagManager().newTag(player);
+        main.getSideBarManager().setSideBar(player);
     }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
         e.setQuitMessage(ChatColor.RED + "bozo " + e.getPlayer().getName() + " has left.");
         main.getNameTagManager().removeTag(e.getPlayer());
+        e.getPlayer().setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
     }
 
     @EventHandler
@@ -38,5 +44,11 @@ public class RankListener implements Listener {
         e.setCancelled(true);
         Player player = e.getPlayer();
         Bukkit.broadcastMessage(main.getRankManager().getRank(player.getUniqueId()).getDisplay() + " " + player.getName() + ChatColor.WHITE + ": " + e.getMessage());
+    }
+
+    //Death changing in sidebar
+    @EventHandler
+    public void onDeath(PlayerDeathEvent e) {
+        main.getSideBarManager().changeOnDeath(e.getEntity().getPlayer());
     }
 }

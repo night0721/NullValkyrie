@@ -2,9 +2,9 @@ package com.night.nullvalkyrie;
 
 import com.night.nullvalkyrie.Chests.MenuListener;
 import com.night.nullvalkyrie.NameTag.NameTagManager;
-import com.night.nullvalkyrie.RankSys.RankListener;
+import com.night.nullvalkyrie.RankSys.ScoreboardListener;
 import com.night.nullvalkyrie.RankSys.RankManager;
-import com.night.nullvalkyrie.SideBar.SideBarListener;
+import com.night.nullvalkyrie.SideBar.SideBarManager;
 import com.night.nullvalkyrie.commands.*;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -21,7 +21,6 @@ import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.entity.EntityInteractEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.server.ServerListPingEvent;
@@ -36,11 +35,13 @@ public final class Main extends JavaPlugin implements Listener {
     private BossBar bossbar;
     private RankManager rankManager;
     private NameTagManager nameTagManager;
+    private SideBarManager sideBarManager;
 
     public RankManager getRankManager() {
         return rankManager;
     }
     public NameTagManager getNameTagManager() { return nameTagManager; }
+    public SideBarManager getSideBarManager() { return  sideBarManager; }
     @Override
     public void onEnable() {
         // Plugin startup logic
@@ -61,10 +62,10 @@ public final class Main extends JavaPlugin implements Listener {
         );
         Bukkit.getPluginManager().registerEvents(this, this);
         Bukkit.getPluginManager().registerEvents(new MenuListener(), this);
-        Bukkit.getPluginManager().registerEvents(new RankListener(this), this);
-        Bukkit.getPluginManager().registerEvents(new SideBarListener(this), this);
-        rankManager = new RankManager(this);
+        Bukkit.getPluginManager().registerEvents(new ScoreboardListener(this), this);
         nameTagManager = new NameTagManager(this);
+        rankManager = new RankManager(this);
+        sideBarManager = new SideBarManager(this);
 
         ItemStack widow_sword = new ItemStack(Material.STICK);
         widow_sword.addUnsafeEnchantment(Enchantment.DAMAGE_ALL, 20);

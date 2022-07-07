@@ -21,8 +21,9 @@ public class HologramCommand implements CommandExecutor {
             };
             Location location = player.getLocation();
             for(String line: ar) {
-                ArmorStand stand = (ArmorStand) player.getWorld().spawnEntity(location.subtract(0,0.3,0), EntityType.ARMOR_STAND);
-                stand.setInvisible(true);
+                ArmorStand stand = location.getWorld().spawn(location.subtract(0,0.3,0), ArmorStand.class, armorStand -> {
+                    armorStand.setVisible(false);
+                });
                 stand.setGravity(false);
                 stand.setInvulnerable(true);
                 stand.setCustomNameVisible(true);
