@@ -8,19 +8,19 @@ import com.night.nullvalkyrie.SideBar.SideBarManager;
 import com.night.nullvalkyrie.commands.*;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
+import org.bukkit.*;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Snowball;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.event.player.PlayerEggThrowEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.server.ServerListPingEvent;
@@ -44,7 +44,7 @@ public final class Main extends JavaPlugin implements Listener {
     public SideBarManager getSideBarManager() { return  sideBarManager; }
     @Override
     public void onEnable() {
-        new VanishCommand();new TestCommand();new GunCommand();new AnvilCommand();new ArmorCommand();new MenuCommand();new RankCommand(this);
+        new VanishCommand();new TestCommand();new WeaponCommand();new AnvilCommand();new ArmorCommand();new MenuCommand();new RankCommand(this);
         new MessageCommand();new HologramCommand();new CraftCommand();new EnchantingCommand();
         bossbar = Bukkit.createBossBar(
                 ChatColor.GOLD + "Kuudra",
@@ -123,6 +123,52 @@ public final class Main extends JavaPlugin implements Listener {
             ee.printStackTrace();
         }
 
+    }
+    @EventHandler
+    public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
+        if (e.getDamager().getType() == EntityType.SNOWBALL) {
+            Entity ent = e.getEntity();
+            if (!(ent instanceof Player)) {
+                Snowball sb = (Snowball) e.getDamager();
+                Player pl = (Player) sb.getShooter();
+                if(pl.getInventory().getItemInMainHand().getItemMeta() == null) {
+                    String name = pl.getInventory().getItemInMainHand().getItemMeta().getDisplayName();
+                    if (name.equalsIgnoreCase(net.md_5.bungee.api.ChatColor.of("#ff23ff") + "SnowGun")) {
+                        e.setDamage(10000);
+                    } else if (name.equalsIgnoreCase("AA-12")) {
+                        e.setDamage(7);
+                    } else {
+                        e.setDamage(0);
+                    }
+                }
+
+            }
+        }
+    }
+    @EventHandler
+    public void onProjectileHit(ProjectileHitEvent e) {
+        if(e.getEntity().getShooter() instanceof Player) {
+            Player shooter = (Player) e.getEntity().getShooter();
+            if(shooter.getInventory().getItemInMainHand().getItemMeta() == null) {
+                String name = shooter.getInventory().getItemInMainHand().getItemMeta().getDisplayName();
+                if(name.equalsIgnoreCase(net.md_5.bungee.api.ChatColor.of("#ff23ff") + "Frag Grenade")) {
+                    if(e.getHitBlock() == null) {
+                        Location l = e.getHitEntity().getLocation();
+                        e.getHitEntity().getWorld().createExplosion(l.getX(),l.getY(),l.getZ(),100,false,false);
+                    } else if(e.getHitEntity() == null) {
+                        Location l = e.getHitBlock().getLocation();
+                        e.getHitBlock().getWorld().createExplosion(l.getX(),l.getY(),l.getZ(),100,false,false);
+                    }
+                }
+            }
+
+        }
+    }
+    @EventHandler
+    public void onCreatureSpawn(CreatureSpawnEvent event) {
+        if (event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.EGG) {
+            event.setCancelled(true);
+        }
     }
 //    For hologram clicks to change page
 //    @EventHandler
