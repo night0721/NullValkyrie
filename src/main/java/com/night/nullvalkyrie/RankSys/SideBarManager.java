@@ -1,4 +1,4 @@
-package com.night.nullvalkyrie.SideBar;
+package com.night.nullvalkyrie.RankSys;
 
 import com.night.nullvalkyrie.Main;
 import org.bukkit.Bukkit;

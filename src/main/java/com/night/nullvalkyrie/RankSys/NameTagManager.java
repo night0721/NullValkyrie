@@ -1,4 +1,4 @@
-package com.night.nullvalkyrie.NameTag;
+package com.night.nullvalkyrie.RankSys;
 
 import com.night.nullvalkyrie.Main;
 import com.night.nullvalkyrie.RankSys.Rank;

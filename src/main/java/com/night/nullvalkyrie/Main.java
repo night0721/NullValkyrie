@@ -1,26 +1,31 @@
 package com.night.nullvalkyrie;
 
 import com.night.nullvalkyrie.Chests.MenuListener;
-import com.night.nullvalkyrie.NameTag.NameTagManager;
+import com.night.nullvalkyrie.RankSys.NameTagManager;
 import com.night.nullvalkyrie.RankSys.ScoreboardListener;
 import com.night.nullvalkyrie.RankSys.RankManager;
-import com.night.nullvalkyrie.SideBar.SideBarManager;
+import com.night.nullvalkyrie.RankSys.SideBarManager;
 import com.night.nullvalkyrie.commands.*;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
+import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
-import org.bukkit.event.player.PlayerEggThrowEvent;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.server.ServerListPingEvent;
@@ -28,8 +33,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.util.Vector;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.UUID;
 
 public final class Main extends JavaPlugin implements Listener {
     private BossBar bossbar;
@@ -45,7 +53,7 @@ public final class Main extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         new VanishCommand();new TestCommand();new WeaponCommand();new AnvilCommand();new ArmorCommand();new MenuCommand();new RankCommand(this);
-        new MessageCommand();new HologramCommand();new CraftCommand();new EnchantingCommand();
+        new MessageCommand();new HologramCommand();new CraftCommand();new EnchantingCommand();new SpawnCommand();
         bossbar = Bukkit.createBossBar(
                 ChatColor.GOLD + "Kuudra",
                 BarColor.RED,
@@ -73,19 +81,32 @@ public final class Main extends JavaPlugin implements Listener {
         wither_sword_recipe.setIngredient('B', Material.STICK);
         Bukkit.addRecipe(wither_sword_recipe);
     }
+    @EventHandler
+    public void Projectile(ProjectileLaunchEvent e) {
+        Player player = (Player) e.getEntity().getShooter();
+        if(player.getInventory().getItemInMainHand().getItemMeta() != null) {
+            String name = player.getInventory().getItemInMainHand().getItemMeta().getDisplayName();
+            if (name.equalsIgnoreCase(net.md_5.bungee.api.ChatColor.of("#ff23ff") + "Frag Grenade")) {
+                Egg s = (Egg) e.getEntity();
+                s.setVelocity(player.getLocation().getDirection().multiply(10));
+            }
+        }
 
+
+
+    }
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent e) {
         Player player = e.getPlayer();
         if(e.hasItem()) {
-            if(e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-                if (player.getInventory().getItemInMainHand()!= null && player.getInventory().getItemInMainHand().getType().equals(Material.DIAMOND_HOE)) {
-                    player.launchProjectile(Snowball.class, player.getLocation().getDirection());
-
+            if(player.getInventory().getItemInMainHand().getItemMeta() != null) {
+                String name = player.getInventory().getItemInMainHand().getItemMeta().getDisplayName();
+                if (name.equalsIgnoreCase(net.md_5.bungee.api.ChatColor.of("#ff23ff") + "SnowGun")) {
+                    Snowball s = player.launchProjectile(Snowball.class, player.getLocation().getDirection());
+                    s.setVelocity(player.getLocation().getDirection().multiply(10));
                 }
             }
         }
-
     }
 
     @EventHandler
@@ -115,7 +136,7 @@ public final class Main extends JavaPlugin implements Listener {
     public void onPing(ServerListPingEvent e) {
         e.setMaxPlayers(8964);
         String s = centerText("Apache\n", 45);
-        String s2 = centerText("Support 1.18 & 1.8.9",15);
+        String s2 = centerText("Support 1.18 & 1.8.9",25);
         e.setMotd(ChatColor.AQUA.toString() + ChatColor.BOLD + s + ChatColor.GOLD + ChatColor.BOLD + s2);
         try {
             e.setServerIcon(Bukkit.loadServerIcon(new File("nuke.png")));
@@ -131,7 +152,7 @@ public final class Main extends JavaPlugin implements Listener {
             if (!(ent instanceof Player)) {
                 Snowball sb = (Snowball) e.getDamager();
                 Player pl = (Player) sb.getShooter();
-                if(pl.getInventory().getItemInMainHand().getItemMeta() == null) {
+                if(pl.getInventory().getItemInMainHand().getItemMeta() != null) {
                     String name = pl.getInventory().getItemInMainHand().getItemMeta().getDisplayName();
                     if (name.equalsIgnoreCase(net.md_5.bungee.api.ChatColor.of("#ff23ff") + "SnowGun")) {
                         e.setDamage(10000);
@@ -149,7 +170,7 @@ public final class Main extends JavaPlugin implements Listener {
     public void onProjectileHit(ProjectileHitEvent e) {
         if(e.getEntity().getShooter() instanceof Player) {
             Player shooter = (Player) e.getEntity().getShooter();
-            if(shooter.getInventory().getItemInMainHand().getItemMeta() == null) {
+            if(shooter.getInventory().getItemInMainHand().getItemMeta() != null) {
                 String name = shooter.getInventory().getItemInMainHand().getItemMeta().getDisplayName();
                 if(name.equalsIgnoreCase(net.md_5.bungee.api.ChatColor.of("#ff23ff") + "Frag Grenade")) {
                     if(e.getHitBlock() == null) {
