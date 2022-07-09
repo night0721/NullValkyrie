@@ -109,8 +109,6 @@ public final class Main extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-
-
         e.getPlayer().sendTitle(ChatColor.RED +"Welcome to Apache!", ChatColor.GREEN + "LOL", 20, 100, 20);
         e.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText("§1NOT ENOUGH MANNER"));
 
@@ -146,8 +144,6 @@ public final class Main extends JavaPlugin implements Listener {
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
         if (e.getDamager().getType() == EntityType.SNOWBALL) {
-            Entity ent = e.getEntity();
-            if (!(ent instanceof Player)) {
                 Snowball sb = (Snowball) e.getDamager();
                 Player pl = (Player) sb.getShooter();
                 if(pl.getInventory().getItemInMainHand().getItemMeta() != null) {
@@ -160,8 +156,6 @@ public final class Main extends JavaPlugin implements Listener {
                         e.setDamage(0);
                     }
                 }
-
-            }
         }
     }
     @EventHandler
