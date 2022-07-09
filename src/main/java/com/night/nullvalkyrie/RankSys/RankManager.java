@@ -38,11 +38,11 @@ public class RankManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if(Bukkit.getOfflinePlayer(uuid).isOnline()) {
-            Player player = Bukkit.getPlayer(uuid);
+        for(Player player : Bukkit.getOnlinePlayers()) {
             main.getNameTagManager().removeTag(player);
             main.getNameTagManager().newTag(player);
         }
+
     }
     public Rank getRank(UUID uuid) {
         return Rank.valueOf(config.getString(uuid.toString()));
