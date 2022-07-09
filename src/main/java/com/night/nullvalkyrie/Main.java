@@ -1,10 +1,7 @@
 package com.night.nullvalkyrie;
 
 import com.night.nullvalkyrie.Chests.MenuListener;
-import com.night.nullvalkyrie.RankSys.NameTagManager;
-import com.night.nullvalkyrie.RankSys.ScoreboardListener;
-import com.night.nullvalkyrie.RankSys.RankManager;
-import com.night.nullvalkyrie.RankSys.SideBarManager;
+import com.night.nullvalkyrie.RankSys.*;
 import com.night.nullvalkyrie.commands.*;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -44,12 +41,14 @@ public final class Main extends JavaPlugin implements Listener {
     private RankManager rankManager;
     private NameTagManager nameTagManager;
     private SideBarManager sideBarManager;
+    private BelowNameManager belowNameManager;
 
     public RankManager getRankManager() {
         return rankManager;
     }
     public NameTagManager getNameTagManager() { return nameTagManager; }
     public SideBarManager getSideBarManager() { return  sideBarManager; }
+    public BelowNameManager getBelowNameManager() { return belowNameManager; }
     @Override
     public void onEnable() {
         new VanishCommand();new TestCommand();new WeaponCommand();new AnvilCommand();new ArmorCommand();new MenuCommand();new RankCommand(this);
@@ -65,7 +64,7 @@ public final class Main extends JavaPlugin implements Listener {
         nameTagManager = new NameTagManager(this);
         rankManager = new RankManager(this);
         sideBarManager = new SideBarManager(this);
-
+        belowNameManager = new BelowNameManager();
         ItemStack widow_sword = new ItemStack(Material.STICK);
         widow_sword.addUnsafeEnchantment(Enchantment.DAMAGE_ALL, 20);
         widow_sword.addUnsafeEnchantment(Enchantment.LOOT_BONUS_MOBS, 10);
@@ -83,17 +82,16 @@ public final class Main extends JavaPlugin implements Listener {
     }
     @EventHandler
     public void Projectile(ProjectileLaunchEvent e) {
-        Player player = (Player) e.getEntity().getShooter();
-        if(player.getInventory().getItemInMainHand().getItemMeta() != null) {
-            String name = player.getInventory().getItemInMainHand().getItemMeta().getDisplayName();
-            if (name.equalsIgnoreCase(net.md_5.bungee.api.ChatColor.of("#ff23ff") + "Frag Grenade")) {
-                Egg s = (Egg) e.getEntity();
-                s.setVelocity(player.getLocation().getDirection().multiply(10));
+        if(e.getEntity().getShooter() instanceof Player) {
+            Player player = (Player) e.getEntity().getShooter();
+            if(player.getInventory().getItemInMainHand().getItemMeta() != null) {
+                String name = player.getInventory().getItemInMainHand().getItemMeta().getDisplayName();
+                if (name.equalsIgnoreCase(net.md_5.bungee.api.ChatColor.of("#ff23ff") + "Frag Grenade")) {
+                    Egg s = (Egg) e.getEntity();
+                    s.setVelocity(player.getLocation().getDirection().multiply(10));
+                }
             }
         }
-
-
-
     }
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent e) {
@@ -111,7 +109,7 @@ public final class Main extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-        e.setJoinMessage(rankManager.getRank(e.getPlayer().getUniqueId()).getDisplay() + " " + e.getPlayer().getName() + ChatColor.WHITE + " joined the server!");
+
 
         e.getPlayer().sendTitle(ChatColor.RED +"Welcome to Apache!", ChatColor.GREEN + "LOL", 20, 100, 20);
         e.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText("§1NOT ENOUGH MANNER"));

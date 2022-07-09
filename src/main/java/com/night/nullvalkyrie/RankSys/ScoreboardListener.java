@@ -30,6 +30,8 @@ public class ScoreboardListener implements Listener {
         main.getNameTagManager().setNametags(player);
         main.getNameTagManager().newTag(player);
         main.getSideBarManager().setSideBar(player);
+        main.getBelowNameManager().setBelowName(player);
+        e.setJoinMessage(main.getRankManager().getRank(e.getPlayer().getUniqueId()).getDisplay() + " " + e.getPlayer().getName() + ChatColor.WHITE + " joined the server!");
     }
 
     @EventHandler

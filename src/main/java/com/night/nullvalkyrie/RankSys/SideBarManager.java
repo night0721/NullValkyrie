@@ -22,9 +22,6 @@ public class SideBarManager {
     @SuppressWarnings("deprecation")
     public void setSideBar(Player player) {
         Scoreboard board = player.getScoreboard();
-        if(board.getObjective("Pluto") != null) {
-
-        }
         Objective obj = board.registerNewObjective("Pluto", "dummy");
         obj.setDisplaySlot(DisplaySlot.SIDEBAR);
         obj.setDisplayName(ChatColor.AQUA.toString() + ChatColor.BOLD + "Pluto");

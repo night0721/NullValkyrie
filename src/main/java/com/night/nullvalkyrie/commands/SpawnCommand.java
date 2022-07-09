@@ -2,10 +2,7 @@ package com.night.nullvalkyrie.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Zombie;
+import org.bukkit.entity.*;
 
 import java.util.List;
 
@@ -22,9 +19,13 @@ public class SpawnCommand extends Command {
     @Override
     public void onCommand(CommandSender sender, String[] args) {
         Player player = (Player) sender;
-        Entity ent = (Entity) Bukkit.getWorld("world").spawnEntity((player.getLocation().add(0, 2, 0)), EntityType.ZOMBIE);
+        Entity ent = player.getWorld().spawnEntity((player.getLocation().add(0, 2, 0)), EntityType.ZOMBIE);
         ent.setCustomName("Gay");
         ent.setCustomNameVisible(true);
+        double ourHealth = 20 * 5;
+        Damageable ente = (Damageable) ent;
+        ente.setMaxHealth(ourHealth);
+        ente.setHealth(ourHealth);
 
     }
 
