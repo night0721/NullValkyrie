@@ -4,7 +4,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.util.StringUtil;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MessageCommand extends Command {
@@ -24,12 +27,16 @@ public class MessageCommand extends Command {
             if (args.length >= 2) {
                 if(Bukkit.getPlayerExact(args[0]) != null) {
                     Player target = Bukkit.getPlayerExact(args[0]);
-                    StringBuilder builder = new StringBuilder();
-                    for(int i = 1; i < args.length; i++) {
-                        builder.append(args[i]).append(" ");
+                    if(!target.equals(player)) {
+                        StringBuilder builder = new StringBuilder();
+                        for(int i = 1; i < args.length; i++) {
+                            builder.append(args[i]).append(" ");
+                        }
+                        player.sendMessage(ChatColor.DARK_AQUA + "TO " + ChatColor.RED + target.getName() + ChatColor.WHITE + " : " + builder);
+                        target.sendMessage(ChatColor.DARK_AQUA + "FROM " + ChatColor.RED + player.getName() + ChatColor.WHITE + " : " + builder);
+                    } else {
+                        player.sendMessage(ChatColor.RED + "You cannot send message to yourself");
                     }
-                    player.sendMessage(ChatColor.DARK_AQUA + "TO " + ChatColor.RED + target.getName() + ChatColor.WHITE + " : " + builder);
-                    target.sendMessage(ChatColor.DARK_AQUA + "FROM " + ChatColor.RED + player.getName() + ChatColor.WHITE + " : " + builder);
                 } else {
                     player.sendMessage(ChatColor.RED + "You cannot send message to offline players");
                 }
@@ -41,6 +48,13 @@ public class MessageCommand extends Command {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, String[] args) {
-        return null;
+        if(args.length == 1) {
+            List<String> names = new ArrayList<>();
+            for(Player player: Bukkit.getOnlinePlayers()) {
+                names.add(player.getName());
+            }
+            return StringUtil.copyPartialMatches(args[0], names, new ArrayList<>());
+        }
+        return new ArrayList<>();
     }
 }
