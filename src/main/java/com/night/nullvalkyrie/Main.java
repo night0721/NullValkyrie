@@ -1,28 +1,25 @@
 package com.night.nullvalkyrie;
 
 import com.night.nullvalkyrie.Chests.MenuListener;
+import com.night.nullvalkyrie.Enchantments.EnchantmentHandler;
 import com.night.nullvalkyrie.RankSys.*;
 import com.night.nullvalkyrie.commands.*;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
-import org.bukkit.block.Block;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
-import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.server.ServerListPingEvent;
@@ -30,11 +27,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.util.Vector;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.UUID;
 
 public final class Main extends JavaPlugin implements Listener {
     private BossBar bossbar;
@@ -51,8 +45,9 @@ public final class Main extends JavaPlugin implements Listener {
     public BelowNameManager getBelowNameManager() { return belowNameManager; }
     @Override
     public void onEnable() {
-        new VanishCommand();new TestCommand();new WeaponCommand();new AnvilCommand();new ArmorCommand();new MenuCommand();new RankCommand(this);
+        new VanishCommand();new TestCommand();new AnvilCommand();new ArmorCommand();new MenuCommand();new RankCommand(this);
         new MessageCommand();new HologramCommand();new CraftCommand();new EnchantingCommand();new SpawnCommand();
+        new WeaponCommand();
         bossbar = Bukkit.createBossBar(
                 ChatColor.GOLD + "Kuudra",
                 BarColor.RED,
@@ -68,8 +63,6 @@ public final class Main extends JavaPlugin implements Listener {
         ItemStack widow_sword = new ItemStack(Material.STICK);
         widow_sword.addUnsafeEnchantment(Enchantment.DAMAGE_ALL, 20);
         widow_sword.addUnsafeEnchantment(Enchantment.LOOT_BONUS_MOBS, 10);
-        widow_sword.addUnsafeEnchantment(Enchantment.LUCK, 10);
-        widow_sword.addUnsafeEnchantment(Enchantment.DURABILITY, 10);
         ItemMeta wsMeta = widow_sword.getItemMeta();
         wsMeta.setDisplayName(net.md_5.bungee.api.ChatColor.of("#ff23ff") + "Fabled Widow Sword");
         wsMeta.setUnbreakable(true);
@@ -79,6 +72,7 @@ public final class Main extends JavaPlugin implements Listener {
         wither_sword_recipe.setIngredient('A', Material.IRON_INGOT);
         wither_sword_recipe.setIngredient('B', Material.STICK);
         Bukkit.addRecipe(wither_sword_recipe);
+        EnchantmentHandler.register();
     }
     @EventHandler
     public void Projectile(ProjectileLaunchEvent e) {
@@ -109,7 +103,7 @@ public final class Main extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-        e.getPlayer().sendTitle(ChatColor.RED +"Welcome to Apache!", ChatColor.GREEN + "LOL", 20, 100, 20);
+        e.getPlayer().sendTitle(ChatColor.RED +"Welcome to Matrix!", ChatColor.GREEN + "LOL", 20, 100, 20);
         e.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText("§1NOT ENOUGH MANNER"));
 
         bossbar.addPlayer(e.getPlayer());
@@ -131,9 +125,9 @@ public final class Main extends JavaPlugin implements Listener {
     @EventHandler
     public void onPing(ServerListPingEvent e) {
         e.setMaxPlayers(8964);
-        String s = centerText("Apache\n", 45);
-        String s2 = centerText("Support 1.18 & 1.8.9",25);
-        e.setMotd(ChatColor.AQUA.toString() + ChatColor.BOLD + s + ChatColor.GOLD + ChatColor.BOLD + s2);
+        String s = centerText("Matrix", 45);
+        String s2 = centerText("Support 1.18 & 1.8.9",45);
+        e.setMotd(ChatColor.AQUA.toString() + ChatColor.BOLD + s + "\n" + ChatColor.GOLD + ChatColor.BOLD + s2);
         try {
             e.setServerIcon(Bukkit.loadServerIcon(new File("nuke.png")));
         } catch (Exception ee) {
@@ -144,18 +138,18 @@ public final class Main extends JavaPlugin implements Listener {
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
         if (e.getDamager().getType() == EntityType.SNOWBALL) {
-                Snowball sb = (Snowball) e.getDamager();
-                Player pl = (Player) sb.getShooter();
-                if(pl.getInventory().getItemInMainHand().getItemMeta() != null) {
-                    String name = pl.getInventory().getItemInMainHand().getItemMeta().getDisplayName();
-                    if (name.equalsIgnoreCase(net.md_5.bungee.api.ChatColor.of("#ff23ff") + "SnowGun")) {
-                        e.setDamage(10000);
-                    } else if (name.equalsIgnoreCase("AA-12")) {
-                        e.setDamage(7);
-                    } else {
-                        e.setDamage(0);
-                    }
+            Snowball sb = (Snowball) e.getDamager();
+            Player pl = (Player) sb.getShooter();
+            if(pl.getInventory().getItemInMainHand().getItemMeta() != null) {
+                String name = pl.getInventory().getItemInMainHand().getItemMeta().getDisplayName();
+                if (name.equalsIgnoreCase(net.md_5.bungee.api.ChatColor.of("#ff23ff") + "SnowGun")) {
+                    e.setDamage(10000);
+                } else if (name.equalsIgnoreCase("AA-12")) {
+                    e.setDamage(7);
+                } else {
+                    e.setDamage(0);
                 }
+            }
         }
     }
     @EventHandler
@@ -183,6 +177,7 @@ public final class Main extends JavaPlugin implements Listener {
             event.setCancelled(true);
         }
     }
+
 //    For hologram clicks to change page
 //    @EventHandler
 //    public void onEntityInteract(EntityInteractEvent e) {

@@ -19,7 +19,7 @@ public class EnchantingCommand extends Command {
     public void onCommand(CommandSender sender, String[] args) {
         if(sender instanceof Player) {
             Player player = (Player) sender;
-            player.openEnchanting(null, true);
+            player.openEnchanting(player.getLocation(), true);
         }
     }
 

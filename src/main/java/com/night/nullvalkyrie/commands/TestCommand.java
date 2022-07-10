@@ -24,6 +24,7 @@ public class TestCommand extends Command {
                     player.sendMessage(player.getAddress().getHostString());
                 }
             }
+
         }
     }
 

@@ -40,7 +40,6 @@ public abstract class Command extends BukkitCommand {
     public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
         return onTabComplete(sender, args);
     }
-
     public abstract void onCommand(CommandSender sender, String[] args);
     public abstract List<String> onTabComplete(CommandSender sender, String[] args);
 }
