@@ -24,9 +24,7 @@ public class WeaponCommand extends Command {
 
     @Override
     public void onCommand(CommandSender sender, String[] args) {
-        List<String> ar = new ArrayList<>();
-        ar.addAll(Arrays.asList(args));
-        String name = String.join(" ", ar.remove(0));
+        String name = String.join(" ", args);
         Player player = (Player) sender;
         if(name.equalsIgnoreCase("Snow Gun")) {
             player.getInventory().addItem(CustomItemManager.SnowGun);
@@ -36,13 +34,19 @@ public class WeaponCommand extends Command {
             player.getInventory().addItem(CustomItemManager.WidowSword);
         } else if(name.equalsIgnoreCase("Terminator")) {
             player.getInventory().addItem(CustomItemManager.Terminator);
+        } else if(name.equalsIgnoreCase("Explosive Bow")) {
+            player.getInventory().addItem(CustomItemManager.ExplosiveBow);
+        } else if(name.equalsIgnoreCase("AOTV")) {
+            player.getInventory().addItem(CustomItemManager.AOTV);
+        } else if(name.equalsIgnoreCase("Grappling Hook")) {
+            player.getInventory().addItem(CustomItemManager.GrapplingHook);
         }
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, String[] args) {
         if(args.length == 1) {
-            return StringUtil.copyPartialMatches(args[0], Arrays.asList("Snow Gun", "Grenade", "Widow Sword", "Terminator"), new ArrayList<>());
+            return StringUtil.copyPartialMatches(args[0], Arrays.asList("Snow Gun", "Grenade", "Widow Sword", "Terminator", "Explosive Bow", "AOTV", "Grappling Hook"), new ArrayList<>());
         }
         return new ArrayList<>();
     }

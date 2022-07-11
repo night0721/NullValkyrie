@@ -2,8 +2,7 @@ package com.night.nullvalkyrie;
 
 import com.night.nullvalkyrie.Chests.MenuListener;
 import com.night.nullvalkyrie.Enchantments.EnchantmentHandler;
-import com.night.nullvalkyrie.Events.onEntityDamageByEntity;
-import com.night.nullvalkyrie.Events.onEntityShoot;
+import com.night.nullvalkyrie.Events.CustomItemEvents;
 import com.night.nullvalkyrie.Items.CustomItemManager;
 import com.night.nullvalkyrie.Rank.*;
 import com.night.nullvalkyrie.Util.Util;
@@ -20,7 +19,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -33,7 +31,6 @@ public final class Main extends JavaPlugin implements Listener {
     private NameTagManager nameTagManager;
     private SideBarManager sideBarManager;
     private BelowNameManager belowNameManager;
-    private CustomItemManager customItemManager;
 
     public RankManager getRankManager() {
         return rankManager;
@@ -44,25 +41,18 @@ public final class Main extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         new VanishCommand();new TestCommand();new AnvilCommand();new ArmorCommand();new MenuCommand();new RankCommand(this);
-        new MessageCommand();new HologramCommand();new CraftCommand();new EnchantingCommand();new SpawnCommand();
-        new WeaponCommand();
-        bossbar = Bukkit.createBossBar(
-                ChatColor.GOLD + "Kuudra",
-                BarColor.RED,
-                BarStyle.SEGMENTED_12
-        );
+        new MessageCommand();new HologramCommand();new CraftCommand();new EnchantingCommand();new SpawnCommand();new WeaponCommand();
+        bossbar = Bukkit.createBossBar(ChatColor.GOLD + "Kuudra", BarColor.RED, BarStyle.SEGMENTED_12);
         Bukkit.getPluginManager().registerEvents(this, this);
         Bukkit.getPluginManager().registerEvents(new MenuListener(), this);
         Bukkit.getPluginManager().registerEvents(new ScoreboardListener(this), this);
-        Bukkit.getPluginManager().registerEvents(new onEntityDamageByEntity(), this);
-        Bukkit.getPluginManager().registerEvents(new onEntityShoot(), this);
+        Bukkit.getPluginManager().registerEvents(new CustomItemEvents(), this);
         nameTagManager = new NameTagManager(this);
         rankManager = new RankManager(this);
         sideBarManager = new SideBarManager(this);
         belowNameManager = new BelowNameManager();
-        customItemManager = new CustomItemManager(this);
+        new CustomItemManager(this);
         CustomItemManager.register();
-
         EnchantmentHandler.register();
     }
     @EventHandler
@@ -73,19 +63,6 @@ public final class Main extends JavaPlugin implements Listener {
                 String name = player.getInventory().getItemInMainHand().getItemMeta().getDisplayName();
                 if (name.equalsIgnoreCase(net.md_5.bungee.api.ChatColor.of("#ff23ff") + "Frag Grenade")) {
                     Egg s = (Egg) e.getEntity();
-                    s.setVelocity(player.getLocation().getDirection().multiply(10));
-                }
-            }
-        }
-    }
-    @EventHandler
-    public void onPlayerInteract(PlayerInteractEvent e) {
-        Player player = e.getPlayer();
-        if(e.hasItem()) {
-            if(player.getInventory().getItemInMainHand().getItemMeta() != null) {
-                String name = player.getInventory().getItemInMainHand().getItemMeta().getDisplayName();
-                if (name.equalsIgnoreCase(net.md_5.bungee.api.ChatColor.of("#ff23ff") + "SnowGun")) {
-                    Snowball s = player.launchProjectile(Snowball.class, player.getLocation().getDirection());
                     s.setVelocity(player.getLocation().getDirection().multiply(10));
                 }
             }

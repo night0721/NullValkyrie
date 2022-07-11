@@ -36,15 +36,20 @@ public class CustomItemManager {
     }
     public static ItemStack WidowSword;
     public static ItemStack Terminator;
-    public static ItemStack ExplosiveBow;
     public static ItemStack Grenade;
     public static ItemStack SnowGun;
+    public static ItemStack ExplosiveBow;
+    public static ItemStack AOTV;
+    public static ItemStack GrapplingHook;
     public static void register() {
         createItemDataDirectory("ItemData");
         setWidowSword();
         setTerminator();
         setGrenade();
         setSnowGun();
+        setExplosiveBow();
+        setAOTV();
+        setGrapplingHook();
     }
 
     public static YamlConfiguration loadConfig(String path) {
@@ -120,7 +125,7 @@ public class CustomItemManager {
         wsMeta.setLore(lore);
         AttributeModifier dmg = new AttributeModifier(UUID.randomUUID(), "generic.attackDamage", 100, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
         wsMeta.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, dmg);
-        wsMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        wsMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_UNBREAKABLE, ItemFlag.HIDE_ENCHANTS);
         widow_sword.setItemMeta(wsMeta);
         WidowSword = widow_sword;
         ShapedRecipe wither_sword_recipe = new ShapedRecipe(new NamespacedKey(main, "widow_sword"), widow_sword);
@@ -144,6 +149,7 @@ public class CustomItemManager {
         lore.add("");
         lore.add(net.md_5.bungee.api.ChatColor.of("#ff23ff").toString() + ChatColor.BOLD + "MYTHIC");
         terminatorMeta.setLore(lore);
+        terminatorMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_UNBREAKABLE, ItemFlag.HIDE_ENCHANTS);
         terminator.setItemMeta(terminatorMeta);
         Terminator = terminator;
     }
@@ -152,7 +158,13 @@ public class CustomItemManager {
         ItemMeta eggdata = egg.getItemMeta();
         eggdata.setDisplayName(net.md_5.bungee.api.ChatColor.of("#ff23ff") + "Frag Grenade");
         eggdata.setUnbreakable(true);
-        eggdata.setLore(Arrays.asList(ChatColor.GOLD + "Boom"));
+        ArrayList<String> lore = new ArrayList<>();
+        lore.add(ChatColor.GOLD + "Item Ability: Throw a TNT ");
+        lore.add(ChatColor.GRAY + "Shoot TNT with 25x more power!");
+        lore.add("");
+        lore.add(net.md_5.bungee.api.ChatColor.of("#ff23ff").toString() + ChatColor.BOLD + "MYTHIC");
+        eggdata.setLore(lore);
+        eggdata.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_UNBREAKABLE, ItemFlag.HIDE_ENCHANTS);
         egg.setItemMeta(eggdata);
         Grenade = egg;
     }
@@ -163,8 +175,53 @@ public class CustomItemManager {
         ItemMeta hoedata = hoe.getItemMeta();
         hoedata.setDisplayName(net.md_5.bungee.api.ChatColor.of("#ff23ff") + "SnowGun");
         hoedata.setUnbreakable(true);
-        hoedata.setLore(Arrays.asList(ChatColor.GOLD + "Shoot Snowball!"));
+        ArrayList<String> lore = new ArrayList<>();
+        lore.add(ChatColor.GOLD + "Item Ability: Shoot Snowball");
+        lore.add(ChatColor.GRAY + "Shoot snowball!");
+        lore.add("");
+        lore.add(net.md_5.bungee.api.ChatColor.of("#ff23ff").toString() + ChatColor.BOLD + "MYTHIC");
+        hoedata.setLore(lore);
+        hoedata.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_UNBREAKABLE, ItemFlag.HIDE_ENCHANTS);
         hoe.setItemMeta(hoedata);
+
         SnowGun = hoe;
+    }
+    private static void setExplosiveBow() {
+
+    }
+    private static void setAOTV() {
+        ItemStack i = new ItemStack(Material.DIAMOND_SWORD, 1);
+        ItemMeta im = i.getItemMeta();
+        im.setDisplayName(ChatColor.DARK_PURPLE + "Aspect of The Void");
+        ArrayList<String> lore = new ArrayList<>();
+        lore.add(ChatColor.GRAY + "Damage: " + ChatColor.RED + "+100");
+        lore.add("");
+        lore.add(ChatColor.GOLD + "Item Ability: Instant Teleport");
+        lore.add(ChatColor.GRAY + "Teleport 12 blocks ahead");
+        lore.add("");
+        lore.add(ChatColor.DARK_PURPLE.toString() + ChatColor.BOLD + "EPIC");
+        im.setLore(lore);
+        im.setUnbreakable(true);
+        AttributeModifier dmg = new AttributeModifier(UUID.randomUUID(), "generic.attackDamage", 25, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
+        AttributeModifier speed = new AttributeModifier(UUID.randomUUID(), "generic.movementSpeed", 0.2, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
+        im.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, dmg);
+        im.addAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED, speed);
+        im.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_UNBREAKABLE, ItemFlag.HIDE_ENCHANTS);
+        i.setItemMeta(im);
+        AOTV = i;
+    }
+    private static void setGrapplingHook() {
+        ItemStack i = new ItemStack(Material.FISHING_ROD, 1);
+        ItemMeta im = i.getItemMeta();
+        im.setDisplayName(ChatColor.WHITE + "Grappling Hook");
+        ArrayList<String> lore = new ArrayList<>();
+        lore.add(ChatColor.GRAY + "I believe I can fly...");
+        lore.add("");
+        lore.add(ChatColor.WHITE.toString() + ChatColor.BOLD + "COMMON");
+        im.setLore(lore);
+        im.setUnbreakable(true);
+        im.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_UNBREAKABLE, ItemFlag.HIDE_ENCHANTS);
+        i.setItemMeta(im);
+        GrapplingHook = i;
     }
 }
