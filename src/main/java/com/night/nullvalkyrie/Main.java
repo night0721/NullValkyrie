@@ -2,7 +2,10 @@ package com.night.nullvalkyrie;
 
 import com.night.nullvalkyrie.Chests.MenuListener;
 import com.night.nullvalkyrie.Enchantments.EnchantmentHandler;
-import com.night.nullvalkyrie.RankSys.*;
+import com.night.nullvalkyrie.Events.onEntityDamageByEntity;
+import com.night.nullvalkyrie.Items.CustomItemManager;
+import com.night.nullvalkyrie.Rank.*;
+import com.night.nullvalkyrie.Util.Util;
 import com.night.nullvalkyrie.commands.*;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -10,22 +13,15 @@ import org.bukkit.*;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.server.ServerListPingEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ShapedRecipe;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -36,6 +32,7 @@ public final class Main extends JavaPlugin implements Listener {
     private NameTagManager nameTagManager;
     private SideBarManager sideBarManager;
     private BelowNameManager belowNameManager;
+    private CustomItemManager customItemManager;
 
     public RankManager getRankManager() {
         return rankManager;
@@ -56,22 +53,14 @@ public final class Main extends JavaPlugin implements Listener {
         Bukkit.getPluginManager().registerEvents(this, this);
         Bukkit.getPluginManager().registerEvents(new MenuListener(), this);
         Bukkit.getPluginManager().registerEvents(new ScoreboardListener(this), this);
+        Bukkit.getPluginManager().registerEvents(new onEntityDamageByEntity(), this);
         nameTagManager = new NameTagManager(this);
         rankManager = new RankManager(this);
         sideBarManager = new SideBarManager(this);
         belowNameManager = new BelowNameManager();
-        ItemStack widow_sword = new ItemStack(Material.STICK);
-        widow_sword.addUnsafeEnchantment(Enchantment.DAMAGE_ALL, 20);
-        widow_sword.addUnsafeEnchantment(Enchantment.LOOT_BONUS_MOBS, 10);
-        ItemMeta wsMeta = widow_sword.getItemMeta();
-        wsMeta.setDisplayName(net.md_5.bungee.api.ChatColor.of("#ff23ff") + "Fabled Widow Sword");
-        wsMeta.setUnbreakable(true);
-        widow_sword.setItemMeta(wsMeta);
-        ShapedRecipe wither_sword_recipe = new ShapedRecipe(new NamespacedKey(this, "widow_sword"), widow_sword);
-        wither_sword_recipe.shape(" A ", " A "," B ");
-        wither_sword_recipe.setIngredient('A', Material.IRON_INGOT);
-        wither_sword_recipe.setIngredient('B', Material.STICK);
-        Bukkit.addRecipe(wither_sword_recipe);
+        customItemManager = new CustomItemManager(this);
+        customItemManager.register();
+
         EnchantmentHandler.register();
     }
     @EventHandler
@@ -109,24 +98,12 @@ public final class Main extends JavaPlugin implements Listener {
         bossbar.addPlayer(e.getPlayer());
         e.getPlayer().setPlayerListHeaderFooter(ChatColor.AQUA + "You are playing on " + ChatColor.GREEN + "127.0.0.1", ChatColor.GOLD + "Ranks, boosters, & more!" + ChatColor.AQUA + "127.0.0.1");
     }
-    public String centerText(String text, int lineLength) {
-        StringBuilder builder = new StringBuilder();
-        char space = ' ';
-        int distance = (lineLength - text.length()) / 2;
-        for (int ii = 0; ii < distance; ii++) {
-            builder.append(space);
-        }
-        builder.append(text);
-        for (int i = 0; i < distance; ++i) {
-            builder.append(space);
-        }
-        return builder.toString();
-    }
+
     @EventHandler
     public void onPing(ServerListPingEvent e) {
         e.setMaxPlayers(8964);
-        String s = centerText("Matrix", 45);
-        String s2 = centerText("Support 1.18 & 1.8.9",45);
+        String s = Util.centerText("Matrix", 45);
+        String s2 = Util.centerText("Support 1.18 & 1.8.9",45);
         e.setMotd(ChatColor.AQUA.toString() + ChatColor.BOLD + s + "\n" + ChatColor.GOLD + ChatColor.BOLD + s2);
         try {
             e.setServerIcon(Bukkit.loadServerIcon(new File("nuke.png")));
@@ -135,23 +112,7 @@ public final class Main extends JavaPlugin implements Listener {
         }
 
     }
-    @EventHandler
-    public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
-        if (e.getDamager().getType() == EntityType.SNOWBALL) {
-            Snowball sb = (Snowball) e.getDamager();
-            Player pl = (Player) sb.getShooter();
-            if(pl.getInventory().getItemInMainHand().getItemMeta() != null) {
-                String name = pl.getInventory().getItemInMainHand().getItemMeta().getDisplayName();
-                if (name.equalsIgnoreCase(net.md_5.bungee.api.ChatColor.of("#ff23ff") + "SnowGun")) {
-                    e.setDamage(10000);
-                } else if (name.equalsIgnoreCase("AA-12")) {
-                    e.setDamage(7);
-                } else {
-                    e.setDamage(0);
-                }
-            }
-        }
-    }
+
     @EventHandler
     public void onProjectileHit(ProjectileHitEvent e) {
         if(e.getEntity().getShooter() instanceof Player) {

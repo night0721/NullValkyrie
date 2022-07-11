@@ -1,7 +1,6 @@
-package com.night.nullvalkyrie.RankSys;
+package com.night.nullvalkyrie.Rank;
 
 import com.night.nullvalkyrie.Main;
-import com.night.nullvalkyrie.RankSys.Rank;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;

@@ -1,4 +1,4 @@
-package com.night.nullvalkyrie.RankSys;
+package com.night.nullvalkyrie.Rank;
 
 import com.night.nullvalkyrie.Main;
 import org.bukkit.Bukkit;
@@ -10,9 +10,6 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-
-import java.util.HashMap;
-import java.util.UUID;
 
 public class ScoreboardListener implements Listener {
 

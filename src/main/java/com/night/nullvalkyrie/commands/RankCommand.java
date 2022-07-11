@@ -3,7 +3,7 @@ package com.night.nullvalkyrie.commands;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.night.nullvalkyrie.Main;
-import com.night.nullvalkyrie.RankSys.Rank;
+import com.night.nullvalkyrie.Rank.Rank;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
