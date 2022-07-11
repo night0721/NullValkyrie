@@ -3,6 +3,7 @@ package com.night.nullvalkyrie;
 import com.night.nullvalkyrie.Chests.MenuListener;
 import com.night.nullvalkyrie.Enchantments.EnchantmentHandler;
 import com.night.nullvalkyrie.Events.onEntityDamageByEntity;
+import com.night.nullvalkyrie.Events.onEntityShoot;
 import com.night.nullvalkyrie.Items.CustomItemManager;
 import com.night.nullvalkyrie.Rank.*;
 import com.night.nullvalkyrie.Util.Util;
@@ -54,12 +55,13 @@ public final class Main extends JavaPlugin implements Listener {
         Bukkit.getPluginManager().registerEvents(new MenuListener(), this);
         Bukkit.getPluginManager().registerEvents(new ScoreboardListener(this), this);
         Bukkit.getPluginManager().registerEvents(new onEntityDamageByEntity(), this);
+        Bukkit.getPluginManager().registerEvents(new onEntityShoot(), this);
         nameTagManager = new NameTagManager(this);
         rankManager = new RankManager(this);
         sideBarManager = new SideBarManager(this);
         belowNameManager = new BelowNameManager();
         customItemManager = new CustomItemManager(this);
-        customItemManager.register();
+        CustomItemManager.register();
 
         EnchantmentHandler.register();
     }
