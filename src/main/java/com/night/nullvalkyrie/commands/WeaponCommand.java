@@ -4,6 +4,7 @@ import com.night.nullvalkyrie.Items.CustomItemManager;
 import com.night.nullvalkyrie.Main;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.StringUtil;
@@ -12,6 +13,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+
+import static com.night.nullvalkyrie.Items.CustomItemManager.getAllFilesFromDirectory;
+import static com.night.nullvalkyrie.Items.CustomItemManager.loadConfig;
 
 public class WeaponCommand extends Command {
     private Main main;
@@ -52,7 +56,13 @@ public class WeaponCommand extends Command {
     @Override
     public List<String> onTabComplete(CommandSender sender, String[] args) {
         if(args.length == 1) {
-            return StringUtil.copyPartialMatches(args[0], Arrays.asList("Snow Gun", "Frag Grenade", "Widow Sword", "Terminator", "Explosive Bow", "Teleport Door", "Grappling Hook"), new ArrayList<>());
+            List<String> hh = getAllFilesFromDirectory("ItemData");
+            ArrayList<String> cc = new ArrayList<>();
+            for(int kk = 0; kk < hh.size(); kk++) {
+                FileConfiguration c = loadConfig("ItemData\\" + hh.get(kk));
+                cc.add(c.getString("name"));
+            }
+            return StringUtil.copyPartialMatches(args[0], cc, new ArrayList<>());
         }
         return new ArrayList<>();
     }

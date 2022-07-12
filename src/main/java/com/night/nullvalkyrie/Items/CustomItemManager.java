@@ -162,7 +162,7 @@ public class CustomItemManager {
 
         }
     }
-    private static List<String> getAllFilesFromDirectory(String path) {
+    public static List<String> getAllFilesFromDirectory(String path) {
         ArrayList<String> ns = new ArrayList<>();
         try {
             File f = new File(main.getDataFolder(), path);
