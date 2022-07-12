@@ -105,7 +105,27 @@ public class CustomItemEvents implements Listener {
                     arrow.setVelocity(arrow.getVelocity().multiply(5));
                     arrow.setDamage(50);
                     e.setCancelled(true);
-
+                }
+            } else if (e.getAction().equals(Action.LEFT_CLICK_AIR) || e.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
+                if (name.equalsIgnoreCase(Rarity.MYTHIC.getColor() + "Terminator")) {
+                    Arrow arrow = player.launchProjectile(Arrow.class, player.getEyeLocation().getDirection());
+                    arrow.setVelocity(arrow.getVelocity().multiply(5));
+                    arrow.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
+                    arrow.setDamage(50);
+                    Arrow a1 = player.launchProjectile(Arrow.class, player.getEyeLocation().getDirection());
+                    a1.setVelocity(arrow.getVelocity().rotateAroundY(Math.toRadians(5)).multiply(5));
+                    a1.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
+                    a1.setDamage(50);
+                    Arrow a2 = player.launchProjectile(Arrow.class, player.getEyeLocation().getDirection());
+                    a2.setVelocity(arrow.getVelocity().rotateAroundY(Math.toRadians(-5)).multiply(5));
+                    a2.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
+                    a2.setDamage(50);
+                    e.setCancelled(true);
+                } else if(name.equalsIgnoreCase(Rarity.LEGENDARY.getColor() + "Explosive Bow")) {
+                    Arrow arrow = player.launchProjectile(Arrow.class, player.getEyeLocation().getDirection());
+                    arrow.setVelocity(arrow.getVelocity().multiply(5));
+                    arrow.setDamage(50);
+                    e.setCancelled(true);
                 }
             }
         }
