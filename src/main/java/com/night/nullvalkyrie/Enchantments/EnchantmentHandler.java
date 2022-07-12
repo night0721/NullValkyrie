@@ -7,11 +7,13 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 public class EnchantmentHandler {
-    public static final Enchantment ThunderBolt = new CustomEnchantment("enc_thunderbolt", "Thunderbolt", 5);
+    public static final Enchantment ThunderBolt = new CustomEnchantment("thunderbolt", "ThunderBolt", 5);
+    public static final Enchantment SmeltingTouch = new CustomEnchantment("smelting-touch", "Smelting Touch", 1);
     public static void register() {
         boolean registered = Arrays.stream(Enchantment.values()).collect(Collectors.toList()).contains(ThunderBolt);
         if(!registered) {
             registerEnchantment(ThunderBolt);
+            registerEnchantment(SmeltingTouch);
         }
 
     }

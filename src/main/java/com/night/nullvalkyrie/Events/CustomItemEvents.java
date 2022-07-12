@@ -9,8 +9,7 @@ import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityShootBowEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
@@ -88,15 +87,24 @@ public class CustomItemEvents implements Listener {
                     s.setVelocity(player.getLocation().getDirection().multiply(10));
                 } else if (name.equalsIgnoreCase(net.md_5.bungee.api.ChatColor.of("#ff23ff") + "Terminator")) {
                     Arrow arrow = player.launchProjectile(Arrow.class, player.getEyeLocation().getDirection());
-                    arrow.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
                     arrow.setVelocity(arrow.getVelocity().multiply(5));
+                    arrow.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
+                    arrow.setDamage(50);
                     Arrow a1 = player.launchProjectile(Arrow.class, player.getEyeLocation().getDirection());
                     a1.setVelocity(arrow.getVelocity().rotateAroundY(Math.toRadians(5)).multiply(5));
                     a1.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
+                    a1.setDamage(50);
                     Arrow a2 = player.launchProjectile(Arrow.class, player.getEyeLocation().getDirection());
                     a2.setVelocity(arrow.getVelocity().rotateAroundY(Math.toRadians(-5)).multiply(5));
                     a2.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
+                    a2.setDamage(50);
                     e.setCancelled(true);
+                } else if(name.equalsIgnoreCase(ChatColor.GOLD + "Explosive Bow")) {
+                    Arrow arrow = player.launchProjectile(Arrow.class, player.getEyeLocation().getDirection());
+                    arrow.setVelocity(arrow.getVelocity().multiply(5));
+                    arrow.setDamage(50);
+                    e.setCancelled(true);
+
                 }
             }
         }
@@ -110,7 +118,51 @@ public class CustomItemEvents implements Listener {
                     String name = player.getInventory().getItemInMainHand().getItemMeta().getDisplayName();
                     if (name.equalsIgnoreCase(net.md_5.bungee.api.ChatColor.of("#ff23ff") + "Terminator")) {
                         e.setCancelled(true);
+                    } else if(name.equalsIgnoreCase(ChatColor.GOLD + "Explosive Bow")) {
+                        e.setCancelled(true);
                     }
+                }
+            }
+        }
+    }
+    @EventHandler
+    public void onProjectileHit(ProjectileHitEvent e) {
+        if(e.getEntity().getShooter() instanceof Player) {
+            Player shooter = (Player) e.getEntity().getShooter();
+            if(shooter.getInventory().getItemInMainHand().getItemMeta() != null) {
+                String name = shooter.getInventory().getItemInMainHand().getItemMeta().getDisplayName();
+                if(name.equalsIgnoreCase(net.md_5.bungee.api.ChatColor.of("#ff23ff") + "Frag Grenade")) {
+                    if(e.getHitBlock() == null) {
+                        Location l = e.getHitEntity().getLocation();
+                        e.getHitEntity().getWorld().createExplosion(l.getX(),l.getY(),l.getZ(),100,false,false);
+                    } else if(e.getHitEntity() == null) {
+                        Location l = e.getHitBlock().getLocation();
+                        e.getHitBlock().getWorld().createExplosion(l.getX(),l.getY(),l.getZ(),100,false,false);
+                    }
+                } else if(name.equalsIgnoreCase(ChatColor.GOLD + "Explosive Bow")) {
+                    Arrow arrow = (Arrow) e.getEntity();
+                    Location al = arrow.getLocation();
+                    shooter.getWorld().createExplosion(al, 100, false, false);
+                }
+            }
+
+        }
+    }
+    @EventHandler
+    public void onCreatureSpawn(CreatureSpawnEvent event) {
+        if (event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.EGG) {
+            event.setCancelled(true);
+        }
+    }
+    @EventHandler
+    public void Projectile(ProjectileLaunchEvent e) {
+        if(e.getEntity().getShooter() instanceof Player) {
+            Player player = (Player) e.getEntity().getShooter();
+            if(player.getInventory().getItemInMainHand().getItemMeta() != null) {
+                String name = player.getInventory().getItemInMainHand().getItemMeta().getDisplayName();
+                if (name.equalsIgnoreCase(net.md_5.bungee.api.ChatColor.of("#ff23ff") + "Frag Grenade")) {
+                    Egg s = (Egg) e.getEntity();
+                    s.setVelocity(player.getLocation().getDirection().multiply(10));
                 }
             }
         }

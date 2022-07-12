@@ -24,7 +24,9 @@ public class WeaponCommand extends Command {
 
     @Override
     public void onCommand(CommandSender sender, String[] args) {
-        String name = String.join(" ", args);
+        List<String> arg = Arrays.asList(args);
+        //arg.remove(0); //in case buggy bukkit make it bug again
+        String name = String.join(" ", arg);
         Player player = (Player) sender;
         if(name.equalsIgnoreCase("Snow Gun")) {
             player.getInventory().addItem(CustomItemManager.SnowGun);
