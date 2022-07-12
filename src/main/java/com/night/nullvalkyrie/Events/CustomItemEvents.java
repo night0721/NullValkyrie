@@ -15,7 +15,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import java.util.Set;
 
-import static com.night.nullvalkyrie.Items.CustomItemManager.loadConfig;
+import static com.night.nullvalkyrie.Items.CustomItem.loadConfig;
 
 public class CustomItemEvents implements Listener {
     @EventHandler

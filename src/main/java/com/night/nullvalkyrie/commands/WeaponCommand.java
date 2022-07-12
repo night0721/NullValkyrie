@@ -1,6 +1,6 @@
 package com.night.nullvalkyrie.commands;
 
-import com.night.nullvalkyrie.Items.CustomItemManager;
+import com.night.nullvalkyrie.Items.CustomItem;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
@@ -29,19 +29,19 @@ public class WeaponCommand extends Command {
         String name = String.join(" ", arg);
         Player player = (Player) sender;
         if(name.equalsIgnoreCase("Snow Gun")) {
-            player.getInventory().addItem(CustomItemManager.SnowGun);
+            player.getInventory().addItem(CustomItem.SnowGun);
         } else if(name.equalsIgnoreCase("Grenade")) {
-            player.getInventory().addItem(CustomItemManager.Grenade);
+            player.getInventory().addItem(CustomItem.Grenade);
         } else if(name.equalsIgnoreCase("Widow Sword")) {
-            player.getInventory().addItem(CustomItemManager.WidowSword);
+            player.getInventory().addItem(CustomItem.WidowSword);
         } else if(name.equalsIgnoreCase("Terminator")) {
-            player.getInventory().addItem(CustomItemManager.Terminator);
+            player.getInventory().addItem(CustomItem.Terminator);
         } else if(name.equalsIgnoreCase("Explosive Bow")) {
-            player.getInventory().addItem(CustomItemManager.ExplosiveBow);
+            player.getInventory().addItem(CustomItem.ExplosiveBow);
         } else if(name.equalsIgnoreCase("AOTV")) {
-            player.getInventory().addItem(CustomItemManager.AOTV);
+            player.getInventory().addItem(CustomItem.AOTV);
         } else if(name.equalsIgnoreCase("Grappling Hook")) {
-            player.getInventory().addItem(CustomItemManager.GrapplingHook);
+            player.getInventory().addItem(CustomItem.GrapplingHook);
         }
     }
 

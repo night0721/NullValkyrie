@@ -6,7 +6,7 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-public class EnchantmentHandler {
+public class EnchantmentManager {
     public static final Enchantment ThunderBolt = new CustomEnchantment("thunderbolt", "ThunderBolt", 5);
     public static final Enchantment SmeltingTouch = new CustomEnchantment("smelting-touch", "Smelting Touch", 1);
     public static void register() {
