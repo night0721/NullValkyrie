@@ -7,6 +7,9 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 public class EnchantmentManager {
+    public EnchantmentManager() {
+        register();
+    }
     public static final Enchantment ThunderBolt = new CustomEnchantment("thunderbolt", "ThunderBolt", 5);
     public static final Enchantment SmeltingTouch = new CustomEnchantment("smelting-touch", "Smelting Touch", 1);
     public static void register() {
@@ -18,7 +21,6 @@ public class EnchantmentManager {
 
     }
     public static void registerEnchantment(Enchantment en) {
-        boolean registered = true;
         try {
             try {
                 Field f = Enchantment.class.getDeclaredField("acceptingNew");
@@ -29,11 +31,7 @@ public class EnchantmentManager {
             }
             Enchantment.registerEnchantment(en);
         } catch (Exception e) {
-            registered = false;
             e.printStackTrace();
-        }
-        if (registered) {
-
         }
     }
 

@@ -3,7 +3,6 @@ package com.night.nullvalkyrie;
 import com.night.nullvalkyrie.Chests.MenuListener;
 import com.night.nullvalkyrie.Enchantments.EnchantmentManager;
 import com.night.nullvalkyrie.Events.CustomItemEvents;
-import com.night.nullvalkyrie.Items.CustomItem;
 import com.night.nullvalkyrie.Items.CustomItemManager;
 import com.night.nullvalkyrie.Rank.*;
 import com.night.nullvalkyrie.Util.Util;
@@ -29,7 +28,6 @@ public final class Main extends JavaPlugin implements Listener {
     private SideBarManager sideBarManager;
     private BelowNameManager belowNameManager;
     private CustomItemManager customItemManager;
-    private CustomItem customItems;
 
     public RankManager getRankManager() {
         return rankManager;
@@ -50,6 +48,7 @@ public final class Main extends JavaPlugin implements Listener {
         return customItemManager;
     }
 
+
     @Override
     public void onEnable() {
         new VanishCommand();
@@ -57,13 +56,13 @@ public final class Main extends JavaPlugin implements Listener {
         new AnvilCommand();
         new ArmorCommand();
         new MenuCommand();
-        new RankCommand(this);
         new MessageCommand();
         new HologramCommand();
         new CraftCommand();
         new EnchantingCommand();
         new SpawnCommand();
-        new WeaponCommand();
+        new RankCommand(this);
+        new WeaponCommand(this);
         bossbar = Bukkit.createBossBar(ChatColor.GOLD + "Kuudra", BarColor.RED, BarStyle.SEGMENTED_12);
         Bukkit.getPluginManager().registerEvents(this, this);
         Bukkit.getPluginManager().registerEvents(new MenuListener(), this);
@@ -73,21 +72,16 @@ public final class Main extends JavaPlugin implements Listener {
         rankManager = new RankManager(this);
         sideBarManager = new SideBarManager(this);
         belowNameManager = new BelowNameManager();
-        customItemManager = new CustomItemManager();
-        customItems = new CustomItem(this);
-        customItems.register();
-        EnchantmentManager.register();
+        new EnchantmentManager();
+        customItemManager = new CustomItemManager(this);
     }
 
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-        e.getPlayer().sendTitle(ChatColor.RED + "Welcome to Matrix!", ChatColor.GREEN + "LOL", 20, 100, 20);
         e.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText("§1NOT ENOUGH MANNER"));
-
         bossbar.addPlayer(e.getPlayer());
-        e.getPlayer().setPlayerListHeaderFooter(ChatColor.AQUA + "You are playing on " + ChatColor.GREEN + "127.0.0.1", ChatColor.GOLD + "Ranks, boosters, & more!" + ChatColor.AQUA + "127.0.0.1");
-    }
+        }
 
     @EventHandler
     public void onPing(ServerListPingEvent e) {

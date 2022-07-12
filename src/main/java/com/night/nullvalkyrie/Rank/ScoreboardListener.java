@@ -22,8 +22,10 @@ public class ScoreboardListener implements Listener {
     public void onJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
         if(!player.hasPlayedBefore()) {
+            e.getPlayer().sendTitle(ChatColor.RED + "Welcome to Matrix!", ChatColor.GREEN + "LOL", 20, 100, 20);
             main.getRankManager().setRank(player.getUniqueId(), Rank.ROOKIE);
         }
+        e.getPlayer().setPlayerListHeaderFooter(ChatColor.AQUA + "You are playing on " + ChatColor.GREEN + "127.0.0.1", ChatColor.GOLD + "Ranks, boosters, & more!" + ChatColor.AQUA + "127.0.0.1");
         main.getNameTagManager().setNametags(player);
         main.getNameTagManager().newTag(player);
         main.getSideBarManager().setSideBar(player);
