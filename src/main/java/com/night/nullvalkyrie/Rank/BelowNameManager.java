@@ -14,6 +14,5 @@ public class BelowNameManager {
         obj.setDisplayName(ChatColor.RED + "❤");
         player.setScoreboard(board);
         player.setHealth(player.getHealth());
-
     }
 }

@@ -38,7 +38,7 @@ public class RankManager {
             e.printStackTrace();
         }
         for(Player player : Bukkit.getOnlinePlayers()) {
-            if(player.getUniqueId() != uuid) {
+            if(player.hasPlayedBefore()) {
                 main.getNameTagManager().removeTag(player);
                 main.getNameTagManager().newTag(player);
             }
