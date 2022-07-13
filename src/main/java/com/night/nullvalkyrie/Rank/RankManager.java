@@ -38,10 +38,11 @@ public class RankManager {
             e.printStackTrace();
         }
         for(Player player : Bukkit.getOnlinePlayers()) {
-            main.getNameTagManager().removeTag(player);
-            main.getNameTagManager().newTag(player);
+            if(player.getUniqueId() != uuid) {
+                main.getNameTagManager().removeTag(player);
+                main.getNameTagManager().newTag(player);
+            }
         }
-
     }
     public Rank getRank(UUID uuid) {
         return Rank.valueOf(config.getString(uuid.toString()));

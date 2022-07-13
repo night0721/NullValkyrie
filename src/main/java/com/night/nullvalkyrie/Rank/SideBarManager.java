@@ -11,11 +11,7 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public class SideBarManager {
-    private Main main;
-    public SideBarManager(Main main) {
-        this.main = main;
-    }
-    private HashMap<UUID, Integer> deaths = new HashMap<>();
+    private final HashMap<UUID, Integer> deaths = new HashMap<>();
     @SuppressWarnings("deprecation")
     public void setSideBar(Player player) {
         Scoreboard board = player.getScoreboard();

@@ -38,7 +38,6 @@ public class NameTagManager {
         }
     }
     public void removeTag(Player player) {
-        Rank rank = main.getRankManager().getRank(player.getUniqueId());
         for(Player target : Bukkit.getOnlinePlayers()) {
             target.getScoreboard().getEntryTeam(player.getName()).removeEntry(player.getName());
         }
