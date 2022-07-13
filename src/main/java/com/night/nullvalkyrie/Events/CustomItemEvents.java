@@ -27,7 +27,7 @@ public class CustomItemEvents implements Listener {
             if (pl.getInventory().getItemInMainHand().getItemMeta() != null) {
                 String name = pl.getInventory().getItemInMainHand().getItemMeta().getDisplayName();
                 if (name.equalsIgnoreCase(Rarity.ULTRA.getColor() + "Snow Gun")) {
-                    e.setDamage(10000);
+                    e.setDamage(2000);
                 } else if (name.equalsIgnoreCase("AA-12")) {
                     e.setDamage(7);
                 } else {

@@ -1,19 +1,18 @@
 package com.night.nullvalkyrie.Items;
 
 import com.night.nullvalkyrie.Main;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.File;
@@ -30,6 +29,7 @@ public class CustomItemManager {
             main.getDataFolder().mkdir();
         }
         createItemDataDirectory("ItemData");
+        createFilesFromConfig(main.getConfig());
         register();
     }
     public void register() {
@@ -174,6 +174,30 @@ public class CustomItemManager {
             e.printStackTrace();
         }
         return ns;
+    }
+    public void createFilesFromConfig(FileConfiguration config) {
+        for(String a : config.getKeys(false)) {
+            FileConfiguration c = loadConfig("ItemData\\" + a + ".yml");
+            for(String b : config.getKeys(true)) {
+                if(b.startsWith(a)) {
+                    List<String> d = new ArrayList<>(Arrays.asList(b.split("\\.")));
+                    if(d.size() != 1) {
+                        d.remove(0);
+                        if(d.size() == 1) {
+                            c.set(d.get(0), config.get(b));
+                        } else {
+                            c.set(String.join(".", d), config.get(b));
+                        }
+                        try {
+                            c.save(loadFile("ItemData\\" + a + ".yml"));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                }
+            }
+        }
     }
     public static ItemStack getItem(String name){
         return a.get(name);

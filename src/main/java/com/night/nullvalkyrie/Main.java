@@ -50,6 +50,8 @@ public final class Main extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
+        getConfig().options().copyDefaults();
+        saveDefaultConfig();
         new VanishCommand();
         new TestCommand();
         new AnvilCommand();
