@@ -62,6 +62,7 @@ public final class Main extends JavaPlugin implements Listener {
         new CraftCommand();
         new EnchantingCommand();
         new RankCommand(this);
+        new UtilCommand(this);
         new WeaponCommand(this);
         bossbar = Bukkit.createBossBar(ChatColor.GOLD + "Kuudra", BarColor.RED, BarStyle.SEGMENTED_12);
         Bukkit.getPluginManager().registerEvents(this, this);

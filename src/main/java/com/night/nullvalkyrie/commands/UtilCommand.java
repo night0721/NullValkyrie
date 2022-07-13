@@ -16,20 +16,18 @@ import java.util.Objects;
 import static com.night.nullvalkyrie.Items.CustomItemManager.getAllFilesFromDirectory;
 import static com.night.nullvalkyrie.Items.CustomItemManager.loadConfig;
 
-public class WeaponCommand extends Command {
+public class UtilCommand extends Command {
     private Main main;
-    public WeaponCommand(Main main) {
+    public UtilCommand(Main main) {
         super(
-                "weapon",
+                "util",
                 new String[]{},
-                "Give you a weapon",
+                "Give you a tool",
                 ""
 
         );
         this.main = main;
     }
-
-
     @Override
     public void onCommand(CommandSender sender, String[] args) {
         Player player = (Player) sender;
@@ -59,7 +57,7 @@ public class WeaponCommand extends Command {
             ArrayList<String> cc = new ArrayList<>();
             for(int kk = 0; kk < hh.size(); kk++) {
                 FileConfiguration c = loadConfig("ItemData\\" + hh.get(kk));
-                if(Objects.equals(c.getString("type"), "Weapon")) {
+                if(Objects.equals(c.getString("type"), "Util")) {
                     cc.add(c.getString("name"));
                 }
             }

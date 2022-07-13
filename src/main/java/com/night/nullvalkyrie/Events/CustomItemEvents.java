@@ -11,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.*;
+import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
@@ -185,6 +186,23 @@ public class CustomItemEvents implements Listener {
                     Egg s = (Egg) e.getEntity();
                     s.setVelocity(player.getLocation().getDirection().multiply(10));
                 }
+            }
+        }
+    }
+    @EventHandler
+    public void onPlayerBucketEmpty(PlayerBucketEmptyEvent e) {
+        int x = e.getBlockClicked().getX() + e.getBlockFace().getModX();
+        int y = e.getBlockClicked().getY() + e.getBlockFace().getModY();
+        int z = e.getBlockClicked().getZ() + e.getBlockFace().getModZ();
+        Player player = e.getPlayer();
+        if(player.getInventory().getItemInMainHand().getItemMeta() != null) {
+            String name = player.getInventory().getItemInMainHand().getItemMeta().getDisplayName();
+            if (name.equalsIgnoreCase(Rarity.EPIC.getColor() + "Infinite Water Bucket")) {
+                e.getPlayer().getWorld().getBlockAt(x,y,z).setType(Material.WATER);
+                e.setCancelled(true);
+            } else if (name.equalsIgnoreCase(Rarity.EPIC.getColor() + "Infinite LAVA Bucket")) {
+                e.getPlayer().getWorld().getBlockAt(x,y,z).setType(Material.LAVA);
+                e.setCancelled(true);
             }
         }
     }

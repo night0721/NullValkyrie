@@ -2,7 +2,7 @@ ExplosiveBow:
   name: "Explosive Bow"
   material: "BOW"
   type: "Weapon"
-  rarity: LEGENDARY
+  rarity: "LEGENDARY"
   lore:
     properties:
       damage: 50
@@ -19,7 +19,7 @@ FragGrenade:
   name: "Frag Grenade"
   material: "EGG"
   type: "Weapon"
-  rarity: LEGENDARY
+  rarity: "LEGENDARY"
   lore:
     properties:
       damage: 50
@@ -34,8 +34,8 @@ FragGrenade:
 GrapplingHook:
   name: "Grappling Hook"
   material: "FISHING_ROD"
-  type: "Weapon"
-  rarity: RARE
+  type: "Util"
+  rarity: "RARE"
   lore:
     ability:
       name: Hook
@@ -47,7 +47,7 @@ SnowGun:
   name: "Snow Gun"
   material: "DIAMOND_HOE"
   type: "Weapon"
-  rarity: ULTRA
+  rarity: "ULTRA"
   lore:
     properties:
       damage: 25
@@ -65,7 +65,7 @@ TeleportDoor:
   name: "Teleport Door"
   material: "DIAMOND_SHOVEL"
   type: "Weapon"
-  rarity: GRAND
+  rarity: "GRAND"
   lore:
     properties:
       damage: 75
@@ -83,7 +83,7 @@ Terminator:
   name: "Terminator"
   material: "BOW"
   type: "Weapon"
-  rarity: MYTHIC
+  rarity: "MYTHIC"
   lore:
     properties:
       damage: 50
@@ -104,7 +104,7 @@ WidowSword:
   name: "Widow Sword"
   material: "STICK"
   type: "Weapon"
-  rarity: MYTHIC
+  rarity: "MYTHIC"
   lore:
     properties:
       damage: 100
@@ -126,3 +126,13 @@ WidowSword:
   zombie: 100
   skeleton: 100
   spider: 100
+InfiniteWaterBucket:
+  name: "Infinite Water Bucket"
+  material: "WATER_BUCKET"
+  type: "Util"
+  rarity: "EPIC"
+InfiniteLavaBucket:
+  name: "Infinite Lava Bucket"
+  material: "LAVA_BUCKET"
+  type: "Util"
+  rarity: "EPIC"
