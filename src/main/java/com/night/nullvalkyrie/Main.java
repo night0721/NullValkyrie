@@ -48,7 +48,6 @@ public final class Main extends JavaPlugin implements Listener {
         return customItemManager;
     }
 
-
     @Override
     public void onEnable() {
         new VanishCommand();
@@ -60,7 +59,6 @@ public final class Main extends JavaPlugin implements Listener {
         new HologramCommand();
         new CraftCommand();
         new EnchantingCommand();
-        new SpawnCommand();
         new RankCommand(this);
         new WeaponCommand(this);
         bossbar = Bukkit.createBossBar(ChatColor.GOLD + "Kuudra", BarColor.RED, BarStyle.SEGMENTED_12);
@@ -68,9 +66,10 @@ public final class Main extends JavaPlugin implements Listener {
         Bukkit.getPluginManager().registerEvents(new MenuListener(), this);
         Bukkit.getPluginManager().registerEvents(new ScoreboardListener(this), this);
         Bukkit.getPluginManager().registerEvents(new CustomItemEvents(), this);
+        Bukkit.getPluginManager().registerEvents(new SpawnCommand(this), this);
         nameTagManager = new NameTagManager(this);
         rankManager = new RankManager(this);
-        sideBarManager = new SideBarManager(this);
+        sideBarManager = new SideBarManager();
         belowNameManager = new BelowNameManager();
         new EnchantmentManager();
         customItemManager = new CustomItemManager(this);
