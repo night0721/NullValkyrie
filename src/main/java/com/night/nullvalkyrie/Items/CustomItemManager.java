@@ -48,7 +48,7 @@ public class CustomItemManager {
                     String property = Arrays.asList(key.split("\\.")).get(2);
                     if (property.equals("damage") && c.getInt(key) > 0) {
                         pr.add(ChatColor.GRAY + "Damage: " + ChatColor.RED + "+" + c.getInt(key));
-                    } else if (property.equals("damage") && c.getInt(key) > 0) {
+                    } else if (property.equals("speed") && c.getInt(key) > 0) {
                         pr.add(ChatColor.GRAY + "Speed: " + ChatColor.RED + "+" + c.getInt(key));
                     }
                 } else if (key.startsWith("lore.ability.")) {

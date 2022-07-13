@@ -45,7 +45,7 @@ public class SideBarManager {
     public void changeOnDeath(Player player) {
         int amount = deaths.get(player.getUniqueId());
         amount++;
-        deaths.put(player.getUniqueId(), amount);
+        deaths.put(player.getUniqueId(), amount++);
         player.getScoreboard().getTeam("deathsTotal").setSuffix(ChatColor.YELLOW.toString() + amount);
     }
 }
