@@ -8,6 +8,8 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
+import static com.night.nullvalkyrie.Rank.ScoreboardListener.rankManager;
+
 public class NameTagManager {
     private Main main;
 
@@ -26,13 +28,13 @@ public class NameTagManager {
         }
         for (Player target : Bukkit.getOnlinePlayers()) {
             if (player.getUniqueId() != target.getUniqueId()) {
-                Rank rank = main.getRankManager().getRank(target.getUniqueId());
+                Rank rank = rankManager.getRank(target.getUniqueId());
                 player.getScoreboard().getTeam(rank.name()).addEntry(target.getName());
             }
         }
     }
     public void newTag(Player player) {
-        Rank rank = main.getRankManager().getRank(player.getUniqueId());
+        Rank rank = rankManager.getRank(player.getUniqueId());
         for(Player target : Bukkit.getOnlinePlayers()) {
             target.getScoreboard().getTeam(rank.name()).addEntry(player.getName());
         }

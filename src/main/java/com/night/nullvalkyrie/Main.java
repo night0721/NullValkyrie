@@ -23,27 +23,8 @@ import java.io.File;
 
 public final class Main extends JavaPlugin implements Listener {
     private BossBar bossbar;
-    private RankManager rankManager;
-    private NameTagManager nameTagManager;
-    private SideBarManager sideBarManager;
-    private BelowNameManager belowNameManager;
     private CustomItemManager customItemManager;
 
-    public RankManager getRankManager() {
-        return rankManager;
-    }
-
-    public NameTagManager getNameTagManager() {
-        return nameTagManager;
-    }
-
-    public SideBarManager getSideBarManager() {
-        return sideBarManager;
-    }
-
-    public BelowNameManager getBelowNameManager() {
-        return belowNameManager;
-    }
     public CustomItemManager getCustomItemManager() {
         return customItemManager;
     }
@@ -70,10 +51,6 @@ public final class Main extends JavaPlugin implements Listener {
         Bukkit.getPluginManager().registerEvents(new ScoreboardListener(this), this);
         Bukkit.getPluginManager().registerEvents(new CustomItemEvents(), this);
         Bukkit.getPluginManager().registerEvents(new SpawnCommand(this), this);
-        nameTagManager = new NameTagManager(this);
-        rankManager = new RankManager(this);
-        sideBarManager = new SideBarManager();
-        belowNameManager = new BelowNameManager();
         new EnchantmentManager();
         customItemManager = new CustomItemManager(this);
     }

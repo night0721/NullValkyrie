@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import static com.night.nullvalkyrie.Rank.ScoreboardListener.rankManager;
+
 //92.0.69.141:25565
 public class RankCommand extends Command {
     private Main main;
@@ -42,7 +44,7 @@ public class RankCommand extends Command {
                         OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);
                         for(Rank rank : Rank.values()) {
                             if(rank.name().equalsIgnoreCase(args[1])) {
-                                main.getRankManager().setRank(target.getUniqueId(), rank);
+                                rankManager.setRank(target.getUniqueId(), rank);
                                 player.sendMessage(ChatColor.GREEN + "You changed " + target.getName() + "'s rank to " + rank.getDisplay());
                                 if(target.isOnline()) {
                                     target.getPlayer().sendMessage(ChatColor.GREEN + player.getName() + " set your rank to " + rank.getDisplay());

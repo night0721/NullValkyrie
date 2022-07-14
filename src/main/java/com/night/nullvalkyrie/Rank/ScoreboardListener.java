@@ -13,9 +13,15 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class ScoreboardListener implements Listener {
 
-    private Main main;
+    public static RankManager rankManager;
+    public static NameTagManager nameTagManager;
+    private SideBarManager sideBarManager;
+    private BelowNameManager belowNameManager;
     public ScoreboardListener(Main main) {
-        this.main = main;
+        nameTagManager = new NameTagManager(main);
+        rankManager = new RankManager(main);
+        sideBarManager = new SideBarManager();
+        belowNameManager = new BelowNameManager();
     }
 
     @EventHandler
@@ -23,20 +29,20 @@ public class ScoreboardListener implements Listener {
         Player player = e.getPlayer();
         if(!player.hasPlayedBefore()) {
             e.getPlayer().sendTitle(ChatColor.RED + "Welcome to Matrix!", ChatColor.GREEN + "LOL", 20, 100, 20);
-            main.getRankManager().setRank(player.getUniqueId(), Rank.ROOKIE);
+            rankManager.setRank(player.getUniqueId(), Rank.ROOKIE);
         }
         e.getPlayer().setPlayerListHeaderFooter(ChatColor.AQUA + "You are playing on " + ChatColor.GREEN + "127.0.0.1", ChatColor.GOLD + "Ranks, boosters, & more!" + ChatColor.AQUA + "127.0.0.1");
-        main.getNameTagManager().setNametags(player);
-        main.getNameTagManager().newTag(player);
-        main.getSideBarManager().setSideBar(player);
-        main.getBelowNameManager().setBelowName(player);
-        e.setJoinMessage(main.getRankManager().getRank(e.getPlayer().getUniqueId()).getDisplay() + " " + e.getPlayer().getName() + ChatColor.WHITE + " joined the server!");
+        nameTagManager.setNametags(player);
+        nameTagManager.newTag(player);
+        sideBarManager.setSideBar(player);
+        belowNameManager.setBelowName(player);
+        e.setJoinMessage(rankManager.getRank(e.getPlayer().getUniqueId()).getDisplay() + " " + e.getPlayer().getName() + ChatColor.WHITE + " joined the server!");
     }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
         e.setQuitMessage(ChatColor.RED + "bozo " + e.getPlayer().getName() + " has left.");
-        main.getNameTagManager().removeTag(e.getPlayer());
+        nameTagManager.removeTag(e.getPlayer());
         e.getPlayer().setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
     }
 
@@ -44,12 +50,12 @@ public class ScoreboardListener implements Listener {
     public void onChat(AsyncPlayerChatEvent e) {
         e.setCancelled(true);
         Player player = e.getPlayer();
-        Bukkit.broadcastMessage(main.getRankManager().getRank(player.getUniqueId()).getDisplay() + " " + player.getName() + ChatColor.WHITE + ": " + e.getMessage());
+        Bukkit.broadcastMessage(rankManager.getRank(player.getUniqueId()).getDisplay() + " " + player.getName() + ChatColor.WHITE + ": " + e.getMessage());
     }
 
     //Death changing in sidebar
     @EventHandler
     public void onDeath(PlayerDeathEvent e) {
-        main.getSideBarManager().changeOnDeath(e.getEntity().getPlayer());
+        sideBarManager.changeOnDeath(e.getEntity().getPlayer());
     }
 }

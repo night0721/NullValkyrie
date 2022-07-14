@@ -9,6 +9,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
+import static com.night.nullvalkyrie.Rank.ScoreboardListener.nameTagManager;
+
 public class RankManager {
     private File file;
     private YamlConfiguration config;
@@ -39,8 +41,8 @@ public class RankManager {
         }
         for(Player player : Bukkit.getOnlinePlayers()) {
             if(player.hasPlayedBefore()) {
-                main.getNameTagManager().removeTag(player);
-                main.getNameTagManager().newTag(player);
+                nameTagManager.removeTag(player);
+                nameTagManager.newTag(player);
             }
         }
     }
