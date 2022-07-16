@@ -1,10 +1,8 @@
 package com.night.nullvalkyrie.Events;
 
 import com.night.nullvalkyrie.Items.Rarity;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import com.night.nullvalkyrie.Main;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -14,12 +12,19 @@ import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.night.nullvalkyrie.Items.CustomItemManager.loadConfig;
+import static com.night.nullvalkyrie.commands.SpawnCommand.getRandomWithNeg;
 
 public class CustomItemEvents implements Listener {
+    private Main main;
+    public CustomItemEvents(Main main) {
+        this.main = main;
+    }
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
         if (e.getDamager().getType().equals(EntityType.SNOWBALL)) {
@@ -28,6 +33,7 @@ public class CustomItemEvents implements Listener {
             if (pl.getInventory().getItemInMainHand().getItemMeta() != null) {
                 String name = pl.getInventory().getItemInMainHand().getItemMeta().getDisplayName();
                 if (name.equalsIgnoreCase(Rarity.ULTRA.getColor() + "Snow Gun")) {
+                    ((Snowball) e.getDamager()).setShooter(pl.getPlayer());
                     e.setDamage(2000);
                 } else if (name.equalsIgnoreCase("AA-12")) {
                     e.setDamage(7);
@@ -91,19 +97,23 @@ public class CustomItemEvents implements Listener {
                     Arrow arrow = player.launchProjectile(Arrow.class, player.getEyeLocation().getDirection());
                     arrow.setVelocity(arrow.getVelocity().multiply(5));
                     arrow.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
+                    arrow.setShooter(player);
                     arrow.setDamage(50);
                     Arrow a1 = player.launchProjectile(Arrow.class, player.getEyeLocation().getDirection());
                     a1.setVelocity(arrow.getVelocity().rotateAroundY(Math.toRadians(5)).multiply(5));
                     a1.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
+                    a1.setShooter(player);
                     a1.setDamage(50);
                     Arrow a2 = player.launchProjectile(Arrow.class, player.getEyeLocation().getDirection());
                     a2.setVelocity(arrow.getVelocity().rotateAroundY(Math.toRadians(-5)).multiply(5));
                     a2.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
+                    a2.setShooter(player);
                     a2.setDamage(50);
                     e.setCancelled(true);
                 } else if(name.equalsIgnoreCase(Rarity.LEGENDARY.getColor() + "Explosive Bow")) {
                     Arrow arrow = player.launchProjectile(Arrow.class, player.getEyeLocation().getDirection());
                     arrow.setVelocity(arrow.getVelocity().multiply(5));
+                    arrow.setShooter(player);
                     arrow.setDamage(50);
                     e.setCancelled(true);
                 }
@@ -112,19 +122,23 @@ public class CustomItemEvents implements Listener {
                     Arrow arrow = player.launchProjectile(Arrow.class, player.getEyeLocation().getDirection());
                     arrow.setVelocity(arrow.getVelocity().multiply(5));
                     arrow.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
+                    arrow.setShooter(player);
                     arrow.setDamage(50);
                     Arrow a1 = player.launchProjectile(Arrow.class, player.getEyeLocation().getDirection());
                     a1.setVelocity(arrow.getVelocity().rotateAroundY(Math.toRadians(5)).multiply(5));
                     a1.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
+                    a1.setShooter(player);
                     a1.setDamage(50);
                     Arrow a2 = player.launchProjectile(Arrow.class, player.getEyeLocation().getDirection());
                     a2.setVelocity(arrow.getVelocity().rotateAroundY(Math.toRadians(-5)).multiply(5));
                     a2.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
+                    a2.setShooter(player);
                     a2.setDamage(50);
                     e.setCancelled(true);
                 } else if(name.equalsIgnoreCase(Rarity.LEGENDARY.getColor() + "Explosive Bow")) {
                     Arrow arrow = player.launchProjectile(Arrow.class, player.getEyeLocation().getDirection());
                     arrow.setVelocity(arrow.getVelocity().multiply(5));
+                    arrow.setShooter(player);
                     arrow.setDamage(50);
                     e.setCancelled(true);
                 }
@@ -156,6 +170,7 @@ public class CustomItemEvents implements Listener {
                 if(name.equalsIgnoreCase(Rarity.LEGENDARY.getColor() + "Frag Grenade")) {
                     if(e.getHitBlock() == null) {
                         Location l = e.getHitEntity().getLocation();
+                        e.getEntity().setShooter(shooter);
                         e.getHitEntity().getWorld().createExplosion(l.getX(),l.getY(),l.getZ(),100,false,false);
                     } else if(e.getHitEntity() == null) {
                         Location l = e.getHitBlock().getLocation();
@@ -164,6 +179,7 @@ public class CustomItemEvents implements Listener {
                 } else if(name.equalsIgnoreCase(Rarity.LEGENDARY.getColor() + "Explosive Bow")) {
                     Arrow arrow = (Arrow) e.getEntity();
                     Location al = arrow.getLocation();
+                    arrow.setShooter(shooter);
                     shooter.getWorld().createExplosion(al, 100, false, false);
                 }
             }
@@ -206,4 +222,60 @@ public class CustomItemEvents implements Listener {
             }
         }
     }
+    private Location l;
+    private boolean spawnable = false;
+    @EventHandler
+    public void onDamage(EntityDamageByEntityEvent e) {
+        if(e.getEntity() instanceof Player) {
+            Player player = (Player) e.getEntity();
+                if((player.getHealth() - e.getDamage()) <= 0) {
+                    e.setCancelled(true);
+                    Location loc = player.getWorld().getBlockAt(-3,23,-3).getLocation();
+                    player.teleport(loc);
+                    for (Player p : Bukkit.getOnlinePlayers()) {
+                        p.sendMessage(e.getDamager() instanceof Player ? ChatColor.RED + player.getName() + " has been killed by " + e.getDamager().getName() : ChatColor.RED + player.getName() + " died");
+                        p.hidePlayer(player);
+                    }
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            for (Player p : Bukkit.getOnlinePlayers()) {
+                                p.showPlayer(player);
+                            }
+                            player.setHealth(20);
+//                            while(!spawnable) {
+//                                l = generateRandomCoord(9, Bukkit.getWorld("world"));
+//                                if(isSpawnable(l)) {
+//                                    spawnable = true;
+//                                    player.teleport(l);
+//                                }
+//                            }
+                            player.teleport(generateRandomCoord(9, Bukkit.getWorld("world")));
+                        }
+                    }.runTaskLater(main, 100L);
+                    run(player, new int[]{5});
+                }
+        }
+
+    }
+    public Location generateRandomCoord(int size, World world) {
+        int ranX = getRandomWithNeg(size), ranZ = getRandomWithNeg(size);
+        Block block = world.getHighestBlockAt(ranX, ranZ);
+        return block.getLocation();
+    }
+    public boolean isSpawnable(Location loc) {
+        Block feetBlock = loc.getBlock(), headBlock = loc.clone().add(0, 1, 0).getBlock(), upperBlock = loc.clone().add(0, 2, 0).getBlock();
+        return feetBlock.isPassable() && !feetBlock.isLiquid() && headBlock.isPassable() && !headBlock.isLiquid() && upperBlock.isPassable() && !upperBlock.isLiquid();
+    }
+    private int taskID;
+    public void run(Player player, int[] a) {
+        taskID = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(main, () -> {
+            player.sendTitle(ChatColor.RED +"YOU DIED!",ChatColor.GREEN +"You will revive in " + a[0] + " seconds",0,20,0);
+            a[0]--;
+            if (a[0] == 0) {
+                Bukkit.getScheduler().cancelTask(taskID);
+            }
+        }, 0L, 20L);
+    }
+
 }
