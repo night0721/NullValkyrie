@@ -1,6 +1,7 @@
 package com.night.nullvalkyrie;
 
 import com.night.nullvalkyrie.Chests.MenuListener;
+import com.night.nullvalkyrie.Discord.DiscordClientManager;
 import com.night.nullvalkyrie.Enchantments.EnchantmentManager;
 import com.night.nullvalkyrie.Events.CustomItemEvents;
 import com.night.nullvalkyrie.Items.CustomItemManager;
@@ -24,7 +25,6 @@ import java.io.File;
 public final class Main extends JavaPlugin implements Listener {
     private BossBar bossbar;
     private CustomItemManager customItemManager;
-
     public CustomItemManager getCustomItemManager() {
         return customItemManager;
     }
@@ -52,6 +52,8 @@ public final class Main extends JavaPlugin implements Listener {
         Bukkit.getPluginManager().registerEvents(new CustomItemEvents(this), this);
         Bukkit.getPluginManager().registerEvents(new SpawnCommand(this), this);
         new EnchantmentManager();
+        new DiscordClientManager();
+
         customItemManager = new CustomItemManager(this);
     }
 
