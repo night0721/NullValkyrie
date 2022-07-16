@@ -98,7 +98,7 @@ public class SpawnCommand extends Command implements Listener {
         }.runTaskTimer(main, 0L, spawnTime);
     }
 
-    private static boolean isSpawnable(Location loc) {
+    public static boolean isSpawnable(Location loc) {
         Block feetBlock = loc.getBlock(), headBlock = loc.clone().add(0, 1, 0).getBlock(), upperBlock = loc.clone().add(0, 2, 0).getBlock();
         return feetBlock.isPassable() && !feetBlock.isLiquid() && headBlock.isPassable() && !headBlock.isLiquid() && upperBlock.isPassable() && !upperBlock.isLiquid();
     }
@@ -109,7 +109,7 @@ public class SpawnCommand extends Command implements Listener {
         return random;
     }
 
-    private static int getRandomWithNeg(int size) {
+    public static int getRandomWithNeg(int size) {
         int random = (int) (Math.random() * (size + 1));
         if (Math.random() > 0.5) random *= -1;
         return random;

@@ -49,7 +49,7 @@ public final class Main extends JavaPlugin implements Listener {
         Bukkit.getPluginManager().registerEvents(this, this);
         Bukkit.getPluginManager().registerEvents(new MenuListener(), this);
         Bukkit.getPluginManager().registerEvents(new ScoreboardListener(this), this);
-        Bukkit.getPluginManager().registerEvents(new CustomItemEvents(), this);
+        Bukkit.getPluginManager().registerEvents(new CustomItemEvents(this), this);
         Bukkit.getPluginManager().registerEvents(new SpawnCommand(this), this);
         new EnchantmentManager();
         customItemManager = new CustomItemManager(this);
