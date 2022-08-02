@@ -1,0 +1,89 @@
+package me.night.nullvalkyrie;
+
+import me.night.nullvalkyrie.Chests.MenuListener;
+import me.night.nullvalkyrie.Discord.DiscordClientManager;
+import me.night.nullvalkyrie.Enchantments.EnchantmentManager;
+import me.night.nullvalkyrie.Events.CustomItemEvents;
+import me.night.nullvalkyrie.Items.CustomItemManager;
+import me.night.nullvalkyrie.Rank.ScoreboardListener;
+import me.night.nullvalkyrie.Util.Util;
+import me.night.nullvalkyrie.commands.*;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.*;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
+import org.bukkit.boss.BossBar;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.server.ServerListPingEvent;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
+
+public final class Main extends JavaPlugin implements Listener {
+    private BossBar bossbar;
+    private CustomItemManager customItemManager;
+    public CustomItemManager getCustomItemManager() {
+        return customItemManager;
+    }
+
+    @Override
+    public void onEnable() {
+        getConfig().options().copyDefaults();
+        saveDefaultConfig();
+        new VanishCommand();
+        new TestCommand();
+        new AnvilCommand();
+        new ArmorCommand();
+        new MenuCommand();
+        new MessageCommand();
+        new HologramCommand();
+        new CraftCommand();
+        new EnchantingCommand();
+        new RankCommand(this);
+        new UtilCommand(this);
+        new WeaponCommand(this);
+        new MinerCommand(this);
+        bossbar = Bukkit.createBossBar(ChatColor.GOLD + "Kuudra", BarColor.RED, BarStyle.SEGMENTED_12);
+        Bukkit.getPluginManager().registerEvents(this, this);
+        Bukkit.getPluginManager().registerEvents(new MenuListener(), this);
+        Bukkit.getPluginManager().registerEvents(new ScoreboardListener(this), this);
+        Bukkit.getPluginManager().registerEvents(new CustomItemEvents(this), this);
+        Bukkit.getPluginManager().registerEvents(new SpawnCommand(this), this);
+        new EnchantmentManager();
+        new DiscordClientManager();
+        customItemManager = new CustomItemManager(this);
+    }
+
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent e) {
+        e.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText("§1NOT ENOUGH MANNER"));
+        bossbar.addPlayer(e.getPlayer());
+        }
+
+    @EventHandler
+    public void onPing(ServerListPingEvent e) {
+        e.setMaxPlayers(8964);
+        String s = Util.centerText("Matrix", 45);
+        String s2 = Util.centerText("Support 1.18 & 1.8.9", 45);
+        e.setMotd(ChatColor.AQUA.toString() + ChatColor.BOLD + s + "\n" + ChatColor.GOLD + ChatColor.BOLD + s2);
+        try {
+            e.setServerIcon(Bukkit.loadServerIcon(new File("nuke.png")));
+        } catch (Exception ee) {
+            ee.printStackTrace();
+        }
+
+    }
+
+
+//    For hologram clicks to change page
+//    @EventHandler
+//    public void onEntityInteract(EntityInteractEvent e) {
+//        System.out.println(e.getEntity().getLocation());
+//        e.getEntity().setCustomName(ChatColor.RED + "Changed name since you ust clicked lol");
+//    }
+
+}

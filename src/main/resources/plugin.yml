@@ -1,6 +1,6 @@
 name: NullValkyrie
 version: '${project.version}'
-main: com.night.nullvalkyrie.Main
+main: me.night.nullvalkyrie.Main
 api-version: 1.18
 authors: [ NightKaly, Leocthl ]
 description: Null Valkyrie
