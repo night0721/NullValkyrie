@@ -1,4 +1,4 @@
-package me.night.nullvalkyrie.Rank;
+package me.night.nullvalkyrie.rank;
 
 import org.bukkit.ChatColor;
 

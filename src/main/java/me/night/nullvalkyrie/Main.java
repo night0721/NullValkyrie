@@ -1,13 +1,15 @@
 package me.night.nullvalkyrie;
 
-import me.night.nullvalkyrie.Chests.MenuListener;
-import me.night.nullvalkyrie.Discord.DiscordClientManager;
-import me.night.nullvalkyrie.Enchantments.EnchantmentManager;
-import me.night.nullvalkyrie.Events.CustomItemEvents;
-import me.night.nullvalkyrie.Items.CustomItemManager;
-import me.night.nullvalkyrie.Rank.ScoreboardListener;
-import me.night.nullvalkyrie.Util.Util;
+import me.night.nullvalkyrie.chests.MenuListener;
+import me.night.nullvalkyrie.discord.DiscordClientManager;
+import me.night.nullvalkyrie.enchantments.EnchantmentManager;
+import me.night.nullvalkyrie.events.CustomItemEvents;
+import me.night.nullvalkyrie.items.CustomItemManager;
+import me.night.nullvalkyrie.rank.ScoreboardListener;
+import me.night.nullvalkyrie.util.Util;
 import me.night.nullvalkyrie.commands.*;
+import me.night.nullvalkyrie.database.Client;
+import me.night.nullvalkyrie.miners.CryptoMiner;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
@@ -21,6 +23,7 @@ import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.Date;
 
 public final class Main extends JavaPlugin implements Listener {
     private BossBar bossbar;
@@ -28,7 +31,6 @@ public final class Main extends JavaPlugin implements Listener {
     public CustomItemManager getCustomItemManager() {
         return customItemManager;
     }
-
     @Override
     public void onEnable() {
         getConfig().options().copyDefaults();
@@ -42,6 +44,7 @@ public final class Main extends JavaPlugin implements Listener {
         new HologramCommand();
         new CraftCommand();
         new EnchantingCommand();
+        new BetaCommand();
         new RankCommand(this);
         new UtilCommand(this);
         new WeaponCommand(this);
@@ -52,9 +55,11 @@ public final class Main extends JavaPlugin implements Listener {
         Bukkit.getPluginManager().registerEvents(new ScoreboardListener(this), this);
         Bukkit.getPluginManager().registerEvents(new CustomItemEvents(this), this);
         Bukkit.getPluginManager().registerEvents(new SpawnCommand(this), this);
-        new EnchantmentManager();
+        EnchantmentManager.register();
         new DiscordClientManager();
         customItemManager = new CustomItemManager(this);
+        new CryptoMiner(this, "Gay", Material.ENDER_CHEST, 10, 0.7, new Date().getTime());
+        new Client();
     }
 
 
@@ -62,7 +67,8 @@ public final class Main extends JavaPlugin implements Listener {
     public void onJoin(PlayerJoinEvent e) {
         e.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText("§1NOT ENOUGH MANNER"));
         bossbar.addPlayer(e.getPlayer());
-        }
+
+    }
 
     @EventHandler
     public void onPing(ServerListPingEvent e) {

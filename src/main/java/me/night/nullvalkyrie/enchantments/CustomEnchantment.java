@@ -1,4 +1,4 @@
-package me.night.nullvalkyrie.Enchantments;
+package me.night.nullvalkyrie.enchantments;
 
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;

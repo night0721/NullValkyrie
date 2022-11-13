@@ -1,4 +1,4 @@
-package me.night.nullvalkyrie.Util.components;
+package me.night.nullvalkyrie.util.components;
 
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;

@@ -1,4 +1,4 @@
-package me.night.nullvalkyrie.Rank;
+package me.night.nullvalkyrie.rank;
 
 import me.night.nullvalkyrie.Main;
 import org.bukkit.Bukkit;
@@ -9,7 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
-import static me.night.nullvalkyrie.Rank.ScoreboardListener.nameTagManager;
+import static me.night.nullvalkyrie.rank.ScoreboardListener.nameTagManager;
 
 public class RankManager {
     private File file;

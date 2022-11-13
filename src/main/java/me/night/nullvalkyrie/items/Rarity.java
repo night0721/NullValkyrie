@@ -1,4 +1,4 @@
-package me.night.nullvalkyrie.Items;
+package me.night.nullvalkyrie.items;
 
 import org.bukkit.ChatColor;
 public enum Rarity {

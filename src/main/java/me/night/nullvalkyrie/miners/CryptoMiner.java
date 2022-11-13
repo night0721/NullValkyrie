@@ -2,34 +2,33 @@ package me.night.nullvalkyrie.miners;
 
 import me.night.nullvalkyrie.Main;
 import org.bukkit.Material;
-import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.event.EventHandler;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static me.night.nullvalkyrie.Items.CustomItemManager.loadConfig;
-import static me.night.nullvalkyrie.Items.CustomItemManager.loadFile;
+import static me.night.nullvalkyrie.items.CustomItemManager.loadConfig;
+import static me.night.nullvalkyrie.items.CustomItemManager.loadFile;
 
 public class CryptoMiner {
-    protected Main main;
+    protected static Main main;
     protected String name;
     protected Material type;
     protected int level;
     protected double rate;
-    protected int generated;
-    public CryptoMiner(Main main, String name, Material type, int level, double rate) {
+    protected static int generated;
+    protected long lastclaim;
+    public CryptoMiner(Main main, String name, Material type, int level, double rate, long lastclaim) {
         this.main = main;
         this.name = name; // Name of the miner
         this.type = type; // Material to mine
         this.level = level;
         this.rate = rate; // Percentage generate chance in each tick 20tick per sec
-        //generate(70);
-
+        this.lastclaim = lastclaim;
+        FileConfiguration file = loadConfig("miners.yml");
+        setMiner(Integer.toString(file.getKeys(false).size()), name, type.name(), level, rate, lastclaim);
     }
 
     public String getName() {
@@ -53,30 +52,34 @@ public class CryptoMiner {
     public int getLevel() {
         return level;
     }
-    public void setLevel(int level) { this.level = level; }
-    public void generate(int pp) {
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                int count = ThreadLocalRandom.current().nextInt(100);
-                if(count > pp) generated++;
-            }
-        }.runTaskTimer(main, 0L, 1L);
+    public void setLevel(int level) { this.level = level; };
+    public long getLastclaim() {
+        return lastclaim;
+    }
+    public void setLastClaim(long lastclaim) {
+        this.lastclaim = lastclaim;
+    }
+    private int aa;
+    public static void generate(int pp, int times) {
+        for (int ia = 0; ia < times; ia++) {
+            int count = ThreadLocalRandom.current().nextInt(100);
+            if(count > pp) generated++;
+        }
+        System.out.println(generated);
     }
     public List<CryptoMiner> getMiners() {
         List<CryptoMiner> arr = new ArrayList<>();
         FileConfiguration file = loadConfig("miners.yml");
         for(String c : file.getKeys(false)) {
-            arr.add(new CryptoMiner(main, file.getString(c + ".name"), Material.matchMaterial(file.getString(c + ".material")), file.getInt(c + ".level"), file.getDouble(c + ".rate")));
+            arr.add(new CryptoMiner(main, file.getString(c + ".name"), Material.matchMaterial(file.getString(c + ".material")), file.getInt(c + ".level"), file.getDouble(c + ".rate"), file.getLong(c + ".last-claim")));
         }
         return arr;
     }
-    public CryptoMiner getMiner(String index) {
+    public static CryptoMiner getMiner(String index) {
         FileConfiguration file = loadConfig("miners.yml");
-        return new CryptoMiner(main, file.getString(index + ".name"), Material.matchMaterial(file.getString(index + ".name")), file.getInt(index + ".level"), file.getDouble(index + ".rate"));
+        return new CryptoMiner(main, file.getString(index + ".name"), Material.matchMaterial(file.getString(index + ".name")), file.getInt(index + ".level"), file.getDouble(index + ".rate"), file.getLong(index + ".last-claim"));
     }
-    public void setMiner(String index, String name, String material, int level, double rate) {
-        CryptoMiner miner = new CryptoMiner(main, name, Material.matchMaterial(material), level, rate);
+    public void setMiner(String index, String name, String material, int level, double rate, long time) {
         FileConfiguration file = loadConfig("miners.yml");
         file.createSection(index);
         file.set(index + ".name", name);
@@ -84,6 +87,7 @@ public class CryptoMiner {
         file.set(index + ".level", level);
         file.set(index + ".rate", rate);
         file.set(index + ".enabled", true);
+        file.set(index + ".last-claim", time);
         try {
             file.save(loadFile("miners.yml"));
         } catch (IOException e) {

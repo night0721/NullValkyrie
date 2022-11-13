@@ -1,4 +1,4 @@
-package me.night.nullvalkyrie.Util;
+package me.night.nullvalkyrie.util;
 
 public class Util {
     public static String centerText(String text, int lineLength) {

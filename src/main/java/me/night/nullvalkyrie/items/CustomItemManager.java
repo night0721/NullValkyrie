@@ -1,4 +1,4 @@
-package me.night.nullvalkyrie.Items;
+package me.night.nullvalkyrie.items;
 
 import me.night.nullvalkyrie.Main;
 import org.bukkit.ChatColor;
@@ -6,7 +6,6 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
-import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -168,7 +167,6 @@ public class CustomItemManager {
             File f = new File(main.getDataFolder(), path);
             File[] files = f.listFiles();
             for (int i = 0; i < files.length; i++) {
-                System.out.println(files[i].getName());
                 ns.add(files[i].getName());
             }
         } catch (Exception e) {

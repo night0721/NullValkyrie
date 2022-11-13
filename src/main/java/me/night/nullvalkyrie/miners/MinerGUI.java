@@ -1,7 +1,7 @@
 package me.night.nullvalkyrie.miners;
 
 import me.night.nullvalkyrie.Main;
-import me.night.nullvalkyrie.Items.CustomItemManager;
+import me.night.nullvalkyrie.items.CustomItemManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

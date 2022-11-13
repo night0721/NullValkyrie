@@ -1,7 +1,7 @@
-package me.night.nullvalkyrie.Events;
+package me.night.nullvalkyrie.events;
 
-import me.night.nullvalkyrie.Items.CustomItemManager;
-import me.night.nullvalkyrie.Items.Rarity;
+import me.night.nullvalkyrie.items.CustomItemManager;
+import me.night.nullvalkyrie.items.Rarity;
 import me.night.nullvalkyrie.Main;
 import me.night.nullvalkyrie.commands.SpawnCommand;
 import org.bukkit.*;

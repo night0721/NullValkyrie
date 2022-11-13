@@ -1,4 +1,4 @@
-package me.night.nullvalkyrie.Util.components;
+package me.night.nullvalkyrie.util.components;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -12,8 +12,8 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Arrays;
 import java.util.List;
 
-import static me.night.nullvalkyrie.Util.Utils.color;
-import static me.night.nullvalkyrie.Util.Utils.*;
+import static me.night.nullvalkyrie.util.Utils.color;
+import static me.night.nullvalkyrie.util.Utils.*;
 
 public enum CustomMob {
 

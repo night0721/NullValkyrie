@@ -1,4 +1,4 @@
-package me.night.nullvalkyrie.Rank;
+package me.night.nullvalkyrie.rank;
 
 import me.night.nullvalkyrie.Main;
 import org.bukkit.Bukkit;
@@ -10,6 +10,8 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+
+import static me.night.nullvalkyrie.database.Client.createUserSchema;
 
 public class ScoreboardListener implements Listener {
 
@@ -30,6 +32,7 @@ public class ScoreboardListener implements Listener {
         if(!player.hasPlayedBefore()) {
             e.getPlayer().sendTitle(ChatColor.RED + "Welcome to Matrix!", ChatColor.GREEN + "LOL", 20, 100, 20);
             rankManager.setRank(player.getUniqueId(), Rank.ROOKIE);
+            createUserSchema(e.getPlayer().getDisplayName());
         }
         e.getPlayer().setPlayerListHeaderFooter(ChatColor.AQUA + "You are playing on " + ChatColor.GREEN + "127.0.0.1", ChatColor.GOLD + "Ranks, boosters, & more!" + ChatColor.AQUA + "127.0.0.1");
         nameTagManager.setNametags(player);

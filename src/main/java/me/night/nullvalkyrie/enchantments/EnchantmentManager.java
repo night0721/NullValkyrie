@@ -1,4 +1,4 @@
-package me.night.nullvalkyrie.Enchantments;
+package me.night.nullvalkyrie.enchantments;
 
 import org.bukkit.enchantments.Enchantment;
 
@@ -7,9 +7,6 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 public class EnchantmentManager {
-    public EnchantmentManager() {
-        register();
-    }
     public static final Enchantment ThunderBolt = new CustomEnchantment("thunderbolt", "ThunderBolt", 5);
     public static final Enchantment SmeltingTouch = new CustomEnchantment("smelting-touch", "Smelting Touch", 1);
     public static void register() {

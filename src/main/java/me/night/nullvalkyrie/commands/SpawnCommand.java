@@ -1,8 +1,8 @@
 package me.night.nullvalkyrie.commands;
 
 import me.night.nullvalkyrie.Main;
-import me.night.nullvalkyrie.Util.components.CustomMob;
-import me.night.nullvalkyrie.Util.Utils;
+import me.night.nullvalkyrie.util.components.CustomMob;
+import me.night.nullvalkyrie.util.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;

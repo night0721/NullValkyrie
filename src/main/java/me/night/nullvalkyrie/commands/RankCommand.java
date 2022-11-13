@@ -3,7 +3,7 @@ package me.night.nullvalkyrie.commands;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import me.night.nullvalkyrie.Main;
-import me.night.nullvalkyrie.Rank.Rank;
+import me.night.nullvalkyrie.rank.Rank;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import static me.night.nullvalkyrie.Rank.ScoreboardListener.rankManager;
+import static me.night.nullvalkyrie.rank.ScoreboardListener.rankManager;
 
 //92.0.69.141:25565
 public class RankCommand extends Command {
