@@ -35,20 +35,7 @@ public final class Main extends JavaPlugin implements Listener {
     public void onEnable() {
         getConfig().options().copyDefaults();
         saveDefaultConfig();
-        new VanishCommand();
-        new TestCommand();
-        new AnvilCommand();
-        new ArmorCommand();
-        new MenuCommand();
-        new MessageCommand();
-        new HologramCommand();
-        new CraftCommand();
-        new EnchantingCommand();
-        new BetaCommand();
-        new RankCommand(this);
-        new UtilCommand(this);
-        new WeaponCommand(this);
-        new MinerCommand(this);
+        new CommandManager(this).register();
         bossbar = Bukkit.createBossBar(ChatColor.GOLD + "Kuudra", BarColor.RED, BarStyle.SEGMENTED_12);
         Bukkit.getPluginManager().registerEvents(this, this);
         Bukkit.getPluginManager().registerEvents(new MenuListener(), this);
@@ -67,7 +54,6 @@ public final class Main extends JavaPlugin implements Listener {
     public void onJoin(PlayerJoinEvent e) {
         e.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText("§1NOT ENOUGH MANNER"));
         bossbar.addPlayer(e.getPlayer());
-
     }
 
     @EventHandler

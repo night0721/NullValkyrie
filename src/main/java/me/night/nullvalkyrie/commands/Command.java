@@ -17,7 +17,6 @@ public abstract class Command extends BukkitCommand {
         this.setAliases(Arrays.asList(aliases));
         this.setDescription(description);
         this.setPermission(permission);
-        this.setPermission(ChatColor.RED + "You must have" + permission + "in order to use this command");
 
         try {
             Field field = Bukkit.getServer().getClass().getDeclaredField("commandMap");
