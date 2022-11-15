@@ -43,7 +43,7 @@ public class Client {
                Document doc = (Document) cursor.next();
                for(String a : doc.keySet()) {
                    if(!a.equals("_id")) {
-                       System.out.println(a + ": " + doc.get(a));
+//                       System.out.println(a + ": " + doc.get(a));
                    }
                }
            }

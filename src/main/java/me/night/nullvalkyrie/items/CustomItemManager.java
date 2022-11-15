@@ -13,6 +13,8 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,12 +23,16 @@ import java.util.*;
 
 public class CustomItemManager {
     private static HashMap<String, ItemStack> a = new HashMap<>();
+    public static HashMap<String, NamespacedKey> keys = new HashMap<>();
     private static Main main;
     public CustomItemManager(Main main) {
         this.main = main;
+        main.getConfig().options().copyDefaults();
+        main.saveDefaultConfig();
         if(!main.getDataFolder().exists()) {
             main.getDataFolder().mkdir();
         }
+
         createDirectoryInPluginFolder("ItemData");
         createFilesFromConfig(main.getConfig());
         register();
@@ -36,10 +42,10 @@ public class CustomItemManager {
         for(int kk = 0; kk < hh.size(); kk++) {
             FileConfiguration c = loadConfig("ItemData/" + hh.get(kk));
             ItemStack i = new ItemStack(Material.matchMaterial(c.getString("material")));
-            HashMap<String, List<String>> d = new HashMap<>();
             List<String> pr = new ArrayList<>();
             List<String> ia = new ArrayList<>();
             HashMap<String, Double> aa = new HashMap<>();
+            HashMap<String, String> pdc = new HashMap<>();
             for (String key : c.getKeys(true)) {
                 if (key.startsWith("enchants.")) {
                     i.addUnsafeEnchantment(Enchantment.getByKey(NamespacedKey.minecraft(Arrays.asList(key.split("\\.")).get(1))), c.getInt(key));
@@ -67,14 +73,11 @@ public class CustomItemManager {
 
                 }
             }
-            d.put("properties", pr);
-            d.put("ability", ia);
-            d.put("attributes", pr);
             ItemMeta im = i.getItemMeta();
             im.setDisplayName(Rarity.getRarity(c.getString("rarity")).getColor() + c.getString("name"));
             im.setUnbreakable(true);
             ArrayList<String> l = new ArrayList<>();
-            l.addAll(d.get("properties"));
+            l.addAll(pr);
             l.add("");
             ArrayList<String> e = new ArrayList<>();
             for (Enchantment ee : i.getEnchantments().keySet()) {
@@ -109,6 +112,23 @@ public class CustomItemManager {
                 }
             }
             im.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_UNBREAKABLE, ItemFlag.HIDE_ENCHANTS);
+            for (String key : c.getKeys(true)) {
+                if (key.startsWith("pdc.")) {
+                    String property = Arrays.asList(key.split("\\.")).get(1);
+                    if (property.equals("ammo")) {
+                        PersistentDataContainer container = im.getPersistentDataContainer();
+                        NamespacedKey key1 = new NamespacedKey(main, "ammo");
+                        keys.put(c.getString("name") + "." + property, key1);
+                        container.set(key1, PersistentDataType.INTEGER, c.getInt(key));
+                    }
+                    else if (property.equals("maxload")) {
+                        PersistentDataContainer container = im.getPersistentDataContainer();
+                        NamespacedKey key2 = new NamespacedKey(main, "maxload");
+                        keys.put(c.getString("name") + "." + property, key2);
+                        container.set(key2, PersistentDataType.INTEGER, c.getInt(key));
+                    }
+                }
+            }
             i.setItemMeta(im);
             a.put(c.getString("name"), i);
         }

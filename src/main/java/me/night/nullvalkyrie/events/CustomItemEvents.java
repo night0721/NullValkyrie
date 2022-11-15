@@ -4,6 +4,8 @@ import me.night.nullvalkyrie.items.CustomItemManager;
 import me.night.nullvalkyrie.items.Rarity;
 import me.night.nullvalkyrie.Main;
 import me.night.nullvalkyrie.commands.SpawnCommand;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
@@ -18,9 +20,13 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Merchant;
 import org.bukkit.inventory.MerchantRecipe;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
+
 
 public class CustomItemEvents implements Listener {
     private Main main;
@@ -98,6 +104,20 @@ public class CustomItemEvents implements Listener {
                 } else if (name.equalsIgnoreCase(Rarity.ULTRA.getColor() + "Snow Gun")) {
                     Snowball s = player.launchProjectile(Snowball.class, player.getLocation().getDirection());
                     s.setVelocity(player.getLocation().getDirection().multiply(10));
+
+                    ItemStack weapon = player.getInventory().getItemInMainHand();
+                    ItemMeta weaponMeta = weapon.getItemMeta();
+                    PersistentDataContainer container = weaponMeta.getPersistentDataContainer();
+                    System.out.println(name);
+                    if(container != null) {
+                        int ammo = container.get(CustomItemManager.keys.get("Snow Gun" + "." + "ammo"), PersistentDataType.INTEGER);
+                        container.set(CustomItemManager.keys.get("Snow Gun" + "." + "ammo"), PersistentDataType.INTEGER, ammo - 1);
+                        int maxload = container.get(CustomItemManager.keys.get("Snow Gun" + "." + "maxload"), PersistentDataType.INTEGER);
+                        weapon.setItemMeta(weaponMeta);
+                        e.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', "&6AK-47 ( " + (ammo - 1) + "/ " + maxload + " )")));
+
+                    }
+
                 } else if (name.equalsIgnoreCase(Rarity.MYTHIC.getColor() + "Terminator")) {
                     Arrow arrow = player.launchProjectile(Arrow.class, player.getEyeLocation().getDirection());
                     arrow.setVelocity(arrow.getVelocity().multiply(5));
@@ -226,7 +246,7 @@ public class CustomItemEvents implements Listener {
             if (name.equalsIgnoreCase(Rarity.EPIC.getColor() + "Infinite Water Bucket")) {
                 e.getPlayer().getWorld().getBlockAt(x, y, z).setType(Material.WATER);
                 e.setCancelled(true);
-            } else if (name.equalsIgnoreCase(Rarity.EPIC.getColor() + "Infinite LAVA Bucket")) {
+            } else if (name.equalsIgnoreCase(Rarity.EPIC.getColor() + "Infinite Lava Bucket")) {
                 e.getPlayer().getWorld().getBlockAt(x, y, z).setType(Material.LAVA);
                 e.setCancelled(true);
             }
