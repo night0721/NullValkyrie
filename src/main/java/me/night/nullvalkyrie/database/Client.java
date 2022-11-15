@@ -6,6 +6,8 @@ import com.mongodb.client.model.Filters;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
+import java.util.HashMap;
+
 public class Client {
     private MongoClient client;
     private static MongoCollection<Document> users;
@@ -37,16 +39,19 @@ public class Client {
         }
 
     }
-    public static void getUser(String username) {
+    public static HashMap<String, Object> getUser(String username) {
         try (MongoCursor<Document> cursor = users.find(Filters.eq("Username", username)).cursor()) {
-           while (cursor.hasNext()) {
-               Document doc = (Document) cursor.next();
-               for(String a : doc.keySet()) {
-                   if(!a.equals("_id")) {
-//                       System.out.println(a + ": " + doc.get(a));
-                   }
-               }
-           }
+            while (cursor.hasNext()) {
+                Document doc = cursor.next();
+                for (String a : doc.keySet()) {
+                    if (!a.equals("_id")) {
+                        HashMap<String, Object> details = new HashMap<>();
+                        details.put(a, doc.get(a));
+                        return details;
+                    }
+                }
+            }
         }
+        return null;
     }
 }

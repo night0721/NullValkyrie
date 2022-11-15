@@ -17,10 +17,10 @@ public class CommandManager {
         new HologramCommand();
         new CraftCommand();
         new EnchantingCommand();
+        new WeaponCommand();
         new BetaCommand(main);
         new RankCommand(main);
         new UtilCommand(main);
-        new WeaponCommand(main);
         new MinerCommand(main);
     }
 }

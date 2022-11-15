@@ -108,11 +108,11 @@ public class CustomItemEvents implements Listener {
                     ItemStack weapon = player.getInventory().getItemInMainHand();
                     ItemMeta weaponMeta = weapon.getItemMeta();
                     PersistentDataContainer container = weaponMeta.getPersistentDataContainer();
-                    System.out.println(name);
                     if(container != null) {
-                        int ammo = container.get(CustomItemManager.keys.get("Snow Gun" + "." + "ammo"), PersistentDataType.INTEGER);
-                        container.set(CustomItemManager.keys.get("Snow Gun" + "." + "ammo"), PersistentDataType.INTEGER, ammo - 1);
-                        int maxload = container.get(CustomItemManager.keys.get("Snow Gun" + "." + "maxload"), PersistentDataType.INTEGER);
+                        NamespacedKey ammocount = CustomItemManager.keys.get("Snow Gun.ammo");
+                        int ammo = container.get(ammocount, PersistentDataType.INTEGER);
+                        container.set(ammocount, PersistentDataType.INTEGER, ammo - 1);
+                        int maxload = container.get(CustomItemManager.keys.get("Snow Gun.maxload"), PersistentDataType.INTEGER);
                         weapon.setItemMeta(weaponMeta);
                         e.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', "&6AK-47 ( " + (ammo - 1) + "/ " + maxload + " )")));
 

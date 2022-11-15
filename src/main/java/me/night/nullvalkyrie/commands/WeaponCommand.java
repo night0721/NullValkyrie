@@ -22,18 +22,18 @@ public class WeaponCommand extends Command {
     public void onCommand(CommandSender sender, String[] args) {
         Player player = (Player) sender;
         StringBuilder s = new StringBuilder();
-        List<String> b = Arrays.asList(args);
-        for (String a : args) {
-            if (a.equals(b.get(b.size() - 1))) {
-                s.append(a);
-            } else {
-                s.append(a);
-                s.append(" ");
-            }
-        }
-        if (s.isEmpty()) {
+        if (args.length == 0) {
             player.sendMessage(ChatColor.RED + "This item doesn't exist");
         } else {
+            List<String> b = Arrays.asList(args);
+            for (String a : args) {
+                if (a.equals(b.get(b.size() - 1))) {
+                    s.append(a);
+                } else {
+                    s.append(a);
+                    s.append(" ");
+                }
+            }
             ItemStack item = CustomItemManager.getItem(s.toString());
             if (item.hasItemMeta()) {
                 player.getInventory().addItem(item);
