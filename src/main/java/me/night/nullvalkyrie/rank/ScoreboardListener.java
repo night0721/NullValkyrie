@@ -22,7 +22,7 @@ public class ScoreboardListener implements Listener {
     public ScoreboardListener(Main main) {
         nameTagManager = new NameTagManager(main);
         rankManager = new RankManager(main);
-        sideBarManager = new SideBarManager();
+        sideBarManager = new SideBarManager(main);
         belowNameManager = new BelowNameManager();
     }
 
@@ -38,6 +38,7 @@ public class ScoreboardListener implements Listener {
         nameTagManager.setNametags(player);
         nameTagManager.newTag(player);
         sideBarManager.setSideBar(player);
+        sideBarManager.start(player);
         belowNameManager.setBelowName(player);
         e.setJoinMessage(rankManager.getRank(e.getPlayer().getUniqueId()).getDisplay() + " " + e.getPlayer().getName() + ChatColor.WHITE + " joined the server!");
     }
@@ -47,6 +48,10 @@ public class ScoreboardListener implements Listener {
         e.setQuitMessage(ChatColor.RED + "bozo " + e.getPlayer().getName() + " has left.");
         nameTagManager.removeTag(e.getPlayer());
         e.getPlayer().setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+        AnimatedSideBar board = new AnimatedSideBar(e.getPlayer().getUniqueId());
+        if(board.hasID()) {
+            board.stop();
+        }
     }
 
     @EventHandler
