@@ -13,10 +13,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.*;
-import org.bukkit.event.player.PlayerBucketEmptyEvent;
-import org.bukkit.event.player.PlayerFishEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Merchant;
 import org.bukkit.inventory.MerchantRecipe;
@@ -29,7 +26,7 @@ import java.util.*;
 
 
 public class CustomItemEvents implements Listener {
-    private Main main;
+    private final Main main;
 
     public CustomItemEvents(Main main) {
         this.main = main;
@@ -92,7 +89,7 @@ public class CustomItemEvents implements Listener {
             String name = player.getInventory().getItemInMainHand().getItemMeta().getDisplayName();
             if (e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
                 if (name.equalsIgnoreCase(Rarity.GRAND.getColor() + "Teleport Door")) {
-                    Block block = player.getTargetBlock((Set<Material>) null, 12);
+                    Block block = player.getTargetBlock(null, 12);
                     Location l = block.getLocation();
                     l.add(0, 1, 0);
                     float yaw = player.getEyeLocation().getYaw();
@@ -356,5 +353,4 @@ public class CustomItemEvents implements Listener {
             p.openMerchant(merchant, true);
         }
     }
-
 }
