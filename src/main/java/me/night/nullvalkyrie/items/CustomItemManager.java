@@ -22,7 +22,7 @@ import java.util.*;
 
 
 public class CustomItemManager {
-    private static HashMap<String, ItemStack> a = new HashMap<>();
+    private static final HashMap<String, ItemStack> weapons = new HashMap<>();
     public static HashMap<String, NamespacedKey> keys = new HashMap<>();
     private static Main main;
     public CustomItemManager(Main main) {
@@ -38,99 +38,97 @@ public class CustomItemManager {
         register();
     }
     public void register() {
-        List<String> hh = getAllFilesFromDirectory("ItemData");
-        for(int kk = 0; kk < hh.size(); kk++) {
-            FileConfiguration c = loadConfig("ItemData/" + hh.get(kk));
-            ItemStack i = new ItemStack(Material.matchMaterial(c.getString("material")));
-            List<String> pr = new ArrayList<>();
-            List<String> ia = new ArrayList<>();
-            HashMap<String, Double> aa = new HashMap<>();
-            HashMap<String, String> pdc = new HashMap<>();
-            for (String key : c.getKeys(true)) {
+        List<String> files = getAllFilesFromDirectory("ItemData");
+        for (String file : files) {
+            FileConfiguration fileConfig = loadConfig("ItemData/" + file);
+            ItemStack item = new ItemStack(Material.matchMaterial(fileConfig.getString("material")));
+            List<String> properties = new ArrayList<>();
+            List<String> itemAbility = new ArrayList<>();
+            HashMap<String, Double> attributes = new HashMap<>();
+            for (String key : fileConfig.getKeys(true)) {
                 if (key.startsWith("enchants.")) {
-                    i.addUnsafeEnchantment(Enchantment.getByKey(NamespacedKey.minecraft(Arrays.asList(key.split("\\.")).get(1))), c.getInt(key));
+                    item.addUnsafeEnchantment(Enchantment.getByKey(NamespacedKey.minecraft(Arrays.asList(key.split("\\.")).get(1))), fileConfig.getInt(key));
                 } else if (key.startsWith("lore.properties.")) {
                     String property = Arrays.asList(key.split("\\.")).get(2);
-                    if (property.equals("damage") && c.getInt(key) > 0) {
-                        pr.add(ChatColor.GRAY + "Damage: " + ChatColor.RED + "+" + c.getInt(key));
-                    } else if (property.equals("speed") && c.getInt(key) > 0) {
-                        pr.add(ChatColor.GRAY + "Speed: " + ChatColor.RED + "+" + c.getInt(key));
+                    if (property.equals("damage") && fileConfig.getInt(key) > 0) {
+                        properties.add(ChatColor.GRAY + "Damage: " + ChatColor.RED + "+" + fileConfig.getInt(key));
+                    } else if (property.equals("speed") && fileConfig.getInt(key) > 0) {
+                        properties.add(ChatColor.GRAY + "Speed: " + ChatColor.RED + "+" + fileConfig.getInt(key));
                     }
                 } else if (key.startsWith("lore.ability.")) {
-                    String a = Arrays.asList(key.split("\\.")).get(2);
-                    if (a.equals("name")) {
-                        ia.add(ChatColor.GOLD + "Item Ability: " + c.getString(key));
-                    } else if (a.equals("details")) {
-                        for (Object line : c.getList(key)) {
-                            ia.add(ChatColor.GRAY.toString() + line);
+                    String paths = Arrays.asList(key.split("\\.")).get(2);
+                    if (paths.equals("name")) {
+                        itemAbility.add(ChatColor.GOLD + "Item Ability: " + fileConfig.getString(key));
+                    } else if (paths.equals("details")) {
+                        for (Object line : fileConfig.getList(key)) {
+                            itemAbility.add(ChatColor.GRAY.toString() + line);
                         }
                     }
                 } else if (key.startsWith("attributes.")) {
-                    if (c.getDouble(key) > 0.0) {
-                        aa.put(Arrays.asList(key.split("\\.")).get(1), c.getDouble(key));
+                    if (fileConfig.getDouble(key) > 0.0) {
+                        attributes.put(Arrays.asList(key.split("\\.")).get(1), fileConfig.getDouble(key));
                     }
                 } else if (key.startsWith("recipe.")) {
 
                 }
             }
-            ItemMeta im = i.getItemMeta();
-            im.setDisplayName(Rarity.getRarity(c.getString("rarity")).getColor() + c.getString("name"));
-            im.setUnbreakable(true);
-            ArrayList<String> l = new ArrayList<>();
-            l.addAll(pr);
-            l.add("");
-            ArrayList<String> e = new ArrayList<>();
-            for (Enchantment ee : i.getEnchantments().keySet()) {
-                List<String> splitted = Arrays.asList(Arrays.asList(ee.getKey().toString().split(":")).get(1).split("_"));
-                StringBuilder n = new StringBuilder();
-                for (String ii : splitted) {
-                    String s = ii.substring(0, 1).toUpperCase() + ii.substring(1);
+            ItemMeta itemMeta = item.getItemMeta();
+            itemMeta.setDisplayName(Rarity.getRarity(fileConfig.getString("rarity")).getColor() + fileConfig.getString("name"));
+            itemMeta.setUnbreakable(true);
+            ArrayList<String> lore = new ArrayList<>();
+            lore.addAll(properties);
+            lore.add("");
+            ArrayList<String> enchantmentList = new ArrayList<>();
+            for (Enchantment enchantment : item.getEnchantments().keySet()) {
+                List<String> splitted = Arrays.asList(Arrays.asList(enchantment.getKey().toString().split(":")).get(1).split("_"));
+                StringBuilder builder = new StringBuilder();
+                for (String strings : splitted) {
+                    String formatted = strings.substring(0, 1).toUpperCase() + strings.substring(1);
                     if (splitted.size() > 1) {
-                        if (ii.equals(splitted.get(splitted.size() - 1))) {
-                            n.append(s);
+                        if (strings.equals(splitted.get(splitted.size() - 1))) {
+                            builder.append(formatted);
                         } else {
-                            n.append(s);
-                            n.append(" ");
+                            builder.append(formatted);
+                            builder.append(" ");
                         }
-                    } else n.append(s);
+                    } else builder.append(formatted);
                 }
-                e.add(n + " " + i.getEnchantmentLevel(ee));
+                enchantmentList.add(builder + " " + item.getEnchantmentLevel(enchantment));
             }
-            l.add(ChatColor.BLUE + String.join(", ", e));
-            l.add("");
-            l.addAll(ia);
-            l.add("");
-            l.add(Rarity.getRarity(c.getString("rarity")).getDisplay());
-            im.setLore(l);
-            for (String q : aa.keySet()) {
-                if (q.equals("damage")) {
-                    AttributeModifier p = new AttributeModifier(UUID.randomUUID(), "generic.attackDamage", aa.get(q), AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
-                    im.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, p);
-                } else if (q.equals("moveSpeed")) {
-                    AttributeModifier s = new AttributeModifier(UUID.randomUUID(), "generic.movementSpeed", aa.get(q), AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
-                    im.addAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED, s);
+            lore.add(ChatColor.BLUE + String.join(", ", enchantmentList));
+            lore.add("");
+            lore.addAll(itemAbility);
+            lore.add("");
+            lore.add(Rarity.getRarity(fileConfig.getString("rarity")).getDisplay());
+            itemMeta.setLore(lore);
+            for (String attribute : attributes.keySet()) {
+                if (attribute.equals("damage")) {
+                    AttributeModifier p = new AttributeModifier(UUID.randomUUID(), "generic.attackDamage", attributes.get(attribute), AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
+                    itemMeta.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, p);
+                } else if (attribute.equals("moveSpeed")) {
+                    AttributeModifier s = new AttributeModifier(UUID.randomUUID(), "generic.movementSpeed", attributes.get(attribute), AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
+                    itemMeta.addAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED, s);
                 }
             }
-            im.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_UNBREAKABLE, ItemFlag.HIDE_ENCHANTS);
-            for (String key : c.getKeys(true)) {
+            itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_UNBREAKABLE, ItemFlag.HIDE_ENCHANTS);
+            for (String key : fileConfig.getKeys(true)) {
                 if (key.startsWith("pdc.")) {
                     String property = Arrays.asList(key.split("\\.")).get(1);
                     if (property.equals("ammo")) {
-                        PersistentDataContainer container = im.getPersistentDataContainer();
+                        PersistentDataContainer container = itemMeta.getPersistentDataContainer();
                         NamespacedKey key1 = new NamespacedKey(main, "ammo");
-                        keys.put(c.getString("name") + "." + property, key1);
-                        container.set(key1, PersistentDataType.INTEGER, c.getInt(key));
-                    }
-                    else if (property.equals("maxload")) {
-                        PersistentDataContainer container = im.getPersistentDataContainer();
+                        keys.put(fileConfig.getString("name") + "." + property, key1);
+                        container.set(key1, PersistentDataType.INTEGER, fileConfig.getInt(key));
+                    } else if (property.equals("maxload")) {
+                        PersistentDataContainer container = itemMeta.getPersistentDataContainer();
                         NamespacedKey key2 = new NamespacedKey(main, "maxload");
-                        keys.put(c.getString("name") + "." + property, key2);
-                        container.set(key2, PersistentDataType.INTEGER, c.getInt(key));
+                        keys.put(fileConfig.getString("name") + "." + property, key2);
+                        container.set(key2, PersistentDataType.INTEGER, fileConfig.getInt(key));
                     }
                 }
             }
-            i.setItemMeta(im);
-            a.put(c.getString("name"), i);
+            item.setItemMeta(itemMeta);
+            weapons.put(fileConfig.getString("name"), item);
         }
     }
     public static void setItemRecipe(NamespacedKey key, ItemStack i, int ingredient, String shape1, String shape2, String shape3, List<Material> ingredients) {
@@ -186,8 +184,8 @@ public class CustomItemManager {
         try {
             File f = new File(main.getDataFolder(), path);
             File[] files = f.listFiles();
-            for (int i = 0; i < files.length; i++) {
-                ns.add(files[i].getName());
+            for (File file : files) {
+                ns.add(file.getName());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -195,20 +193,20 @@ public class CustomItemManager {
         return ns;
     }
     public void createFilesFromConfig(FileConfiguration config) {
-        for(String a : config.getKeys(false)) {
-            FileConfiguration c = loadConfig("ItemData/" + a + ".yml");
-            for(String b : config.getKeys(true)) {
-                if(b.startsWith(a)) {
-                    List<String> d = new ArrayList<>(Arrays.asList(b.split("\\.")));
-                    if(d.size() != 1) {
-                        d.remove(0);
-                        if(d.size() == 1) {
-                            c.set(d.get(0), config.get(b));
+        for(String filename : config.getKeys(false)) {
+            FileConfiguration fileConfig = loadConfig("ItemData/" + filename + ".yml");
+            for(String key : config.getKeys(true)) {
+                if(key.startsWith(filename)) {
+                    List<String> paths = new ArrayList<>(Arrays.asList(key.split("\\.")));
+                    if(paths.size() != 1) {
+                        paths.remove(0);
+                        if(paths.size() == 1) {
+                            fileConfig.set(paths.get(0), config.get(key));
                         } else {
-                            c.set(String.join(".", d), config.get(b));
+                            fileConfig.set(String.join(".", paths), config.get(key));
                         }
                         try {
-                            c.save(loadFile("ItemData/" + a + ".yml"));
+                            fileConfig.save(loadFile("ItemData/" + filename + ".yml"));
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -219,6 +217,6 @@ public class CustomItemManager {
         }
     }
     public static ItemStack getItem(String name){
-        return a.get(name);
+        return weapons.get(name);
     }
 }

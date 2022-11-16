@@ -21,20 +21,20 @@ public class WeaponCommand extends Command {
     @Override
     public void onCommand(CommandSender sender, String[] args) {
         Player player = (Player) sender;
-        StringBuilder s = new StringBuilder();
+        StringBuilder builder = new StringBuilder();
         if (args.length == 0) {
             player.sendMessage(ChatColor.RED + "This item doesn't exist");
         } else {
-            List<String> b = Arrays.asList(args);
-            for (String a : args) {
-                if (a.equals(b.get(b.size() - 1))) {
-                    s.append(a);
+            List<String> arglist = Arrays.asList(args);
+            for (String arg : args) {
+                if (arg.equals(arglist.get(arglist.size() - 1))) {
+                    builder.append(arg);
                 } else {
-                    s.append(a);
-                    s.append(" ");
+                    builder.append(arg);
+                    builder.append(" ");
                 }
             }
-            ItemStack item = CustomItemManager.getItem(s.toString());
+            ItemStack item = CustomItemManager.getItem(builder.toString());
             if (item.hasItemMeta()) {
                 player.getInventory().addItem(item);
             } else {
