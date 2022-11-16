@@ -12,15 +12,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class MinerGUI {
-    private Main main;
-    private FileConfiguration file;
+    private final FileConfiguration file;
     private Inventory inv;
     public MinerGUI(Main main, Player player) {
-        this.main = main;
         if(!main.getDataFolder().exists()) main.getDataFolder().mkdir();
         file = CustomItemManager.loadConfig("miners.yml");
         createUI();
@@ -35,23 +32,26 @@ public class MinerGUI {
         ItemStack close = new ItemStack(Material.BARRIER);
         ItemMeta closemeta = close.getItemMeta();
         closemeta.setDisplayName(ChatColor.WHITE + "Close the menu");
-        closemeta.setLore(Arrays.asList(ChatColor.GRAY + "Close the menu"));
+        closemeta.setLore(List.of(ChatColor.GRAY + "Close the menu"));
         close.setItemMeta(closemeta);
         inv.setItem(0, close);
         int[] a = new int[]{10,11,12,13,14,15,16,19,20,21,22,23,24,25,28,29,30,31,32,33,34};
         int ind = 0;
         for(String c : file.getKeys(false)) {
-            ItemStack item = new ItemStack(Material.matchMaterial(file.getString(c + ".material")));
-            ItemMeta itemMeta = item.getItemMeta();
-            itemMeta.setDisplayName(file.getString(c + ".name"));
-            List<String> lore = new ArrayList<>();
-            lore.add("Level: " + file.getString(c + ".level"));
-            lore.add("Rate: " + file.getString(c + ".rate"));
-            boolean b = file.getBoolean(c + ".rate") ? lore.add(ChatColor.GRAY + "Click to enable miner!") : lore.add(ChatColor.RED + "Click to disable miner!");
-            itemMeta.setLore(lore);
-            item.setItemMeta(itemMeta);
-            inv.setItem(a[ind], item);
-            ind++;
+            if (ind <= 20) {
+                ItemStack item = new ItemStack(Material.matchMaterial(file.getString(c + ".material")));
+                ItemMeta itemMeta = item.getItemMeta();
+                itemMeta.setDisplayName(file.getString(c + ".name"));
+                List<String> lore = new ArrayList<>();
+                lore.add("Level: " + file.getString(c + ".level"));
+                lore.add("Rate: " + file.getString(c + ".rate"));
+                boolean b = file.getBoolean(c + ".rate") ? lore.add(ChatColor.GRAY + "Click to enable miner!") : lore.add(ChatColor.RED + "Click to disable miner!");
+                itemMeta.setLore(lore);
+                item.setItemMeta(itemMeta);
+                inv.setItem(a[ind], item);
+                ind++;
+            }
+
         }
     }
 
