@@ -16,9 +16,6 @@ public class AnimatedSideBar {
     public void setID(int id) {
         Tasks.put(uuid, id);
     }
-    public int getID() {
-        return Tasks.get(uuid);
-    }
     public boolean hasID() {
         if (Tasks.containsKey(uuid))
             return true;
