@@ -1,6 +1,5 @@
 package me.night.nullvalkyrie.commands;
 
-
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -15,11 +14,12 @@ public class TestCommand extends Command {
                 ""
         );
     }
+
     @Override
     public void onCommand(CommandSender sender, String[] args) {
-        if(sender instanceof Player) {
-            if(args.length == 1) {
-                if(args[0].equalsIgnoreCase("hello")) {
+        if (sender instanceof Player) {
+            if (args.length == 1) {
+                if (args[0].equalsIgnoreCase("hello")) {
                     Player player = (Player) sender;
                     player.sendMessage(player.getAddress().getHostString());
                 }

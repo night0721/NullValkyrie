@@ -21,14 +21,14 @@ public class MessageCommand extends Command {
 
     @Override
     public void onCommand(CommandSender sender, String[] args) {
-        if(sender instanceof Player) {
+        if (sender instanceof Player) {
             Player player = (Player) sender;
             if (args.length >= 2) {
-                if(Bukkit.getPlayerExact(args[0]) != null) {
+                if (Bukkit.getPlayerExact(args[0]) != null) {
                     Player target = Bukkit.getPlayerExact(args[0]);
-                    if(!target.equals(player)) {
+                    if (!target.equals(player)) {
                         StringBuilder builder = new StringBuilder();
-                        for(int i = 1; i < args.length; i++) {
+                        for (int i = 1; i < args.length; i++) {
                             builder.append(args[i]).append(" ");
                         }
                         player.sendMessage(ChatColor.DARK_AQUA + "TO " + ChatColor.RED + target.getName() + ChatColor.WHITE + " : " + builder);
@@ -47,9 +47,9 @@ public class MessageCommand extends Command {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, String[] args) {
-        if(args.length == 1) {
+        if (args.length == 1) {
             List<String> names = new ArrayList<>();
-            for(Player player: Bukkit.getOnlinePlayers()) {
+            for (Player player : Bukkit.getOnlinePlayers()) {
                 names.add(player.getName());
             }
             return StringUtil.copyPartialMatches(args[0], names, new ArrayList<>());

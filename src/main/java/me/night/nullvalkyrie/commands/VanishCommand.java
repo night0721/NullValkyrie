@@ -11,19 +11,21 @@ import java.util.UUID;
 
 public class VanishCommand extends Command {
     private final List<UUID> vanished = new ArrayList<>();
+
     public VanishCommand() {
         super(
                 "vanish",
                 new String[]{},
                 "Turn yourself into invisible",
                 ""
-                );
+        );
     }
+
     @Override
     public void onCommand(CommandSender sender, String[] args) {
-        if(sender instanceof Player) {
+        if (sender instanceof Player) {
             Player player = (Player) sender;
-            if(vanished.contains(player.getUniqueId())) {
+            if (vanished.contains(player.getUniqueId())) {
                 vanished.remove(player.getUniqueId());
                 for (Player target : Bukkit.getOnlinePlayers()) {
                     target.showPlayer(player);
@@ -31,7 +33,7 @@ public class VanishCommand extends Command {
                 player.sendMessage(ChatColor.GREEN + "You are now seen by people");
             } else {
                 vanished.add(player.getUniqueId());
-                for (Player target: Bukkit.getOnlinePlayers()){
+                for (Player target : Bukkit.getOnlinePlayers()) {
                     target.hidePlayer(player);
                 }
                 player.sendMessage(ChatColor.GREEN + "You are now vanished");

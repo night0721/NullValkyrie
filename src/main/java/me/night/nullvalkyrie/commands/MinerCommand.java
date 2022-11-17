@@ -13,6 +13,7 @@ import static me.night.nullvalkyrie.miners.CryptoMiner.getMiner;
 
 public class MinerCommand extends Command {
     private final Main main;
+
     public MinerCommand(Main main) {
         super(
                 "miner",
@@ -25,10 +26,10 @@ public class MinerCommand extends Command {
 
     @Override
     public void onCommand(CommandSender sender, String[] args) {
-        if(sender instanceof Player) {
+        if (sender instanceof Player) {
             Player player = (Player) sender;
             new MinerGUI(main, player);
-            int seconds = Math.round((new Date().getTime() - (long) getMiner("1").get("lastclaim")) / 1000);
+            int seconds = (int) (new Date().getTime() - (long) getMiner("1").get("lastclaim")) / 1000;
             System.out.println("Seconds" + seconds);
             generate(50, seconds);
         }

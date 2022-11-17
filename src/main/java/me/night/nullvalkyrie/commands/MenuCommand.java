@@ -26,9 +26,9 @@ public class MenuCommand extends Command {
 
     @Override
     public void onCommand(CommandSender sender, String[] args) {
-        if(sender instanceof Player) {
+        if (sender instanceof Player) {
             Player player = (Player) sender;
-            inv = Bukkit.createInventory(player,45, ChatColor.DARK_BLUE.toString() + ChatColor.BOLD + "Valkyrie Menu");
+            inv = Bukkit.createInventory(player, 45, ChatColor.DARK_BLUE.toString() + ChatColor.BOLD + "Valkyrie Menu");
 
             ItemStack KYS = new ItemStack(Material.WOODEN_SWORD);
             ItemMeta KYSmeta = KYS.getItemMeta();
@@ -59,10 +59,9 @@ public class MenuCommand extends Command {
             inv.setItem(0, close);
 
             ItemStack frame = new ItemStack(Material.BLUE_STAINED_GLASS_PANE);
-            for(int i : new int[]{1,2,3,4,5,6,7,8,9,17,18,26,27,35,36,37,38,39,40,41,42,43,44}) {
+            for (int i : new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 17, 18, 26, 27, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44}) {
                 inv.setItem(i, frame);
             }
-
             player.openInventory(inv);
 
         }

@@ -17,7 +17,7 @@ public class EnchantingCommand extends Command {
 
     @Override
     public void onCommand(CommandSender sender, String[] args) {
-        if(sender instanceof Player) {
+        if (sender instanceof Player) {
             Player player = (Player) sender;
             player.openEnchanting(player.getLocation(), true);
         }

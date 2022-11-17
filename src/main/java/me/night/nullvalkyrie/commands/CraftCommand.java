@@ -1,6 +1,5 @@
 package me.night.nullvalkyrie.commands;
 
-
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -19,7 +18,7 @@ public class CraftCommand extends Command {
 
     @Override
     public void onCommand(CommandSender sender, String[] args) {
-        if(sender instanceof Player) {
+        if (sender instanceof Player) {
             Player player = (Player) sender;
             player.openWorkbench(null, true);
         }

@@ -20,7 +20,7 @@ public class HologramCommand extends Command {
 
     @Override
     public void onCommand(CommandSender sender, String[] args) {
-        if(sender instanceof Player) {
+        if (sender instanceof Player) {
             Player player = (Player) sender;
             String[] ar = new String[]{
                     ChatColor.AQUA + "Hi",
@@ -28,8 +28,8 @@ public class HologramCommand extends Command {
                     ChatColor.GOLD + "Hello World"
             };
             Location location = player.getLocation();
-            for(String line: ar) {
-                ArmorStand stand = location.getWorld().spawn(location.subtract(0,0.3,0), ArmorStand.class, armorStand -> {
+            for (String line : ar) {
+                ArmorStand stand = location.getWorld().spawn(location.subtract(0, 0.3, 0), ArmorStand.class, armorStand -> {
                     armorStand.setVisible(false);
                 });
                 stand.setGravity(false);
