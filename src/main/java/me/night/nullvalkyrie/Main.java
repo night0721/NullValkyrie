@@ -4,6 +4,8 @@ import me.night.nullvalkyrie.chests.MenuListener;
 import me.night.nullvalkyrie.discord.DiscordClientManager;
 import me.night.nullvalkyrie.enchantments.EnchantmentManager;
 import me.night.nullvalkyrie.events.CustomItemEvents;
+//import me.night.nullvalkyrie.hardpoint.GameEvent;
+import me.night.nullvalkyrie.events.DamageEffect;
 import me.night.nullvalkyrie.items.CustomItemManager;
 import me.night.nullvalkyrie.rank.ScoreboardListener;
 import me.night.nullvalkyrie.util.Util;
@@ -41,14 +43,14 @@ public final class Main extends JavaPlugin implements Listener {
         Bukkit.getPluginManager().registerEvents(new MenuListener(), this);
         Bukkit.getPluginManager().registerEvents(new ScoreboardListener(this), this);
         Bukkit.getPluginManager().registerEvents(new CustomItemEvents(this), this);
-        Bukkit.getPluginManager().registerEvents(new SpawnCommand(this), this);
+        Bukkit.getPluginManager().registerEvents(new DamageEffect(this), this);
+        //Bukkit.getPluginManager().registerEvents(new GameEvent(this), this);
         EnchantmentManager.register();
         new DiscordClientManager();
         customItemManager = new CustomItemManager(this);
         new CryptoMiner(this, "Gay", Material.ENDER_CHEST, 10, 0.7, new Date().getTime());
         new Client();
     }
-
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
@@ -69,13 +71,4 @@ public final class Main extends JavaPlugin implements Listener {
         }
 
     }
-
-
-//    For hologram clicks to change page
-//    @EventHandler
-//    public void onEntityInteract(EntityInteractEvent e) {
-//        System.out.println(e.getEntity().getLocation());
-//        e.getEntity().setCustomName(ChatColor.RED + "Changed name since you ust clicked lol");
-//    }
-
 }
