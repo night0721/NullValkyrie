@@ -1,17 +1,19 @@
 package me.night.nullvalkyrie.util;
 
+import org.bukkit.ChatColor;
+
 public class Util {
     public static String centerText(String text, int lineLength) {
         StringBuilder builder = new StringBuilder();
         char space = ' ';
         int distance = (lineLength - text.length()) / 2;
-        for (int ii = 0; ii < distance; ii++) {
-            builder.append(space);
-        }
+        String repeat = String.valueOf(space).repeat(Math.max(0, distance));
+        builder.append(repeat);
         builder.append(text);
-        for (int i = 0; i < distance; ++i) {
-            builder.append(space);
-        }
+        builder.append(repeat);
         return builder.toString();
+    }
+    public static String color(String string) {
+        return ChatColor.translateAlternateColorCodes('&', string);
     }
 }

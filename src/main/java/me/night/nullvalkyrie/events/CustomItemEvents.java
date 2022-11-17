@@ -3,7 +3,6 @@ package me.night.nullvalkyrie.events;
 import me.night.nullvalkyrie.items.CustomItemManager;
 import me.night.nullvalkyrie.items.Rarity;
 import me.night.nullvalkyrie.Main;
-import me.night.nullvalkyrie.commands.SpawnCommand;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
@@ -20,10 +19,8 @@ import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
-
 
 public class CustomItemEvents implements Listener {
     private final Main main;
@@ -46,23 +43,6 @@ public class CustomItemEvents implements Listener {
                     e.setDamage(7);
                 } else {
                     e.setDamage(0);
-                }
-            }
-        } else if (e.getDamager() instanceof Player) {
-            Player player = (Player) e.getDamager();
-            if (player.getInventory().getItemInMainHand().getItemMeta() != null) {
-                String name = player.getInventory().getItemInMainHand().getItemMeta().getDisplayName();
-                if (name.equalsIgnoreCase(Rarity.MYTHIC.getColor() + "Fabled Widow Sword")) {
-                    if (e.getEntity() instanceof Zombie) {
-                        int zombie = CustomItemManager.loadConfig("ItemData\\WidowSword.yml").getInt("zombie");
-                        e.setDamage(e.getDamage() * (1 + zombie / 100));
-                    } else if (e.getEntity() instanceof Skeleton) {
-                        int skeleton = CustomItemManager.loadConfig("ItemData\\WidowSword.yml").getInt("skeleton");
-                        e.setDamage(e.getDamage() * (1 + skeleton / 100));
-                    } else if (e.getEntity() instanceof Spider) {
-                        int spider = CustomItemManager.loadConfig("ItemData\\WidowSword.yml").getInt("spider");
-                        e.setDamage(e.getDamage() * (1 + spider / 100));
-                    }
                 }
             }
         }
@@ -105,7 +85,7 @@ public class CustomItemEvents implements Listener {
                     ItemStack weapon = player.getInventory().getItemInMainHand();
                     ItemMeta weaponMeta = weapon.getItemMeta();
                     PersistentDataContainer container = weaponMeta.getPersistentDataContainer();
-                    if(container != null) {
+                    if (container != null) {
                         NamespacedKey ammocount = CustomItemManager.keys.get("Snow Gun.ammo");
                         int ammo = container.get(ammocount, PersistentDataType.INTEGER);
                         container.set(ammocount, PersistentDataType.INTEGER, ammo - 1);
@@ -250,62 +230,37 @@ public class CustomItemEvents implements Listener {
         }
     }
 
-    private Location l;
-    private boolean spawnable = false;
-
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent e) {
         if (e.getEntity() instanceof Player) {
             Player player = (Player) e.getEntity();
-            if ((player.getHealth() - e.getDamage()) <= 0) {
-                e.setCancelled(true);
-                Location loc = player.getWorld().getBlockAt(-3, 23, -3).getLocation();
-                player.teleport(loc);
-                for (Player p : Bukkit.getOnlinePlayers()) {
-                    p.sendMessage(e.getDamager() instanceof Player
-                            ? ChatColor.RED + player.getName() + " has been killed by " + e.getDamager().getName()
-                            : ChatColor.RED + player.getName() + " died");
-                    p.hidePlayer(player);
-                }
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        for (Player p : Bukkit.getOnlinePlayers()) {
-                            p.showPlayer(player);
-                        }
-                        player.setHealth(20);
-//                            while(!spawnable) {
-//                                l = generateRandomCoord(9, Bukkit.getWorld("world"));
-//                                if(isSpawnable(l)) {
-//                                    spawnable = true;
-//                                    player.teleport(l);
-//                                }
-//                            }
-                        player.teleport(generateRandomCoord(9, Bukkit.getWorld("world")));
-                    }
-                }.runTaskLater(main, 100L);
-                run(player, new int[]{5});
-            }
+//            if ((player.getHealth() - e.getDamage()) <= 0) {
+//                e.setCancelled(true);
+//                Location loc = player.getWorld().getBlockAt(-3, 23, -3).getLocation();
+//                player.teleport(loc);
+//                for (Player p : Bukkit.getOnlinePlayers()) {
+//                    p.sendMessage(e.getDamager() instanceof Player
+//                            ? ChatColor.RED + player.getName() + " has been killed by " + e.getDamager().getName()
+//                            : ChatColor.RED + player.getName() + " died");
+//                    p.hidePlayer(player);
+//                }
+//                new BukkitRunnable() {
+//                    @Override
+//                    public void run() {
+//                        for (Player p : Bukkit.getOnlinePlayers()) {
+//                            p.showPlayer(player);
+//                        }
+//                        player.setHealth(20);
+//                        player.teleport(generateRandomCoord(9, Bukkit.getWorld("world")));
+//                    }
+//                }.runTaskLater(main, 100L);
+//                countDown(player, new int[]{5});
+//            }
         }
 
     }
-
-    public Location generateRandomCoord(int size, World world) {
-        int ranX = SpawnCommand.getRandomWithNeg(size), ranZ = SpawnCommand.getRandomWithNeg(size);
-        Block block = world.getHighestBlockAt(ranX, ranZ);
-        return block.getLocation();
-    }
-
-    public boolean isSpawnable(Location loc) {
-        Block feetBlock = loc.getBlock(), headBlock = loc.clone().add(0, 1, 0).getBlock(),
-                upperBlock = loc.clone().add(0, 2, 0).getBlock();
-        return feetBlock.isPassable() && !feetBlock.isLiquid() && headBlock.isPassable() && !headBlock.isLiquid()
-                && upperBlock.isPassable() && !upperBlock.isLiquid();
-    }
-
     private int taskID;
-
-    public void run(Player player, int[] a) {
+    public void countDown(Player player, int[] a) {
         taskID = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(main, () -> {
             player.sendTitle(ChatColor.RED + "YOU DIED!", ChatColor.GREEN + "You will revive in " + a[0] + " seconds",
                     0, 20, 0);
@@ -337,11 +292,9 @@ public class CustomItemEvents implements Listener {
             MerchantRecipe tntStick = new MerchantRecipe(CustomItemManager.getItem("Terminator"), 10);
             tntStick.addIngredient(CustomItemManager.getItem("Widow Sword"));
             recipes.add(tntStick);
-            Merchant merchant = Bukkit.createMerchant("Yum Yum In The Tum Tum");
+            Merchant merchant = Bukkit.createMerchant("Exchange here");
             merchant.setRecipes(recipes);
-
             villagerlist.put(villager.getUniqueId(), merchant);
-
             p.spawnParticle(Particle.END_ROD, loc, 30, 0, 1, 0, 0.2);
             p.openMerchant(merchant, true);
         }
@@ -353,4 +306,11 @@ public class CustomItemEvents implements Listener {
             p.openMerchant(merchant, true);
         }
     }
+
+    //    For hologram clicks to change page
+//    @EventHandler
+//    public void onEntityInteract(EntityInteractEvent e) {
+//        System.out.println(e.getEntity().getLocation());
+//        e.getEntity().setCustomName(ChatColor.RED + "Changed name since you ust clicked lol");
+//    }
 }
