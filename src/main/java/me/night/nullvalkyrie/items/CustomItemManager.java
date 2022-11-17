@@ -26,13 +26,12 @@ public class CustomItemManager {
     public static HashMap<String, NamespacedKey> keys = new HashMap<>();
     private static Main main;
     public CustomItemManager(Main main) {
-        this.main = main;
+        CustomItemManager.main = main;
         main.getConfig().options().copyDefaults();
         main.saveDefaultConfig();
         if(!main.getDataFolder().exists()) {
             main.getDataFolder().mkdir();
         }
-
         createDirectoryInPluginFolder("ItemData");
         createFilesFromConfig(main.getConfig());
         register();
@@ -151,17 +150,18 @@ public class CustomItemManager {
         return YamlConfiguration.loadConfiguration(f);
     }
     public static File loadFile(String path) {
-        File f = new File(main.getDataFolder(), path);
-        if(!f.exists()) {
+        File file = new File(main.getDataFolder(), path);
+        if(!file.exists()) {
             try {
-                f.createNewFile();
+                file.createNewFile();
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
         }
-        return f;
+        return file;
     }
+
     public static void createDirectoryInPluginFolder(String path) {
         File f = new File(main.getDataFolder(), path);
         if(!f.exists()) {
@@ -218,5 +218,11 @@ public class CustomItemManager {
     }
     public static ItemStack getItem(String name){
         return weapons.get(name);
+    }
+
+    public static void updateYamlFilesToPlugin(String path) {
+        File file = new File(main.getDataFolder(), path); //xxx.yml
+        if (!file.exists()) main.saveResource(path, true);
+        else main.saveResource(path, true);
     }
 }
