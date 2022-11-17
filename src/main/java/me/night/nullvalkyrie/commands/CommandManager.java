@@ -20,6 +20,7 @@ public class CommandManager {
         new WeaponCommand();
         new RankCommand();
         new UtilCommand();
+        new ShopCommand();
         new BetaCommand(main);
         new MinerCommand(main);
     }

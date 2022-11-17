@@ -27,16 +27,19 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.util.Date;
 
+import static me.night.nullvalkyrie.items.CustomItemManager.updateYamlFilesToPlugin;
+
 public final class Main extends JavaPlugin implements Listener {
     private BossBar bossbar;
-    private CustomItemManager customItemManager;
-    public CustomItemManager getCustomItemManager() {
-        return customItemManager;
-    }
     @Override
     public void onEnable() {
         getConfig().options().copyDefaults();
         saveDefaultConfig();
+        EnchantmentManager.register();
+        new CustomItemManager(this);
+        updateYamlFilesToPlugin("shop.yml");
+        updateYamlFilesToPlugin("hardpoint.yml");
+        updateYamlFilesToPlugin("miners.yml");
         new CommandManager(this).register();
         bossbar = Bukkit.createBossBar(ChatColor.GOLD + "Kuudra", BarColor.RED, BarStyle.SEGMENTED_12);
         Bukkit.getPluginManager().registerEvents(this, this);
@@ -45,10 +48,8 @@ public final class Main extends JavaPlugin implements Listener {
         Bukkit.getPluginManager().registerEvents(new CustomItemEvents(this), this);
         Bukkit.getPluginManager().registerEvents(new DamageEffect(this), this);
         //Bukkit.getPluginManager().registerEvents(new GameEvent(this), this);
-        EnchantmentManager.register();
         new DiscordClientManager();
-        customItemManager = new CustomItemManager(this);
-        new CryptoMiner(this, "Gay", Material.ENDER_CHEST, 10, 0.7, new Date().getTime());
+        new CryptoMiner(this, "Baka", Material.ENDER_CHEST, 10, 0.7, new Date().getTime());
         new Client();
     }
 
