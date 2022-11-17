@@ -3,7 +3,7 @@ package me.night.nullvalkyrie.commands;
 import me.night.nullvalkyrie.Main;
 
 public class CommandManager {
-    private Main main;
+    private final Main main;
     public CommandManager(Main main) {
         this.main = main;
     }
@@ -18,9 +18,9 @@ public class CommandManager {
         new CraftCommand();
         new EnchantingCommand();
         new WeaponCommand();
+        new RankCommand();
+        new UtilCommand();
         new BetaCommand(main);
-        new RankCommand(main);
-        new UtilCommand(main);
         new MinerCommand(main);
     }
 }
