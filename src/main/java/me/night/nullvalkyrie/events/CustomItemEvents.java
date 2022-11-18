@@ -1,5 +1,10 @@
 package me.night.nullvalkyrie.events;
 
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
+import com.comphenix.protocol.events.PacketContainer;
+import com.comphenix.protocol.wrappers.BlockPosition;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import me.night.nullvalkyrie.items.CustomItemManager;
@@ -22,6 +27,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -262,7 +268,9 @@ public class CustomItemEvents implements Listener {
         }
 
     }
+
     private int taskID;
+
     public void countDown(Player player, int[] a) {
         taskID = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(main, () -> {
             player.sendTitle(ChatColor.RED + "YOU DIED!", ChatColor.GREEN + "You will revive in " + a[0] + " seconds", 0, 20, 0);
@@ -272,6 +280,7 @@ public class CustomItemEvents implements Listener {
             }
         }, 0L, 20L);
     }
+
     private final Map<UUID, Merchant> villagerlist = new HashMap<>();
 
     @EventHandler
@@ -313,28 +322,43 @@ public class CustomItemEvents implements Listener {
 //        e.getEntity().setCustomName(ChatColor.RED + "Changed name since you ust clicked lol");
 //    }
 
-    private Cache<UUID, Long> BreakAbility = CacheBuilder.newBuilder().expireAfterWrite(60, TimeUnit.MILLISECONDS).build();
-    private HashMap<Block, Integer> blockStages = new HashMap<>();
+    private final Cache<UUID, Long> BreakAbility = CacheBuilder.newBuilder().expireAfterWrite(60, TimeUnit.MILLISECONDS).build();
+    private final HashMap<Location, Integer> blockStages = new HashMap<>();
+
     @EventHandler
-    public void onPlayAnimation(PlayerAnimationEvent e) {
+    public void onAnimationEvent(PlayerAnimationEvent e) {
         Player player = e.getPlayer();
-        if (player.getGameMode().equals(GameMode.SURVIVAL)) {
-            if (!BreakAbility.asMap().containsKey(player.getUniqueId())) {
-                if (e.getAnimationType().equals(PlayerAnimationType.ARM_SWING)) {
-                    Block block = player.getTargetBlock(null, 3);
-                    if (!blockStages.containsKey(block)) blockStages.put(block, 0);
-                    else {
-                        BreakAbility.put(player.getUniqueId(), System.currentTimeMillis() + 60);
-                        int blockStage = blockStages.get(block) + 1;
-                        blockStages.replace(block, blockStage);
-                        if (blockStages.get(block) == 10) {
-                            player.sendBlockDamage(block.getLocation(), 1);
-                            block.breakNaturally();
-                            blockStages.remove(block);
-                        } else player.sendBlockDamage(block.getLocation(), (float) blockStage / 10);
-                    }
-                }
-            }
+        if (!player.getGameMode().equals(GameMode.SURVIVAL)) return;
+        if (BreakAbility.asMap().containsKey(player.getUniqueId())) return;
+        if (!e.getAnimationType().equals(PlayerAnimationType.ARM_SWING)) return;
+        Block block = player.getTargetBlockExact(4);
+        if (block == null) return;
+        BreakAbility.put(player.getUniqueId(), System.currentTimeMillis() + 60);
+        int blockStage = blockStages.getOrDefault(block.getLocation(), 0);
+        blockStage = blockStage == 10 ? 0 : blockStage + 1;
+        blockStages.put(block.getLocation(), blockStage);
+        sendBlockDamage(player, block);
+        if (blockStage == 0) {
+            blockStages.remove(block.getLocation());
+            block.breakNaturally();
         }
+    }
+
+    ProtocolManager manager = ProtocolLibrary.getProtocolManager();
+    public void sendBlockDamage(Player player, Location location) {
+        int locationId = location.getBlockX() + location.getBlockY() + location.getBlockZ();
+        PacketContainer packet = manager.createPacket(PacketType.Play.Server.BLOCK_BREAK_ANIMATION);
+        packet.getIntegers().write(0, locationId); // set entity ID to the location
+        packet.getBlockPositionModifier().write(0, new BlockPosition(location.toVector())); // set the block location
+        packet.getIntegers().write(1, blockStages.get(location)); // set the damage to blockStage
+        try {
+            manager.sendServerPacket(player, packet);
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendBlockDamage(Player player, Block block) {
+        sendBlockDamage(player, block.getLocation());
     }
 }
