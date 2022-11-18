@@ -1,5 +1,7 @@
 package me.night.nullvalkyrie.events;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import me.night.nullvalkyrie.items.CustomItemManager;
 import me.night.nullvalkyrie.items.Rarity;
 import me.night.nullvalkyrie.Main;
@@ -21,6 +23,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class CustomItemEvents implements Listener {
     private final Main main;
@@ -262,15 +265,13 @@ public class CustomItemEvents implements Listener {
     private int taskID;
     public void countDown(Player player, int[] a) {
         taskID = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(main, () -> {
-            player.sendTitle(ChatColor.RED + "YOU DIED!", ChatColor.GREEN + "You will revive in " + a[0] + " seconds",
-                    0, 20, 0);
+            player.sendTitle(ChatColor.RED + "YOU DIED!", ChatColor.GREEN + "You will revive in " + a[0] + " seconds", 0, 20, 0);
             a[0]--;
             if (a[0] == 0) {
                 Bukkit.getScheduler().cancelTask(taskID);
             }
         }, 0L, 20L);
     }
-
     private final Map<UUID, Merchant> villagerlist = new HashMap<>();
 
     @EventHandler
@@ -278,8 +279,7 @@ public class CustomItemEvents implements Listener {
         Player p = e.getPlayer();
         Entity clickedEntity = e.getRightClicked();
         if (clickedEntity instanceof Creeper) {
-            if (p.getInventory().getItemInMainHand().getType() != Material.STICK)
-                return;
+            if (p.getInventory().getItemInMainHand().getType() != Material.STICK) return;
             clickedEntity.remove();
             Location loc = clickedEntity.getLocation();
             Villager villager = (Villager) p.getWorld().spawnEntity(loc, EntityType.VILLAGER);
@@ -300,8 +300,7 @@ public class CustomItemEvents implements Listener {
         }
         if (e.getRightClicked() instanceof Villager) {
             Merchant merchant = villagerlist.get(clickedEntity.getUniqueId());
-            if (merchant == null)
-                return;
+            if (merchant == null) return;
             e.setCancelled(true);
             p.openMerchant(merchant, true);
         }
@@ -313,4 +312,29 @@ public class CustomItemEvents implements Listener {
 //        System.out.println(e.getEntity().getLocation());
 //        e.getEntity().setCustomName(ChatColor.RED + "Changed name since you ust clicked lol");
 //    }
+
+    private Cache<UUID, Long> BreakAbility = CacheBuilder.newBuilder().expireAfterWrite(60, TimeUnit.MILLISECONDS).build();
+    private HashMap<Block, Integer> blockStages = new HashMap<>();
+    @EventHandler
+    public void onPlayAnimation(PlayerAnimationEvent e) {
+        Player player = e.getPlayer();
+        if (player.getGameMode().equals(GameMode.SURVIVAL)) {
+            if (!BreakAbility.asMap().containsKey(player.getUniqueId())) {
+                if (e.getAnimationType().equals(PlayerAnimationType.ARM_SWING)) {
+                    Block block = player.getTargetBlock(null, 3);
+                    if (!blockStages.containsKey(block)) blockStages.put(block, 0);
+                    else {
+                        BreakAbility.put(player.getUniqueId(), System.currentTimeMillis() + 60);
+                        int blockStage = blockStages.get(block) + 1;
+                        blockStages.replace(block, blockStage);
+                        if (blockStages.get(block) == 10) {
+                            player.sendBlockDamage(block.getLocation(), 1);
+                            block.breakNaturally();
+                            blockStages.remove(block);
+                        } else player.sendBlockDamage(block.getLocation(), (float) blockStage / 10);
+                    }
+                }
+            }
+        }
+    }
 }

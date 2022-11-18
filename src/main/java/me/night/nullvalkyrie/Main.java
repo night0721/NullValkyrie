@@ -6,6 +6,7 @@ import me.night.nullvalkyrie.enchantments.EnchantmentManager;
 import me.night.nullvalkyrie.events.CustomItemEvents;
 //import me.night.nullvalkyrie.hardpoint.GameEvent;
 import me.night.nullvalkyrie.events.DamageEffect;
+import me.night.nullvalkyrie.hardpoint.ConfigManager;
 import me.night.nullvalkyrie.items.CustomItemManager;
 import me.night.nullvalkyrie.rank.ScoreboardListener;
 import me.night.nullvalkyrie.util.Util;
@@ -31,6 +32,7 @@ import static me.night.nullvalkyrie.items.CustomItemManager.updateYamlFilesToPlu
 
 public final class Main extends JavaPlugin implements Listener {
     private BossBar bossbar;
+
     @Override
     public void onEnable() {
         getConfig().options().copyDefaults();
@@ -51,11 +53,11 @@ public final class Main extends JavaPlugin implements Listener {
         new DiscordClientManager();
         new CryptoMiner(this, "Baka", Material.ENDER_CHEST, 10, 0.7, new Date().getTime());
         new Client();
+        ConfigManager.setConfig();
     }
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-        e.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText("§1NOT ENOUGH MANNER"));
         bossbar.addPlayer(e.getPlayer());
     }
 

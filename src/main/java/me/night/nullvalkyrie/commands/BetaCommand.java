@@ -31,14 +31,6 @@ public class BetaCommand extends Command {
 //            EntityPlayer ep = cp.getHandle();
 //            PacketPlayOutUpdateHealth packet = new PacketPlayOutUpdateHealth(20f, 20, 5.0f); // health, food, food saturation
 //            ep.b.a(packet); // Sends the Packet
-
-//            new BukkitRunnable() {
-//                @Override
-//                public void run() {
-//                    pa.spigot().sendMessage(ChatMessageType.ACTION_BAR,
-//                            TextComponent.fromLegacyText("§1NOT ENOUGH MANNER"));
-//                }
-//            }.runTaskTimer(main, 0L, 10);
         }
     }
 
