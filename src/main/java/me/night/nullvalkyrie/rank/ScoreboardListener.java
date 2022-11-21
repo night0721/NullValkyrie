@@ -1,6 +1,7 @@
 package me.night.nullvalkyrie.rank;
 
 import me.night.nullvalkyrie.Main;
+import me.night.nullvalkyrie.npc.NPC;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -17,8 +18,8 @@ public class ScoreboardListener implements Listener {
 
     public static RankManager rankManager;
     public static NameTagManager nameTagManager;
-    private SideBarManager sideBarManager;
-    private BelowNameManager belowNameManager;
+    private final SideBarManager sideBarManager;
+    private final BelowNameManager belowNameManager;
     public ScoreboardListener(Main main) {
         nameTagManager = new NameTagManager(main);
         rankManager = new RankManager(main);
@@ -41,6 +42,9 @@ public class ScoreboardListener implements Listener {
         sideBarManager.start(player);
         belowNameManager.setBelowName(player);
         e.setJoinMessage(rankManager.getRank(e.getPlayer().getUniqueId()).getDisplay() + " " + e.getPlayer().getName() + ChatColor.WHITE + " joined the server!");
+        if(NPC.getNPCs() == null) return;
+        if(NPC.getNPCs().isEmpty()) return;
+        NPC.addJoinPacket(e.getPlayer());
     }
 
     @EventHandler

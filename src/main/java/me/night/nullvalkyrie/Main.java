@@ -8,13 +8,12 @@ import me.night.nullvalkyrie.events.CustomItemEvents;
 import me.night.nullvalkyrie.events.DamageEffect;
 import me.night.nullvalkyrie.hardpoint.ConfigManager;
 import me.night.nullvalkyrie.items.CustomItemManager;
+import me.night.nullvalkyrie.npc.NPC;
 import me.night.nullvalkyrie.rank.ScoreboardListener;
 import me.night.nullvalkyrie.util.Util;
 import me.night.nullvalkyrie.commands.*;
 import me.night.nullvalkyrie.database.Client;
 import me.night.nullvalkyrie.miners.CryptoMiner;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -37,6 +36,7 @@ public final class Main extends JavaPlugin implements Listener {
     public void onEnable() {
         getConfig().options().copyDefaults();
         saveDefaultConfig();
+        new NPC(this);
         EnchantmentManager.register();
         new CustomItemManager(this);
         updateYamlFilesToPlugin("shop.yml");

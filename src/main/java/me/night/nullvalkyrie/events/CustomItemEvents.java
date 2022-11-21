@@ -8,6 +8,7 @@ import com.comphenix.protocol.wrappers.BlockPosition;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import me.night.nullvalkyrie.items.CustomItemManager;
+import me.night.nullvalkyrie.items.Pickaxe;
 import me.night.nullvalkyrie.items.Rarity;
 import me.night.nullvalkyrie.Main;
 import net.md_5.bungee.api.ChatMessageType;
@@ -321,19 +322,26 @@ public class CustomItemEvents implements Listener {
 //        System.out.println(e.getEntity().getLocation());
 //        e.getEntity().setCustomName(ChatColor.RED + "Changed name since you ust clicked lol");
 //    }
-
-    private final Cache<UUID, Long> BreakAbility = CacheBuilder.newBuilder().expireAfterWrite(60, TimeUnit.MILLISECONDS).build();
     private final HashMap<Location, Integer> blockStages = new HashMap<>();
-
+    private final HashMap<UUID, Long> miningCooldown = new HashMap<>();
     @EventHandler
-    public void onAnimationEvent(PlayerAnimationEvent e) {
+    public void onAnimationEvent(PlayerAnimationEvent e) { //Material blockType, int mineInterval, Pickaxe x
         Player player = e.getPlayer();
+        UUID uuid = player.getUniqueId();
         if (!player.getGameMode().equals(GameMode.SURVIVAL)) return;
-        if (BreakAbility.asMap().containsKey(player.getUniqueId())) return;
+        if (miningCooldown.containsKey(uuid) && (miningCooldown.get(uuid) > System.currentTimeMillis())) return;
+        else miningCooldown.remove(uuid);
+
         if (!e.getAnimationType().equals(PlayerAnimationType.ARM_SWING)) return;
         Block block = player.getTargetBlockExact(4);
         if (block == null) return;
-        BreakAbility.put(player.getUniqueId(), System.currentTimeMillis() + 60);
+
+        Pickaxe pickaxe = new Pickaxe(player.getInventory().getItemInMainHand());
+        List<Material> materialsThatCanBeMinedFast = pickaxe.multimap.get(pickaxe.getMaterial()); // to get all materials that the pickaxe can mine
+        if (!materialsThatCanBeMinedFast.contains(block.getType())) return;
+
+        long miningPerPhase = pickaxe.getMiningPerPhase(block.getType());
+        miningCooldown.put(uuid, System.currentTimeMillis() + miningPerPhase);
         int blockStage = blockStages.getOrDefault(block.getLocation(), 0);
         blockStage = blockStage == 10 ? 0 : blockStage + 1;
         blockStages.put(block.getLocation(), blockStage);
@@ -343,9 +351,10 @@ public class CustomItemEvents implements Listener {
             block.breakNaturally();
         }
     }
-
     ProtocolManager manager = ProtocolLibrary.getProtocolManager();
-    public void sendBlockDamage(Player player, Location location) {
+
+    public void sendBlockDamage(Player player, Block block) {
+        Location location = block.getLocation();
         int locationId = location.getBlockX() + location.getBlockY() + location.getBlockZ();
         PacketContainer packet = manager.createPacket(PacketType.Play.Server.BLOCK_BREAK_ANIMATION);
         packet.getIntegers().write(0, locationId); // set entity ID to the location
@@ -356,9 +365,5 @@ public class CustomItemEvents implements Listener {
         } catch (InvocationTargetException e) {
             e.printStackTrace();
         }
-    }
-
-    public void sendBlockDamage(Player player, Block block) {
-        sendBlockDamage(player, block.getLocation());
     }
 }
