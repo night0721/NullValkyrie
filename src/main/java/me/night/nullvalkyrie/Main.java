@@ -4,9 +4,7 @@ import me.night.nullvalkyrie.chests.MenuListener;
 import me.night.nullvalkyrie.discord.DiscordClientManager;
 import me.night.nullvalkyrie.enchantments.EnchantmentManager;
 import me.night.nullvalkyrie.events.CustomItemEvents;
-//import me.night.nullvalkyrie.hardpoint.GameEvent;
 import me.night.nullvalkyrie.events.DamageEffect;
-import me.night.nullvalkyrie.hardpoint.ConfigManager;
 import me.night.nullvalkyrie.items.CustomItemManager;
 import me.night.nullvalkyrie.npc.ClickNPC;
 import me.night.nullvalkyrie.npc.NPC;
@@ -39,7 +37,6 @@ public final class Main extends JavaPlugin implements Listener {
         EnchantmentManager.register();
         new CustomItemManager(this);
         new FileManager();
-
         new CommandManager(this).register();
         bossbar = Bukkit.createBossBar(ChatColor.GOLD + "Kuudra", BarColor.RED, BarStyle.SEGMENTED_12);
         Bukkit.getPluginManager().registerEvents(this, this);
@@ -51,7 +48,6 @@ public final class Main extends JavaPlugin implements Listener {
         //Bukkit.getPluginManager().registerEvents(new GameEvent(this), this);
         new DiscordClientManager();
         new DatabaseManager();
-        ConfigManager.setConfig();
         NPC.loadNPC(CustomItemManager.loadConfig("npcs.yml"));
         this.injector = new PacketInjector();
     }

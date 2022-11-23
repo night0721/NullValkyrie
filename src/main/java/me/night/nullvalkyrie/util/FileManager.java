@@ -5,6 +5,5 @@ import static me.night.nullvalkyrie.items.CustomItemManager.updateYamlFilesToPlu
 public class FileManager {
     public FileManager() {
         updateYamlFilesToPlugin("shop.yml");
-        updateYamlFilesToPlugin("hardpoint.yml");
     }
 }
