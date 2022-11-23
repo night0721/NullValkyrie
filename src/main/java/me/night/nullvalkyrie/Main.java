@@ -8,12 +8,14 @@ import me.night.nullvalkyrie.events.CustomItemEvents;
 import me.night.nullvalkyrie.events.DamageEffect;
 import me.night.nullvalkyrie.hardpoint.ConfigManager;
 import me.night.nullvalkyrie.items.CustomItemManager;
+import me.night.nullvalkyrie.npc.ClickNPC;
 import me.night.nullvalkyrie.npc.NPC;
+import me.night.nullvalkyrie.npc.PacketInjector;
 import me.night.nullvalkyrie.rank.ScoreboardListener;
+import me.night.nullvalkyrie.util.FileManager;
 import me.night.nullvalkyrie.util.Util;
 import me.night.nullvalkyrie.commands.*;
-import me.night.nullvalkyrie.database.Client;
-import me.night.nullvalkyrie.miners.CryptoMiner;
+import me.night.nullvalkyrie.database.DatabaseManager;
 import org.bukkit.*;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -25,23 +27,19 @@ import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.util.Date;
-
-import static me.night.nullvalkyrie.items.CustomItemManager.updateYamlFilesToPlugin;
 
 public final class Main extends JavaPlugin implements Listener {
     private BossBar bossbar;
+    private PacketInjector injector;
 
     @Override
     public void onEnable() {
         getConfig().options().copyDefaults();
         saveDefaultConfig();
-        new NPC(this);
         EnchantmentManager.register();
         new CustomItemManager(this);
-        updateYamlFilesToPlugin("shop.yml");
-        updateYamlFilesToPlugin("hardpoint.yml");
-        updateYamlFilesToPlugin("miners.yml");
+        new FileManager();
+
         new CommandManager(this).register();
         bossbar = Bukkit.createBossBar(ChatColor.GOLD + "Kuudra", BarColor.RED, BarStyle.SEGMENTED_12);
         Bukkit.getPluginManager().registerEvents(this, this);
@@ -49,16 +47,18 @@ public final class Main extends JavaPlugin implements Listener {
         Bukkit.getPluginManager().registerEvents(new ScoreboardListener(this), this);
         Bukkit.getPluginManager().registerEvents(new CustomItemEvents(this), this);
         Bukkit.getPluginManager().registerEvents(new DamageEffect(this), this);
+        Bukkit.getPluginManager().registerEvents(new ClickNPC(), this);
         //Bukkit.getPluginManager().registerEvents(new GameEvent(this), this);
         new DiscordClientManager();
-        new CryptoMiner(this, "Baka", Material.ENDER_CHEST, 10, 0.7, new Date().getTime());
-        new Client();
+        new DatabaseManager();
         ConfigManager.setConfig();
+        NPC.loadNPC(CustomItemManager.loadConfig("npcs.yml"));
+        this.injector = new PacketInjector();
     }
-
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         bossbar.addPlayer(e.getPlayer());
+        injector.addPlayer(e.getPlayer());
     }
 
     @EventHandler

@@ -6,7 +6,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -28,8 +27,7 @@ public class CryptoMiner {
         this.level = level;
         this.rate = rate; // Percentage generate chance in each tick 20tick per sec
         this.lastclaim = lastclaim;
-        FileConfiguration file = loadConfig("miners.yml");
-        setMiner(Integer.toString(file.getKeys(false).size()), name, type.name(), level, rate, lastclaim);
+
     }
 
     public String getName() {
@@ -57,8 +55,15 @@ public class CryptoMiner {
     public long getLastclaim() {
         return lastclaim;
     }
-    public void setLastClaim(long lastclaim) {
+    public void setLastClaim(String index, long lastclaim) {
         this.lastclaim = lastclaim;
+        FileConfiguration file = loadConfig("miners.yml");
+        file.set(index + ".last-claim", lastclaim);
+        try {
+            file.save(loadFile("miners.yml"));
+        } catch (IOException ignored) {
+
+        }
     }
     public static void generate(int pp, int times) {
         for (int counter = 0; counter < times; counter++) {
@@ -75,18 +80,18 @@ public class CryptoMiner {
         }
         return arr;
     }
-    public static HashMap<String, Object> getMiner(String index) {
+    public static CryptoMiner getMiner(String index) {
         FileConfiguration file = loadConfig("miners.yml");
-        HashMap<String, Object> details = new HashMap<>();
-        details.put("name", file.getString(index + ".name"));
-        details.put("material", Material.matchMaterial(file.getString(index + ".material")));
-        details.put("level", file.getInt(index + ".level"));
-        details.put("rate", file.getDouble(index + ".rate"));
-        details.put("lastclaim", file.getLong(index + ".last-claim"));
-        return details;
+        String name = file.getString(index + ".name");
+        Material material =  Material.matchMaterial(file.getString(index + ".material"));
+        int level = file.getInt(index + ".level");
+        double rate = file.getDouble(index + ".rate");
+        long lastclaim = file.getLong(index + ".last-claim");
+        return new CryptoMiner(main, name, material, level, rate, lastclaim);
     }
-    public void setMiner(String index, String name, String material, int level, double rate, long time) {
+    public void setMiner(String name, String material, int level, double rate, long time) {
         FileConfiguration file = loadConfig("miners.yml");
+        String index = Integer.toString(file.getKeys(false).size());
         file.createSection(index);
         file.set(index + ".name", name);
         file.set(index + ".material", material);

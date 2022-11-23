@@ -11,7 +11,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MinerGUI {
@@ -45,6 +47,7 @@ public class MinerGUI {
                 List<String> lore = new ArrayList<>();
                 lore.add("Level: " + file.getString(c + ".level"));
                 lore.add("Rate: " + file.getString(c + ".rate"));
+                lore.add("Last Claim: " + new SimpleDateFormat("d MMM yyyy HH:mm:ss").format(new Date(file.getLong(c + ".last-claim"))));
                 boolean b = file.getBoolean(c + ".rate") ? lore.add(ChatColor.GRAY + "Click to enable miner!") : lore.add(ChatColor.RED + "Click to disable miner!");
                 itemMeta.setLore(lore);
                 item.setItemMeta(itemMeta);

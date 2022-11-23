@@ -221,7 +221,7 @@ public class CustomItemManager {
     }
 
     public static void updateYamlFilesToPlugin(String path) {
-        File file = new File(main.getDataFolder(), path); //xxx.yml
+        File file = new File(main.getDataFolder(), path);
         if (!file.exists()) main.saveResource(path, true);
         else main.saveResource(path, true);
     }

@@ -8,10 +8,9 @@ import org.bson.conversions.Bson;
 
 import java.util.HashMap;
 
-public class Client {
-    private MongoClient client;
+public class DatabaseManager {
     private static MongoCollection<Document> users;
-    public Client() {
+    public DatabaseManager() {
         connect();
     }
     public void connect() {
@@ -31,7 +30,7 @@ public class Client {
         users.insertOne(document);
     }
     public void updateUserBank(String username, Number coins) {
-        Document document = (Document) users.find(new Document("Username", username)).first();
+        Document document = users.find(new Document("Username", username)).first();
         if(document != null) {
             Bson updated = new Document("Bank", coins);
             Bson update = new Document("$set", updated);
