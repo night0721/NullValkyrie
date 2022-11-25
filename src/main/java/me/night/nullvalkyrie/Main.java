@@ -14,18 +14,16 @@ import me.night.nullvalkyrie.database.DatabaseManager;
 import org.bukkit.*;
 import org.bukkit.plugin.java.JavaPlugin;
 public final class Main extends JavaPlugin {
-
-
+    public static Dotenv env;
     @Override
     public void onEnable() {
         getConfig().options().copyDefaults();
         saveDefaultConfig();
-//        Dotenv env = Dotenv.configure().directory("C:\\Users\\NK\\OneDrive\\Desktop\\.nky\\Coding\\Java\\NullValkyrie\\src\\main\\resources").filename(".env").load();
-//        System.out.println(env.get("MONGO"));
         EnchantmentManager.register();
         new CustomItemManager(this);
         new FileManager();
-        new CommandManager(this).register();
+        env = Dotenv.configure().directory("E:\\Files\\SB\\plugins\\NullValkyrie").filename(".env").load();
+        new CommandManager(this);
         Bukkit.getPluginManager().registerEvents(new ServerEvents(), this);
         Bukkit.getPluginManager().registerEvents(new MenuListener(), this);
         Bukkit.getPluginManager().registerEvents(new ScoreboardListener(this), this);
@@ -34,6 +32,6 @@ public final class Main extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new NPCEvents(), this);
         new DiscordClientManager();
         new DatabaseManager(this);
-        NPC.loadNPC(CustomItemManager.loadConfig("npcs.yml"));
+        NPCManager.reloadNPC();
     }
 }

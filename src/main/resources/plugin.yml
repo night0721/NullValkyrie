@@ -9,3 +9,5 @@ depend: [ProtocolLib]
 permissions:
   nv.command.use:
     default: true
+libraries:
+  - "io.github.cdimascio:dotenv-java:2.3.1"

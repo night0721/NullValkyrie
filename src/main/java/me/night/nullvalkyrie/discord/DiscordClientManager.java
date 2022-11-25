@@ -1,4 +1,5 @@
 package me.night.nullvalkyrie.discord;
+import me.night.nullvalkyrie.Main;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -12,7 +13,7 @@ public class DiscordClientManager {
         register();
     }
     public void register() {
-        JDABuilder builder = JDABuilder.createDefault("OTk3ODczMzgyNjM0ODM2MDQ5.Gd9Fdh.GEOleI-1znVeHwaAef54nXl2ovlSmC3hQX-qQI");
+        JDABuilder builder = JDABuilder.createDefault(Main.env.get("DISCORD_TOKEN"));
         builder.setActivity(Activity.streaming("cath.exe", "https://www.youtube.com/watch?v=YSKDu1gKntY"));
         try {
             jda = builder.build();

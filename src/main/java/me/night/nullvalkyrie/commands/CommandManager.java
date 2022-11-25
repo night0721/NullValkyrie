@@ -3,11 +3,7 @@ package me.night.nullvalkyrie.commands;
 import me.night.nullvalkyrie.Main;
 
 public class CommandManager {
-    private final Main main;
     public CommandManager(Main main) {
-        this.main = main;
-    }
-    public void register() {
         new VanishCommand();
         new TestCommand();
         new AnvilCommand();
@@ -21,7 +17,7 @@ public class CommandManager {
         new RankCommand();
         new UtilCommand();
         new ShopCommand();
-        new BetaCommand(main);
+        new BetaCommand();
         new MinerCommand(main);
     }
 }

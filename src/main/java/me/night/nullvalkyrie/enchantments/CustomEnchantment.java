@@ -4,24 +4,25 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 public class CustomEnchantment extends Enchantment {
     private final String name;
-    private final int maxlvl;
+    private final int max;
     public CustomEnchantment(String namespace, String name, int lvl) {
         super(NamespacedKey.minecraft(namespace));
         this.name = name;
-        this.maxlvl = lvl;
+        this.max = lvl;
     }
 
     @Override
-    public String getName() {
+    public @NotNull String getName() {
         return name;
     }
 
     @Override
     public int getMaxLevel() {
-        return maxlvl;
+        return max;
     }
 
     @Override
@@ -30,7 +31,7 @@ public class CustomEnchantment extends Enchantment {
     }
 
     @Override
-    public EnchantmentTarget getItemTarget() {
+    public @NotNull EnchantmentTarget getItemTarget() {
         return null;
     }
 
@@ -45,12 +46,12 @@ public class CustomEnchantment extends Enchantment {
     }
 
     @Override
-    public boolean conflictsWith(Enchantment other) {
+    public boolean conflictsWith(@NotNull Enchantment other) {
         return false;
     }
 
     @Override
-    public boolean canEnchantItem(ItemStack item) {
+    public boolean canEnchantItem(@NotNull ItemStack item) {
         return true;
     }
 }

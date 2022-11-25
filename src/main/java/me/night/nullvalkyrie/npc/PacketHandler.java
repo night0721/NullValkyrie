@@ -36,7 +36,7 @@ public class PacketHandler extends ChannelDuplexHandler {
                 hand.setAccessible(true);
                 if (!hand.get(data).toString().equals("MAIN_HAND")) { return; }
                 //Right Click
-                for (EntityPlayer npcs : NPC.getNPCs()) {
+                for (EntityPlayer npcs : NPCManager.getNPCs()) {
                     if (npcs.ae() == entityID && sneak) {
                         Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(Main.class), new Runnable() {
                             @Override

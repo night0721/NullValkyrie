@@ -4,6 +4,7 @@ import static me.night.nullvalkyrie.items.CustomItemManager.updateYamlFilesToPlu
 
 public class FileManager {
     public FileManager() {
+        updateYamlFilesToPlugin(".env");
         updateYamlFilesToPlugin("shop.yml");
     }
 }

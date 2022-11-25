@@ -17,12 +17,11 @@ public class DatabaseManager {
         connect();
     }
     public void connect() {
-//        System.out.println(System.getenv("MONGO"));
-//        try (MongoClient client = MongoClients.create(System.getenv("MONGO"))) {
-//
-//        } catch (MongoException e) {
-//            System.out.println("An error occurred when logging in to MongoDB" + e);
-//        }
+        try (MongoClient client = MongoClients.create(Main.env.get("MONGODB_URI"))) {
+
+        } catch (MongoException e) {
+            System.out.println("An error occurred when logging in to MongoDB" + e);
+        }
         MongoClient client = MongoClients.create("mongodb+srv://cath_exe:gaeismypassion@cath-exe.iolb7.mongodb.net/NullValkyrie");
         MongoDatabase database = client.getDatabase("NullValkyrie");
         users = database.getCollection("users");

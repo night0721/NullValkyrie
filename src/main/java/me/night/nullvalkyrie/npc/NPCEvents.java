@@ -21,7 +21,7 @@ public class NPCEvents implements Listener {
     }
     @EventHandler
     public void onMove(PlayerMoveEvent e) {
-        NPC.getNPCs().stream().forEach(npc -> {
+        NPCManager.getNPCs().forEach(npc -> {
             Location location = npc.getBukkitEntity().getLocation();
             location.setDirection(e.getPlayer().getLocation().subtract(location).toVector());
             float yaw = location.getYaw();

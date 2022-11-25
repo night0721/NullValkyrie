@@ -32,13 +32,15 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-public class NPC {
+public class NPCManager {
     private static final List<EntityPlayer> NPCs = new ArrayList<>();
 
     public static List<EntityPlayer> getNPCs() {
         return NPCs;
     }
-
+    public static void reloadNPC() {
+        loadNPC(CustomItemManager.loadConfig("npcs.yml"));
+    }
     public static void createNPC(Player player, String name) { //name must be less than 16 characters including color codes **
         EntityPlayer sp = ((CraftPlayer) player).getHandle();
         MinecraftServer server = sp.c;
