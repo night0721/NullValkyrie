@@ -2,8 +2,7 @@ package me.night.nullvalkyrie.commands;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import me.night.nullvalkyrie.Main;
-import me.night.nullvalkyrie.rank.Rank;
+import me.night.nullvalkyrie.ui.Rank;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -16,7 +15,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import static me.night.nullvalkyrie.rank.ScoreboardListener.rankManager;
+import static me.night.nullvalkyrie.ui.ScoreboardListener.rankManager;
 
 public class RankCommand extends Command {
 
@@ -37,30 +36,30 @@ public class RankCommand extends Command {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (!cooldown.asMap().containsKey(player.getUniqueId())) {
-                if (player.isOp()) {
-                    if (args.length == 2) {
-                        if (Bukkit.getOfflinePlayer(args[0]).hasPlayedBefore()) {
-                            OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);
-                            for (Rank rank : Rank.values()) {
-                                if (rank.name().equalsIgnoreCase(args[1])) {
-                                    rankManager.setRank(target.getUniqueId(), rank);
-                                    player.sendMessage(ChatColor.GREEN + "You changed " + target.getName() + "'s rank to " + rank.getDisplay());
-                                    if (target.isOnline()) {
-                                        target.getPlayer().sendMessage(ChatColor.GREEN + player.getName() + " set your rank to " + rank.getDisplay());
-                                    }
-                                    return;
+                if (!player.isOp()) {
+                    player.sendMessage(ChatColor.RED + "You must be server operator to use this command");
+                    return;
+                }
+                if (args.length == 2) {
+                    if (Bukkit.getOfflinePlayer(args[0]).hasPlayedBefore()) {
+                        OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);
+                        for (Rank rank : Rank.values()) {
+                            if (rank.name().equalsIgnoreCase(args[1])) {
+                                rankManager.setRank(target.getUniqueId(), rank);
+                                player.sendMessage(ChatColor.GREEN + "You changed " + target.getName() + "'s rank to " + rank.getDisplay());
+                                if (target.isOnline()) {
+                                    target.getPlayer().sendMessage(ChatColor.GREEN + player.getName() + " set your rank to " + rank.getDisplay());
                                 }
-
+                                return;
                             }
-                            player.sendMessage(ChatColor.RED + "Invalid Rank, please specify a valid rank, ROOKIE, SPECIAL, ADMIN, OWNER");
-                        } else {
-                            player.sendMessage("This player has never played in this server before!");
+
                         }
+                        player.sendMessage(ChatColor.RED + "Invalid Rank, please specify a valid rank, ROOKIE, SPECIAL, ADMIN, OWNER");
                     } else {
-                        player.sendMessage(ChatColor.RED + "Invalid parameter, use /rank <Player> <Rank>");
+                        player.sendMessage("This player has never played in this server before!");
                     }
                 } else {
-                    player.sendMessage(ChatColor.RED + "You must be server operator to use this command");
+                    player.sendMessage(ChatColor.RED + "Invalid parameter, use /rank <Player> <Rank>");
                 }
                 cooldown.put(player.getUniqueId(), System.currentTimeMillis() + 5000);
             } else {

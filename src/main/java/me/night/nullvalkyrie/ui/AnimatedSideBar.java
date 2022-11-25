@@ -1,4 +1,4 @@
-package me.night.nullvalkyrie.rank;
+package me.night.nullvalkyrie.ui;
 
 import org.bukkit.Bukkit;
 
@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class AnimatedSideBar {
-    private static Map<UUID, Integer> Tasks = new HashMap<>();
+    private static final Map<UUID, Integer> Tasks = new HashMap<>();
     private final UUID uuid;
 
     public AnimatedSideBar(UUID uuid) {
@@ -17,9 +17,7 @@ public class AnimatedSideBar {
         Tasks.put(uuid, id);
     }
     public boolean hasID() {
-        if (Tasks.containsKey(uuid))
-            return true;
-        return false;
+        return Tasks.containsKey(uuid);
     }
     public void stop() {
         Bukkit.getScheduler().cancelTask(Tasks.get(uuid));

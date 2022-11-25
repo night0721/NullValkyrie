@@ -17,10 +17,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.text.DecimalFormat;
 import java.util.*;
 
-public class DamageEffect implements Listener {
+public class DamageEffectEvents implements Listener {
     private final Main main;
 
-    public DamageEffect(Main main) {
+    public DamageEffectEvents(Main main) {
         this.main = main;
     }
 
@@ -63,7 +63,7 @@ public class DamageEffect implements Listener {
                     ticksLeft--;
                     indicators.put(stand, ticksLeft);
                 }
-                stands.removeAll(removal);
+                removal.forEach(stands::remove);
             }
         }.runTaskTimer(main, 0L, 1L);
     }
