@@ -111,4 +111,5 @@ buildNumber.properties
 
 # Common working directory
 run/
+# env
 src/main/resources/.env
