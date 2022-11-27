@@ -2,6 +2,7 @@ package me.night.nullvalkyrie.commands;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import me.night.nullvalkyrie.database.ranks.RankManager;
 import me.night.nullvalkyrie.ui.Rank;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -14,8 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-
-import static me.night.nullvalkyrie.ui.ScoreboardListener.rankManager;
 
 public class RankCommand extends Command {
 
@@ -45,7 +44,7 @@ public class RankCommand extends Command {
                         OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);
                         for (Rank rank : Rank.values()) {
                             if (rank.name().equalsIgnoreCase(args[1])) {
-                                rankManager.setRank(target.getUniqueId(), rank);
+                                RankManager.setRank(target.getUniqueId(), rank);
                                 player.sendMessage(ChatColor.GREEN + "You changed " + target.getName() + "'s rank to " + rank.getDisplay());
                                 if (target.isOnline()) {
                                     target.getPlayer().sendMessage(ChatColor.GREEN + player.getName() + " set your rank to " + rank.getDisplay());

@@ -1,5 +1,6 @@
 package me.night.nullvalkyrie.ui;
 
+import me.night.nullvalkyrie.database.ranks.RankManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
@@ -7,7 +8,7 @@ import org.bukkit.scoreboard.*;
 public class NameTagManager {
     public void setNametags(Player player) {
         Scoreboard newScoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-        Objective obj = newScoreboard.registerNewObjective("TabList", Criteria.DUMMY, "");
+        Objective obj = newScoreboard.registerNewObjective("TabList", Criteria.DUMMY, "Test");
         obj.setDisplaySlot(DisplaySlot.PLAYER_LIST);
         player.setScoreboard(newScoreboard);
         for (Rank rank : Rank.values()) {
@@ -16,15 +17,16 @@ public class NameTagManager {
         }
         for (Player target : Bukkit.getOnlinePlayers()) {
             if (player.getUniqueId() != target.getUniqueId()) {
-                Rank rank = ScoreboardListener.rankManager.getRank(target.getUniqueId());
+                Rank rank = RankManager.getRank(target.getUniqueId());
                 player.getScoreboard().getTeam(rank.name()).addEntry(target.getName());
             }
         }
     }
     public void newTag(Player player) {
-        Rank rank = ScoreboardListener.rankManager.getRank(player.getUniqueId());
+        Rank rank = RankManager.getRank(player.getUniqueId());
         for(Player target : Bukkit.getOnlinePlayers()) {
-            target.getScoreboard().getTeam(rank.name()).addEntry(player.getName());
+            if(rank == null) target.getScoreboard().getTeam(Rank.ROOKIE.name()).addEntry(player.getName());
+            else target.getScoreboard().getTeam(rank.name()).addEntry(player.getName());
         }
     }
     public void removeTag(Player player) {

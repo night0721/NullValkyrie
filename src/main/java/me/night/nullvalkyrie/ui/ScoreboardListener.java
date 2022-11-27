@@ -1,6 +1,7 @@
 package me.night.nullvalkyrie.ui;
 
 import me.night.nullvalkyrie.Main;
+import me.night.nullvalkyrie.database.ranks.RankManager;
 import me.night.nullvalkyrie.npc.NPCManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -16,13 +17,11 @@ import static me.night.nullvalkyrie.database.DatabaseManager.createUserSchema;
 
 public class ScoreboardListener implements Listener {
 
-    public static RankManager rankManager;
     public static NameTagManager nameTagManager;
     private final SideBarManager sideBarManager;
     private final BelowNameManager belowNameManager;
     public ScoreboardListener(Main main) {
         nameTagManager = new NameTagManager();
-        rankManager = new RankManager(main);
         sideBarManager = new SideBarManager(main);
         belowNameManager = new BelowNameManager();
     }
@@ -32,7 +31,7 @@ public class ScoreboardListener implements Listener {
         Player player = e.getPlayer();
         if(!player.hasPlayedBefore()) {
             e.getPlayer().sendTitle(ChatColor.RED + "Welcome to Matrix!", ChatColor.GREEN + "LOL", 20, 100, 20);
-            rankManager.setRank(player.getUniqueId(), Rank.ROOKIE);
+            RankManager.setRank(player.getUniqueId(), Rank.ROOKIE);
             createUserSchema(e.getPlayer().getDisplayName());
         }
         e.getPlayer().setPlayerListHeaderFooter(ChatColor.AQUA + "You are playing on " + ChatColor.GREEN + "127.0.0.1", ChatColor.GOLD + "Ranks, boosters, & more!" + ChatColor.AQUA + "127.0.0.1");
@@ -41,7 +40,7 @@ public class ScoreboardListener implements Listener {
         sideBarManager.setSideBar(player);
         sideBarManager.start(player);
         belowNameManager.setBelowName(player);
-        e.setJoinMessage(rankManager.getRank(e.getPlayer().getUniqueId()).getDisplay() + " " + e.getPlayer().getName() + ChatColor.WHITE + " joined the server!");
+        e.setJoinMessage(RankManager.getRank(e.getPlayer().getUniqueId()).getDisplay() + " " + e.getPlayer().getName() + ChatColor.WHITE + " joined the server!");
         if(NPCManager.getNPCs() == null) return;
         if(NPCManager.getNPCs().isEmpty()) return;
         NPCManager.addJoinPacket(e.getPlayer());
@@ -62,7 +61,7 @@ public class ScoreboardListener implements Listener {
     public void onChat(AsyncPlayerChatEvent e) {
         e.setCancelled(true);
         Player player = e.getPlayer();
-        Bukkit.broadcastMessage(rankManager.getRank(player.getUniqueId()).getDisplay() + " " + player.getName() + ChatColor.WHITE + ": " + e.getMessage());
+        Bukkit.broadcastMessage(me.night.nullvalkyrie.database.ranks.RankManager.getRank(player.getUniqueId()).getDisplay() + " " + player.getName() + ChatColor.WHITE + ": " + e.getMessage());
     }
 
     //Death changing in sidebar

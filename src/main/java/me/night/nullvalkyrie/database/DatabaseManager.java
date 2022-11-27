@@ -1,9 +1,9 @@
 package me.night.nullvalkyrie.database;
 
-import com.mongodb.MongoException;
 import com.mongodb.client.*;
 import com.mongodb.client.model.Filters;
 import me.night.nullvalkyrie.Main;
+import me.night.nullvalkyrie.database.ranks.RankManager;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
@@ -11,20 +11,18 @@ import java.util.HashMap;
 
 public class DatabaseManager {
     private static MongoCollection<Document> users;
+    private static MongoCollection<Document> custom_weapons;
+    public static MongoCollection<Document> ranks;
+    public MongoClient client;
+    public static MongoDatabase database;
     private Main main;
     public DatabaseManager(Main main) {
         this.main = main;
-        connect();
-    }
-    public void connect() {
-        try (MongoClient client = MongoClients.create(Main.env.get("MONGODB_URI"))) {
-
-        } catch (MongoException e) {
-            System.out.println("An error occurred when logging in to MongoDB" + e);
-        }
-        MongoClient client = MongoClients.create("mongodb+srv://cath_exe:gaeismypassion@cath-exe.iolb7.mongodb.net/NullValkyrie");
-        MongoDatabase database = client.getDatabase("NullValkyrie");
+        this.client = MongoClients.create(Main.env.get("MONGODB_URI"));
+        database = client.getDatabase("NullValkyrie");
         users = database.getCollection("users");
+        custom_weapons = database.getCollection("custom_weapons");
+        ranks = database.getCollection("ranks");
     }
     public static void createUserSchema(String username) {
         Document document = new Document();
@@ -39,7 +37,6 @@ public class DatabaseManager {
             Bson update = new Document("$set", updated);
             users.updateOne(document, update);
         }
-
     }
     public static HashMap<String, Object> getUser(String username) {
         try (MongoCursor<Document> cursor = users.find(Filters.eq("Username", username)).cursor()) {
