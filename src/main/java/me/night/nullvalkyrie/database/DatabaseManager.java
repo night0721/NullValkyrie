@@ -3,7 +3,6 @@ package me.night.nullvalkyrie.database;
 import com.mongodb.client.*;
 import com.mongodb.client.model.Filters;
 import me.night.nullvalkyrie.Main;
-import me.night.nullvalkyrie.database.ranks.RankManager;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
@@ -15,9 +14,8 @@ public class DatabaseManager {
     public static MongoCollection<Document> ranks;
     public MongoClient client;
     public static MongoDatabase database;
-    private Main main;
-    public DatabaseManager(Main main) {
-        this.main = main;
+
+    public DatabaseManager() {
         this.client = MongoClients.create(Main.env.get("MONGODB_URI"));
         database = client.getDatabase("NullValkyrie");
         users = database.getCollection("users");
@@ -42,13 +40,10 @@ public class DatabaseManager {
         try (MongoCursor<Document> cursor = users.find(Filters.eq("Username", username)).cursor()) {
             while (cursor.hasNext()) {
                 Document doc = cursor.next();
-                for (String a : doc.keySet()) {
-                    if (!a.equals("_id")) {
-                        HashMap<String, Object> details = new HashMap<>();
-                        details.put(a, doc.get(a));
-                        return details;
-                    }
-                }
+                HashMap<String, Object> map = new HashMap<>();
+                for (String key : doc.keySet())  map.put(key, doc.get(key));
+                map.remove("_id");
+                return map;
             }
         }
         return null;

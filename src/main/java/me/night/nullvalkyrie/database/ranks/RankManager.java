@@ -1,10 +1,7 @@
 package me.night.nullvalkyrie.database.ranks;
 
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Filters;
-import me.night.nullvalkyrie.Main;
 import me.night.nullvalkyrie.database.DatabaseManager;
 import me.night.nullvalkyrie.ui.Rank;
 import org.bson.Document;
@@ -40,9 +37,9 @@ public class RankManager {
         try (MongoCursor<Document> cursor = DatabaseManager.ranks.find(Filters.eq("UUID", uuid.toString())).cursor()) {
             while (cursor.hasNext()) {
                 Document doc = cursor.next();
-                for (String a : doc.keySet()) {
-                    if (a.equals("Rank")) {
-                        return Rank.valueOf((String) doc.get(a));
+                for (String key : doc.keySet()) {
+                    if (key.equals("Rank")) {
+                        return Rank.valueOf((String) doc.get(key));
                     }
                 }
             }

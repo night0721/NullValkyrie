@@ -31,7 +31,7 @@ public final class Main extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new DamageEffectEvents(this), this);
         Bukkit.getPluginManager().registerEvents(new NPCEvents(), this);
         new DiscordClientManager();
-        new DatabaseManager(this);
+        new DatabaseManager();
         NPCManager.reloadNPC();
     }
 }
