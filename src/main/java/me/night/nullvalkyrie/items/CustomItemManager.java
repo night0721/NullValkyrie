@@ -29,9 +29,7 @@ public class CustomItemManager {
         CustomItemManager.main = main;
         main.getConfig().options().copyDefaults();
         main.saveDefaultConfig();
-        if(!main.getDataFolder().exists()) {
-            main.getDataFolder().mkdir();
-        }
+        if(!main.getDataFolder().exists()) main.getDataFolder().mkdir();
         createDirectoryInPluginFolder("ItemData");
         createFilesFromConfig(main.getConfig());
         register();
@@ -116,12 +114,12 @@ public class CustomItemManager {
                     if (property.equals("ammo")) {
                         PersistentDataContainer container = itemMeta.getPersistentDataContainer();
                         NamespacedKey key1 = new NamespacedKey(main, "ammo");
-                        keys.put(fileConfig.getString("name") + "." + property, key1);
+                        keys.put(Rarity.getRarity(fileConfig.getString("rarity")).getColor() + fileConfig.getString("name") + "." + property, key1);
                         container.set(key1, PersistentDataType.INTEGER, fileConfig.getInt(key));
                     } else if (property.equals("maxload")) {
                         PersistentDataContainer container = itemMeta.getPersistentDataContainer();
                         NamespacedKey key2 = new NamespacedKey(main, "maxload");
-                        keys.put(fileConfig.getString("name") + "." + property, key2);
+                        keys.put(Rarity.getRarity(fileConfig.getString("rarity")).getColor() + fileConfig.getString("name") + "." + property, key2);
                         container.set(key2, PersistentDataType.INTEGER, fileConfig.getInt(key));
                     }
                 }
