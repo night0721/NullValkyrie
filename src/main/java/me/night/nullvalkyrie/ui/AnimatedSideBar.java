@@ -9,7 +9,6 @@ import java.util.UUID;
 public class AnimatedSideBar {
     private static final Map<UUID, Integer> Tasks = new HashMap<>();
     private final UUID uuid;
-
     public AnimatedSideBar(UUID uuid) {
         this.uuid = uuid;
     }

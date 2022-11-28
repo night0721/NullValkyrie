@@ -9,5 +9,7 @@ depend: [ProtocolLib]
 permissions:
   nv.command.use:
     default: true
+  nv.rank.add:
+    default: op
 libraries:
   - "io.github.cdimascio:dotenv-java:2.3.1"
