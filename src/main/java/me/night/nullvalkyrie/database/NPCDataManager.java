@@ -21,7 +21,7 @@ import static me.night.nullvalkyrie.npc.NPCManager.*;
 public class NPCDataManager {
     public static void setNPC(String name, int x, int y, int z, int pitch, int yaw, String world, String texture, String signature) {
         Document document = DatabaseManager.npcs.find(new Document("Name", name)).first();
-        if(document != null) {
+        if (document != null) {
             System.out.println("A NPC with this name already exist");
         } else {
             Document newDocument = new Document();
@@ -37,9 +37,10 @@ public class NPCDataManager {
             DatabaseManager.npcs.insertOne(newDocument);
         }
     }
+
     public static void reloadNPC() {
-        try (MongoCursor<Document> cursor = DatabaseManager.npcs.find().cursor()){
-            while(cursor.hasNext()) {
+        try (MongoCursor<Document> cursor = DatabaseManager.npcs.find().cursor()) {
+            while (cursor.hasNext()) {
                 Document document = cursor.next();
                 String name = (String) document.get("Name");
                 int x = (int) document.get("x");
@@ -50,7 +51,7 @@ public class NPCDataManager {
                 String world = (String) document.get("world");
                 String texture = (String) document.get("texture");
                 String signature = (String) document.get("signature");
-                Location location = new Location(Bukkit.getWorld(world), x ,y ,z);
+                Location location = new Location(Bukkit.getWorld(world), x, y, z);
                 location.setPitch((float) pitch);
                 location.setYaw((float) yaw);
                 GameProfile gameProfile = new GameProfile(UUID.randomUUID(), Util.color(name));
