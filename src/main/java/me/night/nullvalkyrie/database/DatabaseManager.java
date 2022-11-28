@@ -12,6 +12,7 @@ public class DatabaseManager {
     private static MongoCollection<Document> users;
     private static MongoCollection<Document> custom_weapons;
     public static MongoCollection<Document> ranks;
+    public static MongoCollection<Document> npcs;
     public MongoClient client;
     public static MongoDatabase database;
 
@@ -21,6 +22,7 @@ public class DatabaseManager {
         users = database.getCollection("users");
         custom_weapons = database.getCollection("custom_weapons");
         ranks = database.getCollection("ranks");
+        npcs = database.getCollection("npcs");
     }
     public static void createUserSchema(String username) {
         Document document = new Document();

@@ -1,5 +1,6 @@
 package me.night.nullvalkyrie.commands;
 
+import me.night.nullvalkyrie.npc.NPCManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -14,6 +15,7 @@ public class BetaCommand extends Command {
     @Override
     public void onCommand(CommandSender sender, String[] args) {
         if (sender instanceof Player) {
+            NPCManager.createNPC((Player) sender, args[0]);
         }
     }
     @Override

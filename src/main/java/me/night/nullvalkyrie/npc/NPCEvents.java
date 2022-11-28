@@ -19,6 +19,7 @@ public class NPCEvents implements Listener {
             player.sendMessage(Util.color("Hi"));
         }
     }
+
     @EventHandler
     public void onMove(PlayerMoveEvent e) {
         NPCManager.getNPCs().forEach(npc -> {
@@ -27,8 +28,8 @@ public class NPCEvents implements Listener {
             float yaw = location.getYaw();
             float pitch = location.getPitch();
             PlayerConnection con = ((CraftPlayer) e.getPlayer()).getHandle().b;
-            con.a(new PacketPlayOutEntityHeadRotation(npc, (byte) ((yaw%360)*256/360)));
-            con.a(new PacketPlayOutEntity.PacketPlayOutEntityLook(npc.ae(), (byte) ((yaw%360)*256/360), (byte) ((pitch%360)*256/360), false));
+            con.a(new PacketPlayOutEntityHeadRotation(npc, (byte) ((yaw % 360) * 256 / 360)));
+            con.a(new PacketPlayOutEntity.PacketPlayOutEntityLook(npc.ae(), (byte) ((yaw % 360) * 256 / 360), (byte) ((pitch % 360) * 256 / 360), false));
         });
     }
 }

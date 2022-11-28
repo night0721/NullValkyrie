@@ -5,8 +5,6 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.wrappers.BlockPosition;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
 import me.night.nullvalkyrie.items.CustomItemManager;
 import me.night.nullvalkyrie.items.Pickaxe;
 import me.night.nullvalkyrie.items.Rarity;
@@ -30,7 +28,6 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 public class CustomItemEvents implements Listener {
     private final Main main;

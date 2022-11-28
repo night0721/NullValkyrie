@@ -2,6 +2,7 @@ package me.night.nullvalkyrie;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import me.night.nullvalkyrie.chests.MenuListener;
+import me.night.nullvalkyrie.database.NPCDataManager;
 import me.night.nullvalkyrie.discord.DiscordClientManager;
 import me.night.nullvalkyrie.enchantments.EnchantmentManager;
 import me.night.nullvalkyrie.events.*;
@@ -32,6 +33,6 @@ public final class Main extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new NPCEvents(), this);
         new DiscordClientManager();
         new DatabaseManager();
-        NPCManager.reloadNPC();
+        NPCDataManager.reloadNPC();
     }
 }
