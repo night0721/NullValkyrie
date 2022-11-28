@@ -1,8 +1,7 @@
-package me.night.nullvalkyrie.database.ranks;
+package me.night.nullvalkyrie.database;
 
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Filters;
-import me.night.nullvalkyrie.database.DatabaseManager;
 import me.night.nullvalkyrie.ui.Rank;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -13,7 +12,7 @@ import java.util.UUID;
 
 import static me.night.nullvalkyrie.ui.ScoreboardListener.nameTagManager;
 
-public class RankManager {
+public class RankDataManager {
     public static void setRank(UUID uuid, Rank rank) {
         Document document = DatabaseManager.ranks.find(new Document("UUID", uuid.toString())).first();
         if(document != null) {

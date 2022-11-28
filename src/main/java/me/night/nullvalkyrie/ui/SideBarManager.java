@@ -15,6 +15,7 @@ public class SideBarManager {
     private final HashMap<UUID, Integer> deaths = new HashMap<>();
     private int taskID;
     private final Main main;
+    public AnimatedSideBar board = null;
 
     public SideBarManager(Main main) {
         this.main = main;
@@ -23,11 +24,8 @@ public class SideBarManager {
     public void setSideBar(Player player) {
         Scoreboard board = player.getScoreboard();
         Objective obj;
-        if (board.getObjective("Vanadium") != null) {
-            obj = board.getObjective("Vanadium");
-        } else {
-            obj = board.registerNewObjective("Vanadium", Criteria.DUMMY, ChatColor.AQUA.toString() + ChatColor.BOLD + ">> Vanadium <<");
-        }
+        if (board.getObjective("Vanadium") != null) obj = board.getObjective("Vanadium");
+        else obj = board.registerNewObjective("Vanadium", Criteria.DUMMY, ChatColor.AQUA.toString() + ChatColor.BOLD + ">> Vanadium <<");
         obj.setDisplaySlot(DisplaySlot.SIDEBAR);
         Score hypens = obj.getScore(ChatColor.GOLD + "=-=-=-=-=-=-=-=");
         hypens.setScore(9);
@@ -46,9 +44,8 @@ public class SideBarManager {
         Score website = obj.getScore(ChatColor.YELLOW + "cath.js.org");
         website.setScore(1);
         Team playersOnline;
-        if (board.getTeam("deathsTotal") != null) {
-            playersOnline = board.getTeam("deathsTotal");
-        } else playersOnline = board.registerNewTeam("deathsTotal");
+        if (board.getTeam("deathsTotal") != null) playersOnline = board.getTeam("deathsTotal");
+        else playersOnline = board.registerNewTeam("deathsTotal");
         playersOnline.addEntry(ChatColor.BOLD.toString());
         playersOnline.setPrefix(ChatColor.BLUE + "Deaths: ");
         playersOnline.setSuffix(ChatColor.YELLOW + "0");
@@ -58,22 +55,22 @@ public class SideBarManager {
     }
 
     public void start(Player player) {
+        board = new AnimatedSideBar(player.getUniqueId());
         taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(main, new Runnable() {
             int count = 0;
-            final AnimatedSideBar board = new AnimatedSideBar(player.getUniqueId());
-
             public void animate(String str) {
-                Objective objective = player.getScoreboard().getObjective("Vanadium");
+                Scoreboard board = player.getScoreboard();
+                Objective objective;
+                if (board.getObjective("Vanadium") != null) objective = board.getObjective("Vanadium");
+                else objective = board.registerNewObjective("Vanadium", Criteria.DUMMY, ChatColor.AQUA.toString() + ChatColor.BOLD + ">> Vanadium <<");
                 objective.setDisplaySlot(DisplaySlot.SIDEBAR);
                 objective.setDisplayName(Util.color(str));
             }
 
             @Override
             public void run() {
-                if (!board.hasID())
-                    board.setID(taskID);
-                if (count == 13)
-                    count = 0;
+                if (!board.hasID()) board.setID(taskID);
+                if (count == 13) count = 0;
                 switch (count) {
                     case 0 -> animate("&1&l>> &e&lVanadium&1&l <<");
                     case 1 -> animate("&b&l>&1&l> &e&lVanadium &1&l<<");

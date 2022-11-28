@@ -1,6 +1,6 @@
 package me.night.nullvalkyrie.ui;
 
-import me.night.nullvalkyrie.database.ranks.RankManager;
+import me.night.nullvalkyrie.database.RankDataManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
@@ -17,20 +17,22 @@ public class NameTagManager {
         }
         for (Player target : Bukkit.getOnlinePlayers()) {
             if (player.getUniqueId() != target.getUniqueId()) {
-                Rank rank = RankManager.getRank(target.getUniqueId());
+                Rank rank = RankDataManager.getRank(target.getUniqueId());
                 player.getScoreboard().getTeam(rank.name()).addEntry(target.getName());
             }
         }
     }
+
     public void newTag(Player player) {
-        Rank rank = RankManager.getRank(player.getUniqueId());
-        for(Player target : Bukkit.getOnlinePlayers()) {
-            if(rank == null) target.getScoreboard().getTeam(Rank.ROOKIE.name()).addEntry(player.getName());
+        Rank rank = RankDataManager.getRank(player.getUniqueId());
+        for (Player target : Bukkit.getOnlinePlayers()) {
+            if (rank == null) target.getScoreboard().getTeam(Rank.ROOKIE.name()).addEntry(player.getName());
             else target.getScoreboard().getTeam(rank.name()).addEntry(player.getName());
         }
     }
+
     public void removeTag(Player player) {
-        for(Player target : Bukkit.getOnlinePlayers()) {
+        for (Player target : Bukkit.getOnlinePlayers()) {
             target.getScoreboard().getEntryTeam(player.getName()).removeEntry(player.getName());
         }
     }
