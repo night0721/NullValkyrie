@@ -24,7 +24,7 @@ public final class Main extends JavaPlugin {
         new CustomItemManager(this);
         new FileManager();
         env = Dotenv.configure().directory("E:\\Files\\SB\\plugins\\NullValkyrie").filename(".env").load();
-        new CommandManager(this);
+        new CommandManager();
         Bukkit.getPluginManager().registerEvents(new ServerEvents(), this);
         Bukkit.getPluginManager().registerEvents(new MenuListener(), this);
         Bukkit.getPluginManager().registerEvents(new ScoreboardListener(this), this);
