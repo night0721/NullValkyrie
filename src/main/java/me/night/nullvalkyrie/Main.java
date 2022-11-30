@@ -6,7 +6,6 @@ import me.night.nullvalkyrie.database.NPCDataManager;
 import me.night.nullvalkyrie.discord.DiscordClientManager;
 import me.night.nullvalkyrie.enchantments.EnchantmentManager;
 import me.night.nullvalkyrie.events.*;
-import me.night.nullvalkyrie.items.CustomItemManager;
 import me.night.nullvalkyrie.npc.*;
 import me.night.nullvalkyrie.ui.ScoreboardListener;
 import me.night.nullvalkyrie.util.*;

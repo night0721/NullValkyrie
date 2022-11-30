@@ -296,8 +296,8 @@ public class CustomItemEvents implements Listener {
             bread.addIngredient(new ItemStack(Material.EMERALD, 10));
             recipes.add(bread);
 
-            MerchantRecipe tntStick = new MerchantRecipe(CustomItemManager.getItem("Terminator"), 10);
-            tntStick.addIngredient(CustomItemManager.getItem("Widow Sword"));
+            MerchantRecipe tntStick = new MerchantRecipe(CustomItemManager.produceItem("Terminator"), 10);
+            tntStick.addIngredient(CustomItemManager.produceItem("Widow Sword"));
             recipes.add(tntStick);
             Merchant merchant = Bukkit.createMerchant("Exchange here");
             merchant.setRecipes(recipes);

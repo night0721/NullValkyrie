@@ -14,7 +14,6 @@ import java.util.List;
 
 public class ShopCommand extends Command {
     private final FileConfiguration file = CustomItemManager.loadConfig("shop.yml");
-    private Inventory inv;
 
     public ShopCommand() {
         super("7elven",
@@ -26,10 +25,10 @@ public class ShopCommand extends Command {
 
     @Override
     public void onCommand(CommandSender sender, String[] args) {
-        inv = Bukkit.createInventory(null, 45, ChatColor.GREEN + "7-Eleven 24/7");
+        Inventory inv = Bukkit.createInventory(null, 45, ChatColor.GREEN + "7-Eleven 24/7");
         int counter = 0;
         for (String c : file.getKeys(false)) {
-            ItemStack item = CustomItemManager.getItem(file.getString(c + ".name")).clone();
+            ItemStack item = CustomItemManager.produceItem(file.getString(c + ".name")).clone();
             ItemMeta itemMeta = item.getItemMeta();
             List<String> lore = itemMeta.getLore();
             lore.add("Price (BIN): " + file.getString(c + ".price"));

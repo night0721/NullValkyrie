@@ -22,51 +22,42 @@ import java.util.*;
 
 import static me.night.nullvalkyrie.database.CustomWeaponsDataManager.getWeapon;
 
-
 public class CustomItemManager {
-    private static final HashMap<String, ItemStack> weapons = new HashMap<>();
     public static HashMap<String, NamespacedKey> keys = new HashMap<>();
-    private static Main main;
-
-    public CustomItemManager(Main main) {
-        CustomItemManager.main = main;
-    }
 
     public static ItemStack produceItem(String itemName) {
         HashMap<String, Object> weapon = getWeapon(itemName);
-
         ItemStack item = new ItemStack((Material) weapon.get("Material"));
-        List<String> properties = new ArrayList<>();
+        List<String> propertiesList = new ArrayList<>();
         List<String> itemAbility = new ArrayList<>();
         HashMap<String, Object> enchants = (HashMap<String, Object>) weapon.get("Enchants");
         HashMap<String, Object> attributes = (HashMap<String, Object>) weapon.get("Attributes");
-        for (String enchant : enchants.keySet()) {
+        for (String enchant : enchants.keySet())
             item.addUnsafeEnchantment(Enchantment.getByKey(NamespacedKey.minecraft(enchant)), (Integer) enchants.get(enchant));
-        }
-        HashMap<String, Object> lo = (HashMap<String, Object>) weapon.get("Lore");
-        HashMap<String, Object> abi = (HashMap<String, Object>) lo.get("Ability");
-        HashMap<String, Object> prob = (HashMap<String, Object>) lo.get("Properties");
-        for (String p : prob.keySet())
-            if ((int) prob.get(p) > 0)
-                properties.add(ChatColor.GRAY + Util.capitalize(p) + ": " + ChatColor.RED + "+" + prob.get(p));
-        itemAbility.add(ChatColor.GOLD + "Item Ability: " + abi.get("Name"));
-        for (String line : (List<String>) abi.get("Details"))
+        HashMap<String, Object> lore = (HashMap<String, Object>) weapon.get("Lore");
+        HashMap<String, Object> ability = (HashMap<String, Object>) lore.get("Ability");
+        HashMap<String, Object> properties = (HashMap<String, Object>) lore.get("Properties");
+        for (String p : properties.keySet())
+            if ((int) properties.get(p) > 0)
+                propertiesList.add(ChatColor.GRAY + Util.capitalize(p) + ": " + ChatColor.RED + "+" + properties.get(p));
+        itemAbility.add(ChatColor.GOLD + "Item Ability: " + ability.get("Name"));
+        for (String line : (List<String>) ability.get("Details"))
             itemAbility.add(ChatColor.GRAY + line);
         //recipe
         ItemMeta itemMeta = item.getItemMeta();
         itemMeta.setDisplayName(Rarity.getRarity((String) weapon.get("Rarity")).getColor() + weapon.get("Name"));
         itemMeta.setUnbreakable(true);
-        ArrayList<String> lore = new ArrayList<>();
-        lore.addAll(properties);
-        lore.add("");
+        ArrayList<String> loreList = new ArrayList<>();
+        loreList.addAll(propertiesList);
+        loreList.add("");
         ArrayList<String> enchantmentList = new ArrayList<>();
         for (Enchantment enchantment : item.getEnchantments().keySet()) {
-            List<String> splitted = Arrays.asList(Arrays.asList(enchantment.getKey().toString().split(":")).get(1).split("_"));
+            List<String> split = Arrays.asList(Arrays.asList(enchantment.getKey().toString().split(":")).get(1).split("_"));
             StringBuilder builder = new StringBuilder();
-            for (String strings : splitted) {
+            for (String strings : split) {
                 String formatted = Util.capitalize(strings);
-                if (splitted.size() > 1) {
-                    if (strings.equals(splitted.get(splitted.size() - 1))) builder.append(formatted);
+                if (split.size() > 1) {
+                    if (strings.equals(split.get(split.size() - 1))) builder.append(formatted);
                     else {
                         builder.append(formatted);
                         builder.append(" ");
@@ -75,12 +66,12 @@ public class CustomItemManager {
             }
             enchantmentList.add(builder + " " + item.getEnchantmentLevel(enchantment));
         }
-        lore.add(ChatColor.BLUE + String.join(", ", enchantmentList));
-        lore.add("");
-        lore.addAll(itemAbility);
-        lore.add("");
-        lore.add(Rarity.getRarity((String) weapon.get("Rarity")).getDisplay());
-        itemMeta.setLore(lore);
+        loreList.add(ChatColor.BLUE + String.join(", ", enchantmentList));
+        loreList.add("");
+        loreList.addAll(itemAbility);
+        loreList.add("");
+        loreList.add(Rarity.getRarity((String) weapon.get("Rarity")).getDisplay());
+        itemMeta.setLore(loreList);
         for (String attribute : attributes.keySet()) {
             if (attribute.equals("damage")) {
                 AttributeModifier p = new AttributeModifier(UUID.randomUUID(), "generic.attackDamage", (Double) attributes.get(attribute), AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
@@ -121,7 +112,7 @@ public class CustomItemManager {
     }
 
     public static YamlConfiguration loadConfig(String path) {
-        File f = new File(main.getDataFolder(), path);
+        File f = new File(Main.getPlugin(Main.class).getDataFolder(), path);
         if (!f.exists()) {
             try {
                 f.createNewFile();
@@ -133,13 +124,10 @@ public class CustomItemManager {
         return YamlConfiguration.loadConfiguration(f);
     }
 
-    public static ItemStack getItem(String name) {
-        return weapons.get(name);
-    }
 
     public static void updateYamlFilesToPlugin(String path) {
-        File file = new File(main.getDataFolder(), path);
-        if (!file.exists()) main.saveResource(path, true);
-        else main.saveResource(path, true);
+        File file = new File(Main.getPlugin(Main.class).getDataFolder(), path);
+        if (!file.exists()) Main.getPlugin(Main.class).saveResource(path, true);
+        else Main.getPlugin(Main.class).saveResource(path, true);
     }
 }

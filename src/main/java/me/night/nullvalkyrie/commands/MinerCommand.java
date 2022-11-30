@@ -24,12 +24,10 @@ public class MinerCommand extends Command {
 
     @Override
     public void onCommand(CommandSender sender, String[] args) {
-        if (sender instanceof Player) {
+        if (sender instanceof Player player) {
             if (args.length == 0) {
-                Player player = (Player) sender;
                 new MinerGUI(player);
                 int seconds = (int) (new Date().getTime() - MinerDataManager.getLastClaim(1)) / 1000;
-                System.out.println("Seconds: " + seconds);
                 generate(50, seconds);
             } else if (args[0].equalsIgnoreCase("new")) {
                 String name = args[1];
@@ -41,7 +39,7 @@ public class MinerCommand extends Command {
             } else if (args[0].equalsIgnoreCase("claim")) {
                 String minerIndex = args[1];
                 MinerDataManager.setLastClaim(Long.parseLong(minerIndex));
-                System.out.println("Done");
+                player.sendMessage("Claimed");
             }
 
         }

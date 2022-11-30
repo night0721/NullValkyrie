@@ -13,13 +13,7 @@ import java.util.*;
 public class UtilCommand extends Command {
 
     public UtilCommand() {
-        super(
-                "util",
-                new String[]{},
-                "Give you a tool",
-                ""
-
-        );
+        super("util", new String[]{}, "Give you a tool", "");
     }
 
     @Override
@@ -36,7 +30,7 @@ public class UtilCommand extends Command {
             }
 
         }
-        ItemStack item = CustomItemManager.getItem(s.toString());
+        ItemStack item = CustomItemManager.produceItem(s.toString());
         if (item.hasItemMeta()) {
             player.getInventory().addItem(item);
         } else {
