@@ -13,7 +13,13 @@ public class Util {
         builder.append(repeat);
         return builder.toString();
     }
+
     public static String color(String string) {
         return ChatColor.translateAlternateColorCodes('&', string);
+    }
+
+    public static String capitalize(String str) {
+        if (str == null || str.length() == 0) return str;
+        return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
 }

@@ -42,15 +42,15 @@ public class NPCDataManager {
         try (MongoCursor<Document> cursor = DatabaseManager.npcs.find().cursor()) {
             while (cursor.hasNext()) {
                 Document document = cursor.next();
-                String name = (String) document.get("Name");
-                int x = (int) document.get("x");
-                int y = (int) document.get("y");
-                int z = (int) document.get("z");
-                int pitch = (int) document.get("pitch");
-                int yaw = (int) document.get("yaw");
-                String world = (String) document.get("world");
-                String texture = (String) document.get("texture");
-                String signature = (String) document.get("signature");
+                String name = document.getString("Name");
+                int x = document.getInteger("x");
+                int y = document.getInteger("y");
+                int z = document.getInteger("z");
+                int pitch = document.getInteger("pitch");
+                int yaw = document.getInteger("yaw");
+                String world = document.getString("world");
+                String texture = document.getString("texture");
+                String signature = document.getString("signature");
                 Location location = new Location(Bukkit.getWorld(world), x, y, z);
                 location.setPitch((float) pitch);
                 location.setYaw((float) yaw);

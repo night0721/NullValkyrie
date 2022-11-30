@@ -47,7 +47,7 @@ public class MinerDataManager {
         try (MongoCursor<Document> cursor = DatabaseManager.miners.find(Filters.eq("ID", id)).cursor()) {
             while (cursor.hasNext()) {
                 Document doc = cursor.next();
-                return new CryptoMiner((String) doc.get("Name"), Material.matchMaterial((String) doc.get("Material")), (int) doc.get("Level"), (double) doc.get("Rate"), (long) doc.get("LastClaim"));
+                return new CryptoMiner(doc.getString("Name"), Material.matchMaterial(doc.getString("Material")), doc.getInteger("Level"), doc.getDouble("Rate"), doc.getLong("LastClaim"));
             }
         }
         return null;
@@ -58,7 +58,7 @@ public class MinerDataManager {
         try (MongoCursor<Document> cursor = DatabaseManager.miners.find().cursor()) {
             while (cursor.hasNext()) {
                 Document doc = cursor.next();
-                list.put((long) doc.get("ID"), new CryptoMiner((String) doc.get("Name"), Material.matchMaterial((String) doc.get("Material")), (int) doc.get("Level"), (double) doc.get("Rate"), (long) doc.get("LastClaim")));
+                list.put(doc.getLong("ID"), new CryptoMiner(doc.getString("Name"), Material.matchMaterial(doc.getString("Material")), doc.getInteger("Level"), doc.getDouble("Rate"), doc.getLong("LastClaim")));
             }
             return list;
         }

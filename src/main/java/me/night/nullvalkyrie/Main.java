@@ -18,12 +18,10 @@ public final class Main extends JavaPlugin {
     public static Dotenv env;
     @Override
     public void onEnable() {
-        getConfig().options().copyDefaults();
-        saveDefaultConfig();
         EnchantmentManager.register();
-        new CustomItemManager(this);
-        new FileManager();
         env = Dotenv.configure().directory("E:\\Files\\SB\\plugins\\NullValkyrie").filename(".env").load();
+        new DatabaseManager();
+        new FileManager();
         new CommandManager();
         Bukkit.getPluginManager().registerEvents(new ServerEvents(), this);
         Bukkit.getPluginManager().registerEvents(new MenuListener(), this);
@@ -32,7 +30,6 @@ public final class Main extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new DamageEffectEvents(this), this);
         Bukkit.getPluginManager().registerEvents(new NPCEvents(), this);
         new DiscordClientManager();
-        new DatabaseManager();
         NPCDataManager.reloadNPC();
     }
 }

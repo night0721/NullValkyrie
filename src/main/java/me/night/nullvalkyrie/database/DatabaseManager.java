@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 public class DatabaseManager {
     private static MongoCollection<Document> users;
-    private static MongoCollection<Document> custom_weapons;
+    public static MongoCollection<Document> custom_weapons;
     public static MongoCollection<Document> ranks;
     public static MongoCollection<Document> npcs;
     public static MongoCollection<Document> miners;

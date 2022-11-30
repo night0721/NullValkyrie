@@ -1,17 +1,14 @@
 package me.night.nullvalkyrie.commands;
 
+import me.night.nullvalkyrie.database.CustomWeaponsDataManager;
 import me.night.nullvalkyrie.items.CustomItemManager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.StringUtil;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class WeaponCommand extends Command {
     public WeaponCommand() {
@@ -34,7 +31,7 @@ public class WeaponCommand extends Command {
                     builder.append(" ");
                 }
             }
-            ItemStack item = CustomItemManager.getItem(builder.toString());
+            ItemStack item = CustomItemManager.produceItem(builder.toString());
             if (item.hasItemMeta()) {
                 player.getInventory().addItem(item);
             } else {
@@ -46,12 +43,12 @@ public class WeaponCommand extends Command {
     @Override
     public List<String> onTabComplete(CommandSender sender, String[] args) {
         if (args.length == 1) {
-            List<String> hh = CustomItemManager.getAllFilesFromDirectory("ItemData");
+            HashMap<String, Object> hh = CustomWeaponsDataManager.getWeapons();
             ArrayList<String> cc = new ArrayList<>();
-            for (String s : hh) {
-                FileConfiguration c = CustomItemManager.loadConfig("ItemData/" + s);
-                if (Objects.equals(c.getString("type"), "Weapon")) {
-                    cc.add(c.getString("name"));
+            for (String s : hh.keySet()) {
+                HashMap<String, Object> item = (HashMap<String, Object>) hh.get(s);
+                if (Objects.equals(item.get("Type"), "Weapon")) {
+                    cc.add((String) item.get("Name"));
                 }
             }
             return StringUtil.copyPartialMatches(args[0], cc, new ArrayList<>());
