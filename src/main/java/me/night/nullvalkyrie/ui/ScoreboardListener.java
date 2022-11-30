@@ -13,7 +13,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import static me.night.nullvalkyrie.database.DatabaseManager.createUserSchema;
+import static me.night.nullvalkyrie.database.UserDataManager.createUserSchema;
 
 public class ScoreboardListener implements Listener {
 
