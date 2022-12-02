@@ -20,7 +20,7 @@ import static me.night.nullvalkyrie.npc.NPCManager.*;
 
 public class NPCDataManager {
     public static void setNPC(String name, int x, int y, int z, int pitch, int yaw, String world, String texture, String signature) {
-        Document document = DatabaseManager.npcs.find(new Document("Name", name)).first();
+        Document document = DatabaseManager.getNPCsDB().find(new Document("Name", name)).first();
         if (document != null) {
             System.out.println("A NPC with this name already exist");
         } else {
@@ -34,12 +34,12 @@ public class NPCDataManager {
             newDocument.put("world", world);
             newDocument.put("texture", texture);
             newDocument.put("signature", signature);
-            DatabaseManager.npcs.insertOne(newDocument);
+            DatabaseManager.getNPCsDB().insertOne(newDocument);
         }
     }
 
     public static void reloadNPC() {
-        try (MongoCursor<Document> cursor = DatabaseManager.npcs.find().cursor()) {
+        try (MongoCursor<Document> cursor = DatabaseManager.getNPCsDB().find().cursor()) {
             while (cursor.hasNext()) {
                 Document document = cursor.next();
                 String name = document.getString("Name");

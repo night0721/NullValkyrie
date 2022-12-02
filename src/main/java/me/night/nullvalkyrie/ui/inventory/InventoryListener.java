@@ -1,16 +1,16 @@
-package me.night.nullvalkyrie.chests;
+package me.night.nullvalkyrie.ui.inventory;
 
-import me.night.nullvalkyrie.commands.MenuCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-public class MenuListener implements Listener {
+
+public class InventoryListener implements Listener {
 
     @EventHandler
     public void onClick(InventoryClickEvent e) {
-        if(e.getInventory().equals(MenuCommand.inv) && e.getCurrentItem() != null) {
+        if (e.getInventory().equals(Menu.GUI) && e.getCurrentItem() != null) {
             e.setCancelled(true);
             Player player = (Player) e.getWhoClicked();
             switch (e.getRawSlot()) {
@@ -24,14 +24,19 @@ public class MenuListener implements Listener {
                     break;
                 case 24:
                     player.closeInventory();
-                    player.openInventory(WitherChest.witherchest);
+                    player.openInventory(Shop.GUI);
                     return;
                 default:
                     return;
             }
-
-
             player.closeInventory();
-         }else { return; }
+        }
+        if (e.getInventory().equals(Shop.GUI) && e.getCurrentItem() != null) {
+            e.setCancelled(true);
+            Player player = (Player) e.getWhoClicked();
+            if (e.getRawSlot() == 0) {
+                player.closeInventory();
+            }
+        }
     }
 }

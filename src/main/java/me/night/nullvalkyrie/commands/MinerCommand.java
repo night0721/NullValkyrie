@@ -1,7 +1,7 @@
 package me.night.nullvalkyrie.commands;
 
 import me.night.nullvalkyrie.database.MinerDataManager;
-import me.night.nullvalkyrie.miners.MinerGUI;
+import me.night.nullvalkyrie.ui.inventory.Miner;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -26,7 +26,7 @@ public class MinerCommand extends Command {
     public void onCommand(CommandSender sender, String[] args) {
         if (sender instanceof Player player) {
             if (args.length == 0) {
-                new MinerGUI(player);
+                new Miner().UI(player);
                 int seconds = (int) (new Date().getTime() - MinerDataManager.getLastClaim(1)) / 1000;
                 generate(50, seconds);
             } else if (args[0].equalsIgnoreCase("new")) {

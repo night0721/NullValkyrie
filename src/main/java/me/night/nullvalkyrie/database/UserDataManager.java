@@ -8,23 +8,24 @@ import org.bson.conversions.Bson;
 import java.util.HashMap;
 
 public class UserDataManager {
-    public static void createUserSchema(String username) {
+    public static void createUserSchema(String uuid) {
         Document document = new Document();
-        document.put("Username", username);
+        document.put("UUID", uuid);
         document.put("Bank", 0);
-        DatabaseManager.users.insertOne(document);
+        DatabaseManager.getUsersDB().insertOne(document);
     }
-    public void updateUserBank(String username, Number coins) {
-        Document document = DatabaseManager.users.find(new Document("Username", username)).first();
+
+    public void updateUserBank(String uuid, Number coins) {
+        Document document = DatabaseManager.getUsersDB().find(new Document("UUID", uuid)).first();
         if (document != null) {
             Bson updated = new Document("Bank", coins);
             Bson update = new Document("$set", updated);
-            DatabaseManager.users.updateOne(document, update);
+            DatabaseManager.getUsersDB().updateOne(document, update);
         }
     }
 
-    public static HashMap<String, Object> getUser(String username) {
-        try (MongoCursor<Document> cursor = DatabaseManager.users.find(Filters.eq("Username", username)).cursor()) {
+    public static HashMap<String, Object> getUser(String uuid) {
+        try (MongoCursor<Document> cursor = DatabaseManager.getUsersDB().find(Filters.eq("UUID", uuid)).cursor()) {
             while (cursor.hasNext()) {
                 Document doc = cursor.next();
                 HashMap<String, Object> map = new HashMap<>();

@@ -33,7 +33,7 @@ public class ScoreboardListener implements Listener {
         if (!player.hasPlayedBefore()) {
             e.getPlayer().sendTitle(ChatColor.RED + "Welcome to Vanadium!", ChatColor.GREEN + "LOL", 20, 100, 20);
             RankDataManager.setRank(player.getUniqueId(), Rank.ROOKIE);
-            createUserSchema(e.getPlayer().getDisplayName());
+            createUserSchema(e.getPlayer().getUniqueId().toString());
         }
         e.getPlayer().setPlayerListHeaderFooter(ChatColor.AQUA + "You are playing on " + ChatColor.GREEN + "127.0.0.1", ChatColor.GOLD + "Ranks, boosters, & more!" + ChatColor.AQUA + "127.0.0.1");
         nameTagManager.setNametags(player);

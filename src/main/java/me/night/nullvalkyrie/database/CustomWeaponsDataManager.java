@@ -13,7 +13,7 @@ import java.util.List;
 public class CustomWeaponsDataManager {
     public static HashMap<String, Object> getWeapon(String itemName) {
         HashMap<String, Object> item = new HashMap<>();
-        try (MongoCursor<Document> cursor = DatabaseManager.custom_weapons.find(Filters.eq("Name", itemName)).cursor()) {
+        try (MongoCursor<Document> cursor = DatabaseManager.getCustomWeaponsDB().find(Filters.eq("Name", itemName)).cursor()) {
             while (cursor.hasNext()) {
                 Document doc = cursor.next();
                 String name = doc.getString("Name");
@@ -51,7 +51,7 @@ public class CustomWeaponsDataManager {
 
     public static HashMap<String, Object> getWeapons() {
         HashMap<String, Object> list = new HashMap<>();
-        try (MongoCursor<Document> cursor = DatabaseManager.custom_weapons.find().cursor()) {
+        try (MongoCursor<Document> cursor = DatabaseManager.getCustomWeaponsDB().find().cursor()) {
             while (cursor.hasNext()) {
                 Document doc = cursor.next();
                 HashMap<String, Object> item = new HashMap<>();
