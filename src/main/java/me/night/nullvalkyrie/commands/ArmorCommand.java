@@ -15,12 +15,18 @@ import java.util.List;
 public class ArmorCommand extends Command {
 
     public ArmorCommand() {
-        super("armor", new String[]{}, "Give you a set of armor", "");
+        super(
+                "armor",
+                new String[]{},
+                "Give you a set of armor",
+                ""
+        );
     }
 
     @Override
     public void onCommand(CommandSender sender, String[] args) {
-        if (sender instanceof Player player) {
+        if (sender instanceof Player) {
+            Player player = (Player) sender;
             ItemStack helmet = new ItemStack(Material.LEATHER_HELMET);
             LeatherArmorMeta helmetdata = (LeatherArmorMeta) helmet.getItemMeta();
             helmetdata.setDisplayName(net.md_5.bungee.api.ChatColor.of("#ff23ff") + "Angeles Helmet");

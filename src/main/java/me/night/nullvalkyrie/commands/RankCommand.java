@@ -15,7 +15,12 @@ import java.util.List;
 public class RankCommand extends Command {
 
     public RankCommand() {
-        super("rank", new String[]{}, "Set rank of players", "nv.rank.add");
+        super(
+                "rank",
+                new String[]{},
+                "Set rank of players",
+                "nv.rank.add"
+        );
     }
 
 

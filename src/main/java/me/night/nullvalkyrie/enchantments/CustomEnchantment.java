@@ -9,7 +9,6 @@ import org.jetbrains.annotations.NotNull;
 public class CustomEnchantment extends Enchantment {
     private final String name;
     private final int max;
-
     public CustomEnchantment(String namespace, String name, int lvl) {
         super(NamespacedKey.minecraft(namespace));
         this.name = name;

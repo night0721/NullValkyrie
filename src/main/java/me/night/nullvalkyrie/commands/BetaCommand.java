@@ -13,10 +13,9 @@ public class BetaCommand extends Command {
 
     @Override
     public void onCommand(CommandSender sender, String[] args) {
-        if (sender instanceof Player player) {
+        if (sender instanceof Player) {
         }
     }
-
     @Override
     public List<String> onTabComplete(CommandSender sender, String[] args) {
         return null;

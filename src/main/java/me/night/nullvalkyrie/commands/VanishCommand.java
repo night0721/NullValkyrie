@@ -13,12 +13,18 @@ public class VanishCommand extends Command {
     private final List<UUID> vanished = new ArrayList<>();
 
     public VanishCommand() {
-        super("vanish", new String[]{}, "Turn yourself into invisible", "");
+        super(
+                "vanish",
+                new String[]{},
+                "Turn yourself into invisible",
+                ""
+        );
     }
 
     @Override
     public void onCommand(CommandSender sender, String[] args) {
-        if (sender instanceof Player player) {
+        if (sender instanceof Player) {
+            Player player = (Player) sender;
             if (vanished.contains(player.getUniqueId())) {
                 vanished.remove(player.getUniqueId());
                 for (Player target : Bukkit.getOnlinePlayers()) {

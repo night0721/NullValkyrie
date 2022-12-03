@@ -14,11 +14,9 @@ import me.night.nullvalkyrie.commands.*;
 import me.night.nullvalkyrie.database.DatabaseManager;
 import org.bukkit.*;
 import org.bukkit.plugin.java.JavaPlugin;
-
 public final class Main extends JavaPlugin {
     public static Dotenv env;
     public static MongoDatabase database;
-
     @Override
     public void onEnable() {
         EnchantmentManager.register();

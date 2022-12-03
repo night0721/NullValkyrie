@@ -14,7 +14,12 @@ import static me.night.nullvalkyrie.miners.CryptoMiner.generate;
 public class MinerCommand extends Command {
 
     public MinerCommand() {
-        super("miner", new String[]{"m", "miners"}, "Miner list", "");
+        super(
+                "miner",
+                new String[]{"m", "miners"},
+                "Miner list",
+                ""
+        );
     }
 
     @Override

@@ -7,7 +7,12 @@ import java.util.List;
 
 public class TestCommand extends Command {
     public TestCommand() {
-        super("test", new String[]{}, "Test", "");
+        super(
+                "test",
+                new String[]{},
+                "Test",
+                ""
+        );
     }
 
     @Override
