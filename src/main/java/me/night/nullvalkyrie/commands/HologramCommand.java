@@ -10,23 +10,13 @@ import java.util.List;
 
 public class HologramCommand extends Command {
     public HologramCommand() {
-        super(
-                "hologram",
-                new String[]{},
-                "Spawn a hologram",
-                ""
-        );
+        super("hologram", new String[]{}, "Spawn a hologram", "");
     }
 
     @Override
     public void onCommand(CommandSender sender, String[] args) {
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-            String[] ar = new String[]{
-                    ChatColor.AQUA + "Hi",
-                    ChatColor.DARK_PURPLE + "What",
-                    ChatColor.GOLD + "Hello World"
-            };
+        if (sender instanceof Player player) {
+            String[] ar = new String[]{ChatColor.AQUA + "Hi", ChatColor.DARK_PURPLE + "What", ChatColor.GOLD + "Hello World"};
             Location location = player.getLocation();
             for (String line : ar) {
                 ArmorStand stand = location.getWorld().spawn(location.subtract(0, 0.3, 0), ArmorStand.class, armorStand -> {

@@ -11,18 +11,12 @@ import java.util.List;
 
 public class MessageCommand extends Command {
     public MessageCommand() {
-        super(
-                "message",
-                new String[]{"msg"},
-                "Send message to someone",
-                ""
-        );
+        super("message", new String[]{"msg"}, "Send message to someone", "");
     }
 
     @Override
     public void onCommand(CommandSender sender, String[] args) {
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
+        if (sender instanceof Player player) {
             if (args.length >= 2) {
                 if (Bukkit.getPlayerExact(args[0]) != null) {
                     Player target = Bukkit.getPlayerExact(args[0]);

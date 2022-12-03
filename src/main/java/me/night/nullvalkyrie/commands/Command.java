@@ -1,7 +1,6 @@
 package me.night.nullvalkyrie.commands;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.BukkitCommand;
@@ -39,6 +38,8 @@ public abstract class Command extends BukkitCommand {
     public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
         return onTabComplete(sender, args);
     }
+
     public abstract void onCommand(CommandSender sender, String[] args);
+
     public abstract List<String> onTabComplete(CommandSender sender, String[] args);
 }

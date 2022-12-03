@@ -25,7 +25,8 @@ public class SideBarManager {
         Scoreboard board = player.getScoreboard();
         Objective obj;
         if (board.getObjective("Vanadium") != null) obj = board.getObjective("Vanadium");
-        else obj = board.registerNewObjective("Vanadium", Criteria.DUMMY, ChatColor.AQUA.toString() + ChatColor.BOLD + ">> Vanadium <<");
+        else
+            obj = board.registerNewObjective("Vanadium", Criteria.DUMMY, ChatColor.AQUA.toString() + ChatColor.BOLD + ">> Vanadium <<");
         obj.setDisplaySlot(DisplaySlot.SIDEBAR);
         Score hypens = obj.getScore(ChatColor.GOLD + "=-=-=-=-=-=-=-=");
         hypens.setScore(9);
@@ -58,11 +59,13 @@ public class SideBarManager {
         board = new AnimatedSideBar(player.getUniqueId());
         taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(main, new Runnable() {
             int count = 0;
+
             public void animate(String str) {
                 Scoreboard board = player.getScoreboard();
                 Objective objective;
                 if (board.getObjective("Vanadium") != null) objective = board.getObjective("Vanadium");
-                else objective = board.registerNewObjective("Vanadium", Criteria.DUMMY, ChatColor.AQUA.toString() + ChatColor.BOLD + ">> Vanadium <<");
+                else
+                    objective = board.registerNewObjective("Vanadium", Criteria.DUMMY, ChatColor.AQUA.toString() + ChatColor.BOLD + ">> Vanadium <<");
                 objective.setDisplaySlot(DisplaySlot.SIDEBAR);
                 objective.setDisplayName(Util.color(str));
             }
