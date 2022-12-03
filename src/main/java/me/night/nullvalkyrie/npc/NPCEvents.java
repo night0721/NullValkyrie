@@ -15,7 +15,7 @@ public class NPCEvents implements Listener {
     @EventHandler
     public void onClick(RightClickNPC e) {
         Player player = e.getPlayer();
-        if (e.getNPC().getBukkitEntity().getName().equalsIgnoreCase(Util.color("&a&lNK"))) {
+        if (e.getNPC().getBukkitEntity().getName().equalsIgnoreCase(Util.color("&1&lRB18"))) {
             player.sendMessage(Util.color("Hi"));
         }
     }

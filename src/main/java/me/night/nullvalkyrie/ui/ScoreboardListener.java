@@ -8,17 +8,16 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import static me.night.nullvalkyrie.database.UserDataManager.createUserSchema;
+import static me.night.nullvalkyrie.database.UserDataManager.createUserBank;
 
 public class ScoreboardListener implements Listener {
 
     public static NameTagManager nameTagManager;
-    private final SideBarManager sideBarManager;
+    public static SideBarManager sideBarManager;
     private final BelowNameManager belowNameManager;
 
     public ScoreboardListener(Main main) {
@@ -33,7 +32,7 @@ public class ScoreboardListener implements Listener {
         if (!player.hasPlayedBefore()) {
             e.getPlayer().sendTitle(ChatColor.RED + "Welcome to Vanadium!", ChatColor.GREEN + "LOL", 20, 100, 20);
             RankDataManager.setRank(player.getUniqueId(), Rank.ROOKIE);
-            createUserSchema(e.getPlayer().getUniqueId().toString());
+            createUserBank(e.getPlayer().getUniqueId().toString());
         }
         e.getPlayer().setPlayerListHeaderFooter(ChatColor.AQUA + "You are playing on " + ChatColor.GREEN + "127.0.0.1", ChatColor.GOLD + "Ranks, boosters, & more!" + ChatColor.AQUA + "127.0.0.1");
         nameTagManager.setNametags(player);
@@ -62,11 +61,5 @@ public class ScoreboardListener implements Listener {
         e.setCancelled(true);
         Player player = e.getPlayer();
         Bukkit.broadcastMessage(RankDataManager.getRank(player.getUniqueId()).getDisplay() + " " + player.getName() + ChatColor.WHITE + ": " + e.getMessage());
-    }
-
-    //Death changing in sidebar
-    @EventHandler
-    public void onDeath(PlayerDeathEvent e) {
-        if (e.getEntity().getPlayer() == null) sideBarManager.changeOnDeath(e.getEntity().getPlayer());
     }
 }

@@ -1,6 +1,7 @@
 package me.night.nullvalkyrie.ui;
 
 import me.night.nullvalkyrie.Main;
+import me.night.nullvalkyrie.database.UserDataManager;
 import me.night.nullvalkyrie.util.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -8,11 +9,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
 import org.bukkit.scoreboard.Scoreboard;
 
-import java.util.HashMap;
 import java.util.UUID;
 
 public class SideBarManager {
-    private final HashMap<UUID, Integer> deaths = new HashMap<>();
     private int taskID;
     private final Main main;
     public AnimatedSideBar board = null;
@@ -44,15 +43,14 @@ public class SideBarManager {
         space2.setScore(2);
         Score website = obj.getScore(ChatColor.YELLOW + "cath.js.org");
         website.setScore(1);
-        Team playersOnline;
-        if (board.getTeam("deathsTotal") != null) playersOnline = board.getTeam("deathsTotal");
-        else playersOnline = board.registerNewTeam("deathsTotal");
-        playersOnline.addEntry(ChatColor.BOLD.toString());
-        playersOnline.setPrefix(ChatColor.BLUE + "Deaths: ");
-        playersOnline.setSuffix(ChatColor.YELLOW + "0");
+        Team bankTeam;
+        if (board.getTeam("Bank") != null) bankTeam = board.getTeam("Bank");
+        else bankTeam = board.registerNewTeam("Bank");
+        bankTeam.addEntry(ChatColor.BOLD.toString());
+        bankTeam.setPrefix(ChatColor.BLUE + "Bank: ");
+        bankTeam.setSuffix(ChatColor.YELLOW + UserDataManager.getUser(player.getUniqueId().toString()).get("Bank").toString());
         obj.getScore(ChatColor.BOLD.toString()).setScore(3);
         player.setScoreboard(board);
-        deaths.put(player.getUniqueId(), 0);
     }
 
     public void start(Player player) {
@@ -97,9 +95,9 @@ public class SideBarManager {
         }, 0, 10);
     }
 
-    public void changeOnDeath(Player player) {
-        int amount = deaths.get(player.getUniqueId());
-        deaths.put(player.getUniqueId(), amount++);
-        player.getScoreboard().getTeam("deathsTotal").setSuffix(ChatColor.YELLOW.toString() + amount);
+    public void addBank(String uuid) {
+        UUID uid = UUID.fromString(uuid);
+        Bukkit.getPlayer(uid).getScoreboard().getTeam("Bank").setSuffix(ChatColor.YELLOW.toString() + UserDataManager.getUser(uuid).get("Bank"));
+
     }
 }
