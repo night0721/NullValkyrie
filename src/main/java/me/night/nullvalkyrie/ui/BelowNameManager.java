@@ -10,9 +10,9 @@ import org.bukkit.scoreboard.Scoreboard;
 public class BelowNameManager {
     public void setBelowName(Player player) {
         Scoreboard board = player.getScoreboard();
-        Objective obj = board.registerNewObjective("HealthBar", Criteria.HEALTH, ChatColor.RED + "❤");
+        Objective obj = board.registerNewObjective("HealthBar", Criteria.DUMMY, ChatColor.RED.toString());
         obj.setDisplaySlot(DisplaySlot.BELOW_NAME);
+        obj.setDisplayName(ChatColor.RED.toString() + player.getHealth()  + "❤");
         player.setScoreboard(board);
-        player.setHealth(player.getHealth());
     }
 }

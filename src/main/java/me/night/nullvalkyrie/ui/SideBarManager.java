@@ -95,9 +95,8 @@ public class SideBarManager {
         }, 0, 10);
     }
 
-    public void addBank(String uuid) {
+    public void addBank(String uuid, Integer amount) {
         UUID uid = UUID.fromString(uuid);
-        Bukkit.getPlayer(uid).getScoreboard().getTeam("Bank").setSuffix(ChatColor.YELLOW.toString() + UserDataManager.getUser(uuid).get("Bank"));
-
+        Bukkit.getPlayer(uid).getScoreboard().getTeam("Bank").setSuffix(ChatColor.YELLOW.toString() + UserDataManager.getUser(uuid).get("Bank") + ChatColor.WHITE + "+(" + amount + ")");
     }
 }

@@ -21,13 +21,13 @@ public class UserDataManager {
             Bson updated = new Document("Bank", coins + coinsBefore);
             Bson update = new Document("$set", updated);
             DatabaseManager.getUsersDB().updateOne(document, update);
-            ScoreboardListener.sideBarManager.addBank(uuid);
+            ScoreboardListener.sideBarManager.addBank(uuid, coins);
         } else {
             Document doc = new Document();
             doc.put("UUID", uuid);
             doc.put("Bank", coins);
             DatabaseManager.getUsersDB().insertOne(doc);
-            ScoreboardListener.sideBarManager.addBank(uuid);
+            ScoreboardListener.sideBarManager.addBank(uuid, coins);
         }
 
 
