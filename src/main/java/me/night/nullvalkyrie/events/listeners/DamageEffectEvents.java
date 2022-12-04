@@ -1,4 +1,4 @@
-package me.night.nullvalkyrie.events;
+package me.night.nullvalkyrie.events.listeners;
 
 import me.night.nullvalkyrie.Main;
 import me.night.nullvalkyrie.util.Util;

@@ -1,6 +1,7 @@
-package me.night.nullvalkyrie.events;
+package me.night.nullvalkyrie.events.listeners;
 
-import me.night.nullvalkyrie.npc.PacketInjector;
+import me.night.nullvalkyrie.events.custom.InteractHologramEvent;
+import me.night.nullvalkyrie.packets.PacketInjector;
 import me.night.nullvalkyrie.util.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -37,6 +38,11 @@ public class ServerEvents implements Listener {
         } catch (Exception ee) {
             ee.printStackTrace();
         }
-
+    }
+    @EventHandler
+    public void onClickHologram(InteractHologramEvent e) {
+        if (e.getHologram().getCustomName().equals(ChatColor.GOLD + "Click me to change!!!")) {
+            System.out.println(true);
+        }
     }
 }

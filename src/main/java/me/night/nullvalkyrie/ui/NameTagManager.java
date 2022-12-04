@@ -1,6 +1,7 @@
 package me.night.nullvalkyrie.ui;
 
 import me.night.nullvalkyrie.database.RankDataManager;
+import me.night.nullvalkyrie.enums.Rank;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;

@@ -2,12 +2,14 @@ package me.night.nullvalkyrie;
 
 import com.mongodb.client.MongoDatabase;
 import io.github.cdimascio.dotenv.Dotenv;
+import me.night.nullvalkyrie.events.listeners.CustomItemEvents;
+import me.night.nullvalkyrie.events.listeners.DamageEffectEvents;
+import me.night.nullvalkyrie.events.listeners.NPCEvents;
+import me.night.nullvalkyrie.events.listeners.ServerEvents;
 import me.night.nullvalkyrie.ui.inventory.InventoryListener;
 import me.night.nullvalkyrie.database.NPCDataManager;
 import me.night.nullvalkyrie.discord.DiscordClientManager;
 import me.night.nullvalkyrie.enchantments.EnchantmentManager;
-import me.night.nullvalkyrie.events.*;
-import me.night.nullvalkyrie.npc.*;
 import me.night.nullvalkyrie.ui.ScoreboardListener;
 import me.night.nullvalkyrie.util.*;
 import me.night.nullvalkyrie.commands.*;

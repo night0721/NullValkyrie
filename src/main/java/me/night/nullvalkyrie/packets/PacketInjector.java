@@ -1,4 +1,4 @@
-package me.night.nullvalkyrie.npc;
+package me.night.nullvalkyrie.packets;
 
 import io.netty.channel.Channel;
 import net.minecraft.server.level.EntityPlayer;

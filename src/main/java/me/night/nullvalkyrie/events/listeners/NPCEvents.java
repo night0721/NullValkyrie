@@ -1,5 +1,7 @@
-package me.night.nullvalkyrie.npc;
+package me.night.nullvalkyrie.events.listeners;
 
+import me.night.nullvalkyrie.events.custom.RightClickNPCEvent;
+import me.night.nullvalkyrie.entities.npcs.NPCManager;
 import me.night.nullvalkyrie.util.Util;
 import net.minecraft.network.protocol.game.PacketPlayOutEntity;
 import net.minecraft.network.protocol.game.PacketPlayOutEntityHeadRotation;
@@ -13,7 +15,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 
 public class NPCEvents implements Listener {
     @EventHandler
-    public void onClick(RightClickNPC e) {
+    public void onClick(RightClickNPCEvent e) {
         Player player = e.getPlayer();
         if (e.getNPC().getBukkitEntity().getName().equalsIgnoreCase(Util.color("&1&lRB18"))) {
             player.sendMessage(Util.color("Hi"));

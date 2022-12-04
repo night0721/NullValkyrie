@@ -1,6 +1,7 @@
 package me.night.nullvalkyrie.items;
 
 import me.night.nullvalkyrie.Main;
+import me.night.nullvalkyrie.enums.Rarity;
 import me.night.nullvalkyrie.util.Util;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -13,8 +14,6 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
 
 import java.io.File;
 import java.io.IOException;
@@ -102,7 +101,6 @@ public class CustomItemManager {
         return item;
     }
 
-
     public static void setItemRecipe(NamespacedKey key, ItemStack i, int ingredient, String shape1, String shape2, String shape3, List<Material> ingredients) {
 //        ShapedRecipe wither_sword_recipe = new ShapedRecipe(new NamespacedKey(main, "widow_sword"), widow_sword);
 //        wither_sword_recipe.shape(" A ", " A "," B ");
@@ -110,20 +108,6 @@ public class CustomItemManager {
 //        wither_sword_recipe.setIngredient('B', Material.STICK);
 //        Bukkit.addRecipe(wither_sword_recipe);
     }
-
-    public static YamlConfiguration loadConfig(String path) {
-        File f = new File(Main.getPlugin(Main.class).getDataFolder(), path);
-        if (!f.exists()) {
-            try {
-                f.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        }
-        return YamlConfiguration.loadConfiguration(f);
-    }
-
 
     public static void updateYamlFilesToPlugin(String path) {
         File file = new File(Main.getPlugin(Main.class).getDataFolder(), path);

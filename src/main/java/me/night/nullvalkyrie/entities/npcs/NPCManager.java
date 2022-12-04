@@ -1,4 +1,4 @@
-package me.night.nullvalkyrie.npc;
+package me.night.nullvalkyrie.entities.npcs;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;

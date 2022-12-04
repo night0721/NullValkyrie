@@ -1,26 +1,25 @@
-package me.night.nullvalkyrie.npc;
+package me.night.nullvalkyrie.events.custom;
 
-import net.minecraft.server.level.EntityPlayer;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
-
-public class RightClickNPC extends Event implements Cancellable {
-    private final Player player;
-    private final EntityPlayer npc;
+public class InteractHologramEvent extends Event implements Cancellable {
     private boolean isCancelled;
+    public Player player;
+    public ArmorStand hologram;
     private static final HandlerList HANDLERS = new HandlerList();
-    public RightClickNPC(Player player, EntityPlayer npc) {
+    public InteractHologramEvent(Player player, ArmorStand hologram) {
         this.player = player;
-        this.npc = npc;
+        this.hologram = hologram;
     }
     public Player getPlayer() {
         return player;
     }
-    public EntityPlayer getNPC() {
-        return npc;
+    public ArmorStand getHologram() {
+        return hologram;
     }
     @Override
     public boolean isCancelled() {

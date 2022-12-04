@@ -1,4 +1,4 @@
-package me.night.nullvalkyrie.npc;
+package me.night.nullvalkyrie.entities.npcs;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -11,8 +11,8 @@ import java.io.InputStreamReader;
 import java.net.URL;
 
 public class Skin {
-    private String texture;
-    private String signature;
+    private final String texture;
+    private final String signature;
     public Skin(String texture, String signature) {
         this.texture = texture;
         this.signature = signature;

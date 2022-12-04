@@ -2,7 +2,8 @@ package me.night.nullvalkyrie.ui;
 
 import me.night.nullvalkyrie.Main;
 import me.night.nullvalkyrie.database.RankDataManager;
-import me.night.nullvalkyrie.npc.NPCManager;
+import me.night.nullvalkyrie.enums.Rank;
+import me.night.nullvalkyrie.entities.npcs.NPCManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;

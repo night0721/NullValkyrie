@@ -15,7 +15,7 @@ import org.bukkit.craftbukkit.v1_19_R1.CraftWorld;
 
 import java.util.UUID;
 
-import static me.night.nullvalkyrie.npc.NPCManager.*;
+import static me.night.nullvalkyrie.entities.npcs.NPCManager.*;
 
 
 public class NPCDataManager {

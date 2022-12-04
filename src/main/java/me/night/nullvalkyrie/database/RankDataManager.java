@@ -2,7 +2,7 @@ package me.night.nullvalkyrie.database;
 
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Filters;
-import me.night.nullvalkyrie.ui.Rank;
+import me.night.nullvalkyrie.enums.Rank;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bukkit.Bukkit;
