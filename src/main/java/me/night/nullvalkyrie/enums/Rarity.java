@@ -10,8 +10,8 @@ public enum Rarity {
     MYTHIC(net.md_5.bungee.api.ChatColor.of("#ff23ff").toString() + ChatColor.BOLD + "MYTHIC", net.md_5.bungee.api.ChatColor.of("#ff23ff").toString()),
     ULTRA(ChatColor.RED.toString() + ChatColor.BOLD + "ULTRA", ChatColor.RED.toString()),
     GRAND(net.md_5.bungee.api.ChatColor.of("#00fdff").toString() + ChatColor.BOLD + "GRAND", net.md_5.bungee.api.ChatColor.of("#00fdff").toString());
-    private String display;
-    private String color;
+    private final String display;
+    private final String color;
     Rarity(String display, String color) {
         this.display = display;
         this.color = color;
@@ -24,7 +24,6 @@ public enum Rarity {
     }
     public static Rarity getRarity(String str) {
         return switch (str) {
-            case "COMMON" -> COMMON;
             case "UNCOMMON" -> UNCOMMON;
             case "RARE" -> RARE;
             case "EPIC" -> EPIC;
