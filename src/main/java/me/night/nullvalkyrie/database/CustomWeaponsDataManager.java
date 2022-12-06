@@ -11,6 +11,7 @@ import java.util.List;
 
 
 public class CustomWeaponsDataManager {
+
     public static HashMap<String, Object> getWeapon(String itemName) {
         HashMap<String, Object> item = new HashMap<>();
         try (MongoCursor<Document> cursor = DatabaseManager.getCustomWeaponsDB().find(Filters.eq("Name", itemName)).cursor()) {
@@ -37,6 +38,21 @@ public class CustomWeaponsDataManager {
                 HashMap<String, Object> attr = new HashMap<>();
                 for (String a : enchants.keySet()) ench.put(a, enchants.get(a));
                 for (String a : attributes.keySet()) attr.put(a, attributes.get(a));
+                Document pdc = (Document) doc.get("PDC");
+                HashMap<String, Object> pdcdata = new HashMap<>();
+                for (String i : pdc.keySet())
+                    pdcdata.put(i, pdc.get(i));
+                Document recipe = (Document) doc.get("Recipes");
+                HashMap<String, Object> recipes = new HashMap<>();
+                Document ing = (Document) recipe.get("Ingredients");
+                HashMap<String, String> ingredients = new HashMap<>();
+                for (String i : ing.keySet())
+                    ingredients.put(i, ing.getString(i));
+                List<String> shapes = new ArrayList<>();
+                if (recipe.get("Shapes") != null) for (String s : (List<String>) recipe.get("Shapes")) shapes.add(s);
+                recipes.put("Shape", shapes);
+                recipes.put("Amount", recipe.getInteger("Amount"));
+                recipes.put("Ingredients", ingredients);
                 item.put("Name", name);
                 item.put("Material", Material.matchMaterial(doc.getString("Material")));
                 item.put("Type", doc.getString("Type"));
@@ -44,6 +60,8 @@ public class CustomWeaponsDataManager {
                 item.put("Lore", lores);
                 item.put("Enchants", ench);
                 item.put("Attributes", attr);
+                item.put("PDC", pdcdata);
+                item.put("Recipes", recipes);
             }
             return item;
         }

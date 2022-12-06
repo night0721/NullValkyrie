@@ -96,7 +96,7 @@ public class CustomItemEvents implements Listener {
                         NamespacedKey ammoKey = CustomItemManager.keys.get(name + ".ammo");
                         int ammo = container.get(ammoKey, PersistentDataType.INTEGER);
                         container.set(ammoKey, PersistentDataType.INTEGER, ammo - 1);
-                        int max = container.get(CustomItemManager.keys.get(name + ".maxload"), PersistentDataType.INTEGER);
+                        int max = container.get(CustomItemManager.keys.get(name + ".max"), PersistentDataType.INTEGER);
                         weapon.setItemMeta(weaponMeta);
                         e.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', "&6AK-47 ( " + (ammo - 1) + "/ " + max + " )")));
 

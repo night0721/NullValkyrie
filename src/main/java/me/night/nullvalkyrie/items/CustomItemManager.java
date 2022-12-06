@@ -3,6 +3,7 @@ package me.night.nullvalkyrie.items;
 import me.night.nullvalkyrie.Main;
 import me.night.nullvalkyrie.enums.Rarity;
 import me.night.nullvalkyrie.util.Util;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -12,7 +13,10 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.io.File;
 import java.util.*;
@@ -40,10 +44,11 @@ public class CustomItemManager {
         itemAbility.add(ChatColor.GOLD + "Item Ability: " + ability.get("Name"));
         for (String line : (List<String>) ability.get("Details"))
             itemAbility.add(ChatColor.GRAY + line);
-        //recipe
+
         ItemMeta itemMeta = item.getItemMeta();
         itemMeta.setDisplayName(Rarity.getRarity((String) weapon.get("Rarity")).getColor() + weapon.get("Name"));
         itemMeta.setUnbreakable(true);
+
         ArrayList<String> loreList = new ArrayList<>();
         loreList.addAll(propertiesList);
         loreList.add("");
@@ -79,32 +84,33 @@ public class CustomItemManager {
             }
         }
         itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_UNBREAKABLE, ItemFlag.HIDE_ENCHANTS);
-//        for (String key : fileConfig.getKeys(true)) {
-//            if (key.startsWith("pdc.")) {
-//                String property = Arrays.asList(key.split("\\.")).get(1);
-//                if (property.equals("ammo")) {
-//                    PersistentDataContainer container = itemMeta.getPersistentDataContainer();
-//                    NamespacedKey key1 = new NamespacedKey(main, "ammo");
-//                    keys.put(Rarity.getRarity(fileConfig.getString("rarity")).getColor() + fileConfig.getString("name") + "." + property, key1);
-//                    container.set(key1, PersistentDataType.INTEGER, fileConfig.getInt(key));
-//                } else if (property.equals("maxload")) {
-//                    PersistentDataContainer container = itemMeta.getPersistentDataContainer();
-//                    NamespacedKey key2 = new NamespacedKey(main, "maxload");
-//                    keys.put(Rarity.getRarity(fileConfig.getString("rarity")).getColor() + fileConfig.getString("name") + "." + property, key2);
-//                    container.set(key2, PersistentDataType.INTEGER, fileConfig.getInt(key));
-//                }
-//            }
-//        }
+        HashMap<String, Object> pdcdata = (HashMap<String, Object>) weapon.get("PDC");
+        for (String key : pdcdata.keySet()) {
+            PersistentDataContainer container = itemMeta.getPersistentDataContainer();
+            NamespacedKey key1 = new NamespacedKey(Main.getPlugin(Main.class), key);
+            keys.put(Rarity.getRarity((String) weapon.get("Rarity")).getColor() + weapon.get("Name") + "." + key, key1);
+            container.set(key1, PersistentDataType.INTEGER, (int) pdcdata.get(key));
+        }
         item.setItemMeta(itemMeta);
+        HashMap<String, Object> recipes = (HashMap<String, Object>) weapon.get("Recipes");
+        List<String> shapes = (List<String>) recipes.get("Shape");
+        HashMap<String, String> ind = (HashMap<String, String>) recipes.get("Ingredients");
+        HashMap<Character, Material> indgredients = new HashMap<>();
+        for (String i : ind.keySet())
+            indgredients.put(i.charAt(0), Material.matchMaterial(ind.get(i)));
+        setItemRecipe((String) weapon.get("Name"), item, shapes, indgredients, (int) recipes.get("Amount"));
         return item;
     }
 
-    public static void setItemRecipe(NamespacedKey key, ItemStack i, int ingredient, String shape1, String shape2, String shape3, List<Material> ingredients) {
-//        ShapedRecipe wither_sword_recipe = new ShapedRecipe(new NamespacedKey(main, "widow_sword"), widow_sword);
-//        wither_sword_recipe.shape(" A ", " A "," B ");
-//        wither_sword_recipe.setIngredient('A', Material.IRON_INGOT);
-//        wither_sword_recipe.setIngredient('B', Material.STICK);
-//        Bukkit.addRecipe(wither_sword_recipe);
+    public static void setItemRecipe(String key, ItemStack i, List<String> shapes, HashMap<Character, Material> ingredients, int amount) {
+        NamespacedKey nsk = new NamespacedKey(Main.getPlugin(Main.class), key.replaceAll("\\s", ""));
+        ShapedRecipe recipe = new ShapedRecipe(nsk, i);
+        recipe.shape(shapes.get(0), shapes.get(1), shapes.get(2));
+        List<Character> abcs = List.of('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I');
+        for (int ei = 0; ei < amount; ei++)
+            recipe.setIngredient(abcs.get(ei), ingredients.get(abcs.get(ei)));
+        if (Bukkit.getRecipe(nsk) != null) Bukkit.removeRecipe(nsk);
+        Bukkit.addRecipe(recipe);
     }
 
     public static void updateYamlFilesToPlugin(String path) {

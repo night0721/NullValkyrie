@@ -1,6 +1,5 @@
 package me.night.nullvalkyrie.commands;
 
-import me.night.nullvalkyrie.database.UserDataManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -15,7 +14,6 @@ public class BetaCommand extends Command {
     @Override
     public void onCommand(CommandSender sender, String[] args) {
         if (sender instanceof Player player) {
-            UserDataManager.updateUserBank(player.getUniqueId().toString(), 10);
         }
     }
 
