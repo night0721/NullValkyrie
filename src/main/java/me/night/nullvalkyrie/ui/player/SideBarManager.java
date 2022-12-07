@@ -1,4 +1,4 @@
-package me.night.nullvalkyrie.ui;
+package me.night.nullvalkyrie.ui.player;
 
 import me.night.nullvalkyrie.Main;
 import me.night.nullvalkyrie.database.UserDataManager;

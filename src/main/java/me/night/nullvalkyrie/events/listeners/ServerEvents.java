@@ -41,6 +41,7 @@ public class ServerEvents implements Listener {
     }
     @EventHandler
     public void onClickHologram(InteractHologramEvent e) {
+        if (e.getHologram().getCustomName() == null) return;
         if (e.getHologram().getCustomName().equals(ChatColor.GOLD + "Click me to change!!!")) {
             // TODO: change hologram things
         }

@@ -1,4 +1,4 @@
-package me.night.nullvalkyrie.ui;
+package me.night.nullvalkyrie.ui.player;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;

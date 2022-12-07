@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import java.util.Date;
 import java.util.List;
 
-import static me.night.nullvalkyrie.miners.CryptoMiner.generate;
+import static me.night.nullvalkyrie.entities.miners.CryptoMiner.generate;
 
 public class MinerCommand extends Command {
 

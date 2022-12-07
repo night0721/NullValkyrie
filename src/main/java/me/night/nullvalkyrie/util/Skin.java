@@ -1,4 +1,4 @@
-package me.night.nullvalkyrie.entities.npcs;
+package me.night.nullvalkyrie.util;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -11,15 +11,6 @@ import java.io.InputStreamReader;
 import java.net.URL;
 
 public class Skin {
-    private final String texture;
-    private final String signature;
-    public Skin(String texture, String signature) {
-        this.texture = texture;
-        this.signature = signature;
-    }
-    public String getTexture() { return texture; }
-    public String getSignature() { return signature; }
-
     public static String[] getSkin(String name) {
         try {
             URL url = new URL("https://api.mojang.com/users/profiles/minecraft/" + name);

@@ -1,6 +1,6 @@
 package me.night.nullvalkyrie.database;
 
-import me.night.nullvalkyrie.ui.ScoreboardListener;
+import me.night.nullvalkyrie.ui.player.ScoreboardListener;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 

@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-import static me.night.nullvalkyrie.ui.ScoreboardListener.nameTagManager;
+import static me.night.nullvalkyrie.ui.player.ScoreboardListener.nameTagManager;
 
 public class RankDataManager {
     public static void setRank(UUID uuid, Rank rank) {

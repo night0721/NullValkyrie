@@ -5,6 +5,7 @@ import com.mojang.authlib.properties.Property;
 import com.mojang.datafixers.util.Pair;
 import me.night.nullvalkyrie.Main;
 import me.night.nullvalkyrie.database.NPCDataManager;
+import me.night.nullvalkyrie.util.Skin;
 import me.night.nullvalkyrie.util.Util;
 import net.minecraft.network.protocol.game.*;
 import net.minecraft.network.syncher.DataWatcher;

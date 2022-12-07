@@ -1,4 +1,4 @@
-package me.night.nullvalkyrie.ui;
+package me.night.nullvalkyrie.ui.player;
 
 import me.night.nullvalkyrie.Main;
 import me.night.nullvalkyrie.database.RankDataManager;
@@ -54,7 +54,6 @@ public class ScoreboardListener implements Listener {
         e.getPlayer().setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
         AnimatedSideBar board = sideBarManager.board;
         if (board.hasID()) board.stop();
-
     }
 
     @EventHandler

@@ -1,7 +1,7 @@
 package me.night.nullvalkyrie.ui.inventory;
 
 import me.night.nullvalkyrie.database.MinerDataManager;
-import me.night.nullvalkyrie.miners.CryptoMiner;
+import me.night.nullvalkyrie.entities.miners.CryptoMiner;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

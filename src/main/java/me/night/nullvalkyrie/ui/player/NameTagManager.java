@@ -1,4 +1,4 @@
-package me.night.nullvalkyrie.ui;
+package me.night.nullvalkyrie.ui.player;
 
 import me.night.nullvalkyrie.database.RankDataManager;
 import me.night.nullvalkyrie.enums.Rank;
@@ -19,7 +19,7 @@ public class NameTagManager {
         for (Player target : Bukkit.getOnlinePlayers()) {
             if (player.getUniqueId() != target.getUniqueId()) {
                 Rank rank = RankDataManager.getRank(target.getUniqueId());
-                player.getScoreboard().getTeam(rank.name()).addEntry(target.getName());
+                if (rank != null) player.getScoreboard().getTeam(rank.name()).addEntry(target.getName());
             }
         }
     }
