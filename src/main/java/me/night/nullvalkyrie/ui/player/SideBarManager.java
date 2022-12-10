@@ -13,12 +13,7 @@ import java.util.UUID;
 
 public class SideBarManager {
     private int taskID;
-    private final Main main;
     public AnimatedSideBar board = null;
-
-    public SideBarManager(Main main) {
-        this.main = main;
-    }
 
     public void setSideBar(Player player) {
         Scoreboard board = player.getScoreboard();
@@ -55,7 +50,7 @@ public class SideBarManager {
 
     public void start(Player player) {
         board = new AnimatedSideBar(player.getUniqueId());
-        taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(main, new Runnable() {
+        taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(Main.class), new Runnable() {
             int count = 0;
 
             public void animate(String str) {

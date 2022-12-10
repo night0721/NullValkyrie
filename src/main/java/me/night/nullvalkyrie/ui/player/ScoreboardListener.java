@@ -1,6 +1,5 @@
 package me.night.nullvalkyrie.ui.player;
 
-import me.night.nullvalkyrie.Main;
 import me.night.nullvalkyrie.database.RankDataManager;
 import me.night.nullvalkyrie.enums.Rank;
 import me.night.nullvalkyrie.entities.npcs.NPCManager;
@@ -21,9 +20,9 @@ public class ScoreboardListener implements Listener {
     public static SideBarManager sideBarManager;
     private final BelowNameManager belowNameManager;
 
-    public ScoreboardListener(Main main) {
+    public ScoreboardListener() {
         nameTagManager = new NameTagManager();
-        sideBarManager = new SideBarManager(main);
+        sideBarManager = new SideBarManager();
         belowNameManager = new BelowNameManager();
     }
 

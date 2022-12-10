@@ -30,12 +30,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class CustomItemEvents implements Listener {
-    private final Main main;
-
-    public CustomItemEvents(Main main) {
-        this.main = main;
-    }
-
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
         if (e.getDamager().getType().equals(EntityType.SNOWBALL)) {
@@ -257,7 +251,7 @@ public class CustomItemEvents implements Listener {
 //                        player.setHealth(20);
 //                        player.teleport(generateRandomCoord(9, Bukkit.getWorld("world")));
 //                    }
-//                }.runTaskLater(main, 100L);
+//                }.runTaskLater(Main.getPlugin(Main.class), 100L);
 //                countDown(player, new int[]{5});
 //            }
         }
@@ -267,7 +261,7 @@ public class CustomItemEvents implements Listener {
     private int taskID;
 
     public void countDown(Player player, int[] a) {
-        taskID = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(main, () -> {
+        taskID = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(Main.class), () -> {
             player.sendTitle(ChatColor.RED + "YOU DIED!", ChatColor.GREEN + "You will revive in " + a[0] + " seconds", 0, 20, 0);
             a[0]--;
             if (a[0] == 0) {
@@ -309,8 +303,10 @@ public class CustomItemEvents implements Listener {
             p.openMerchant(merchant, true);
         }
     }
+
     private final HashMap<Location, Integer> blockStages = new HashMap<>();
     private final HashMap<UUID, Long> miningCooldown = new HashMap<>();
+
     @EventHandler
     public void onAnimationEvent(PlayerAnimationEvent e) { //Material blockType, int mineInterval, Pickaxe x
         Player player = e.getPlayer();
@@ -338,6 +334,7 @@ public class CustomItemEvents implements Listener {
             block.breakNaturally();
         }
     }
+
     ProtocolManager manager = ProtocolLibrary.getProtocolManager();
 
     public void sendBlockDamage(Player player, Block block) {

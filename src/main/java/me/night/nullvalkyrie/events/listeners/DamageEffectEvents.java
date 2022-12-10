@@ -18,12 +18,6 @@ import java.text.DecimalFormat;
 import java.util.*;
 
 public class DamageEffectEvents implements Listener {
-    private final Main main;
-
-    public DamageEffectEvents(Main main) {
-        this.main = main;
-    }
-
     public World world = Bukkit.getWorld("world");
     public final Map<Entity, Integer> indicators = new HashMap<>();
     private final DecimalFormat formatter = new DecimalFormat("#");
@@ -65,7 +59,7 @@ public class DamageEffectEvents implements Listener {
                 }
                 removal.forEach(stands::remove);
             }
-        }.runTaskTimer(main, 0L, 1L);
+        }.runTaskTimer(Main.getPlugin(Main.class), 0L, 1L);
     }
 
     public static boolean isSpawnable(Location loc) {

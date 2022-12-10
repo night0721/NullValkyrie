@@ -5,13 +5,12 @@ import me.night.nullvalkyrie.packets.PacketInjector;
 import me.night.nullvalkyrie.util.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.boss.BarColor;
-import org.bukkit.boss.BarStyle;
-import org.bukkit.boss.BossBar;
+import org.bukkit.boss.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.server.ServerListPingEvent;
+import org.bukkit.event.weather.WeatherChangeEvent;
 
 import java.io.File;
 
@@ -45,5 +44,9 @@ public class ServerEvents implements Listener {
         if (e.getHologram().getCustomName().equals(ChatColor.GOLD + "Click me to change!!!")) {
             // TODO: change hologram things
         }
+    }
+    @EventHandler
+    public void onWeatherChange(WeatherChangeEvent e) {
+        e.setCancelled(true);
     }
 }
