@@ -8,8 +8,8 @@ import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 public class InteractHologramEvent extends Event implements Cancellable {
     private boolean isCancelled;
-    public Player player;
-    public ArmorStand hologram;
+    public final Player player;
+    public final ArmorStand hologram;
     private static final HandlerList HANDLERS = new HandlerList();
     public InteractHologramEvent(Player player, ArmorStand hologram) {
         this.player = player;

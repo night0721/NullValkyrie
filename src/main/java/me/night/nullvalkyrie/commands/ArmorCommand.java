@@ -23,6 +23,7 @@ public class ArmorCommand extends Command {
         if (sender instanceof Player player) {
             ItemStack helmet = new ItemStack(Material.LEATHER_HELMET);
             LeatherArmorMeta helmetdata = (LeatherArmorMeta) helmet.getItemMeta();
+            if (helmetdata == null) return;
             helmetdata.setDisplayName(net.md_5.bungee.api.ChatColor.of("#ff23ff") + "Angeles Helmet");
             helmetdata.setColor(org.bukkit.Color.fromRGB(2, 2, 58));
             helmetdata.setUnbreakable(true);
@@ -31,6 +32,7 @@ public class ArmorCommand extends Command {
 
             ItemStack cp = new ItemStack(Material.LEATHER_CHESTPLATE);
             LeatherArmorMeta cpdata = (LeatherArmorMeta) cp.getItemMeta();
+            if (cpdata == null) return;
             cpdata.setDisplayName(net.md_5.bungee.api.ChatColor.of("#ff23ff") + "Angeles Chestplate");
             cpdata.setColor(org.bukkit.Color.fromRGB(2, 2, 58));
             cpdata.setUnbreakable(true);
@@ -39,6 +41,7 @@ public class ArmorCommand extends Command {
 
             ItemStack leg = new ItemStack(Material.LEATHER_LEGGINGS);
             LeatherArmorMeta legdata = (LeatherArmorMeta) leg.getItemMeta();
+            if (legdata == null) return;
             legdata.setDisplayName(net.md_5.bungee.api.ChatColor.of("#ff23ff") + "Angeles Leggings");
             legdata.setColor(org.bukkit.Color.fromRGB(2, 2, 58));
             legdata.setUnbreakable(true);
@@ -47,6 +50,7 @@ public class ArmorCommand extends Command {
 
             ItemStack boot = new ItemStack(Material.LEATHER_BOOTS);
             LeatherArmorMeta bootdata = (LeatherArmorMeta) boot.getItemMeta();
+            if (bootdata == null) return;
             bootdata.setDisplayName(net.md_5.bungee.api.ChatColor.of("#ff23ff") + "Angeles Boots");
             bootdata.setColor(org.bukkit.Color.fromRGB(2, 2, 58));
             bootdata.setUnbreakable(true);

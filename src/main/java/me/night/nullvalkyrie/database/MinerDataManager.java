@@ -1,7 +1,6 @@
 package me.night.nullvalkyrie.database;
 
 import com.mongodb.client.MongoCursor;
-import com.mongodb.client.model.Filters;
 import me.night.nullvalkyrie.entities.miners.CryptoMiner;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -32,23 +31,19 @@ public class MinerDataManager {
     }
 
     public static long getLastClaim(long id) {
-        try (MongoCursor<Document> cursor = DatabaseManager.getMinersDB().find(Filters.eq("ID", id)).cursor()) {
-            while (cursor.hasNext()) {
-                Document doc = cursor.next();
-                for (String key : doc.keySet()) {
-                    if (key.equals("LastClaim")) return (long) doc.get(key);
-                }
+        Document doc = DatabaseManager.getMinersDB().find(new Document("ID", id)).first();
+        if (doc != null) {
+            for (String key : doc.keySet()) {
+                if (key.equals("LastClaim")) return (long) doc.get(key);
             }
         }
         return 0;
     }
 
     public static CryptoMiner getMiner(long id) {
-        try (MongoCursor<Document> cursor = DatabaseManager.getMinersDB().find(Filters.eq("ID", id)).cursor()) {
-            while (cursor.hasNext()) {
-                Document doc = cursor.next();
-                return new CryptoMiner(doc.getString("Name"), Material.matchMaterial(doc.getString("Material")), doc.getInteger("Level"), doc.getDouble("Rate"), doc.getLong("LastClaim"));
-            }
+        Document doc = DatabaseManager.getMinersDB().find(new Document("ID", id)).first();
+        if (doc != null) {
+            return new CryptoMiner(doc.getString("Name"), Material.matchMaterial(doc.getString("Material")), doc.getInteger("Level"), doc.getDouble("Rate"), doc.getLong("LastClaim"));
         }
         return null;
     }

@@ -7,8 +7,8 @@ import org.bukkit.inventory.ItemStack;
 import java.util.HashMap;
 
 public class Pickaxe {
-    public ArrayListMultimap<Material, Material> multimap = ArrayListMultimap.create();
-    public HashMap<Material, Long> phases = new HashMap<>();
+    public final ArrayListMultimap<Material, Material> multimap = ArrayListMultimap.create();
+    public final HashMap<Material, Long> phases = new HashMap<>();
     private final ItemStack itemStack;
     public Pickaxe(ItemStack item) {
         multimap.put(Material.STONE_PICKAXE, Material.IRON_ORE); //put some blocks and pickaxe to mine

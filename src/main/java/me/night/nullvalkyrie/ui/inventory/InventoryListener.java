@@ -21,6 +21,7 @@ public class InventoryListener implements Listener {
                     player.sendMessage(ChatColor.RED + "又做兵 抵死");
                     break;
                 case 22:
+                    player.teleport(player.getWorld().getSpawnLocation());
                     break;
                 case 24:
                     player.closeInventory();

@@ -6,6 +6,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
 
+import java.util.Objects;
+
 public class NameTagManager {
     public void setNametags(Player player) {
         Scoreboard newScoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
@@ -27,8 +29,7 @@ public class NameTagManager {
     public void newTag(Player player) {
         Rank rank = RankDataManager.getRank(player.getUniqueId());
         for (Player target : Bukkit.getOnlinePlayers()) {
-            if (rank == null) target.getScoreboard().getTeam(Rank.ROOKIE.name()).addEntry(player.getName());
-            else target.getScoreboard().getTeam(rank.name()).addEntry(player.getName());
+            target.getScoreboard().getTeam(Objects.requireNonNullElse(rank, Rank.ROOKIE).name()).addEntry(player.getName());
         }
     }
 

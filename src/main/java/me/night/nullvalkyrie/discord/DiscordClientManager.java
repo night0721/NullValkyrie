@@ -9,7 +9,6 @@ import javax.security.auth.login.LoginException;
 
 
 public class DiscordClientManager {
-    private JDA jda;
 
     public DiscordClientManager() {
         register();
@@ -19,7 +18,7 @@ public class DiscordClientManager {
         JDABuilder builder = JDABuilder.createDefault(Main.env.get("DISCORD_TOKEN"));
         builder.setActivity(Activity.streaming("cath.exe", "https://www.youtube.com/watch?v=YSKDu1gKntY"));
         try {
-            jda = builder.build();
+            JDA jda = builder.build();
         } catch (LoginException e) {
             e.printStackTrace();
         }

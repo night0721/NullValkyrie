@@ -19,9 +19,8 @@ public class HologramCommand extends Command {
             String[] ar = new String[]{ChatColor.AQUA + "Hi", ChatColor.DARK_PURPLE + "What", ChatColor.GOLD + "Hello World"};
             Location location = player.getLocation();
             for (String line : ar) {
-                ArmorStand stand = location.getWorld().spawn(location.subtract(0, 0.3, 0), ArmorStand.class, armorStand -> {
-                    armorStand.setVisible(false);
-                });
+                ArmorStand stand = location.getWorld().spawn(location.subtract(0, 0.3, 0), ArmorStand.class);
+                stand.setVisible(false);
                 stand.setGravity(false);
                 stand.setInvulnerable(true);
                 stand.setCustomNameVisible(true);

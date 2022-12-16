@@ -27,7 +27,7 @@ public class CustomWeaponsDataManager {
                 abi.put("Name", ability.getString("Name"));
                 List<String> details = new ArrayList<>();
                 if (ability.get("Details") != null)
-                    for (String s : (List<String>) ability.get("Details")) details.add(s);
+                    details.addAll((List<String>) ability.get("Details"));
                 abi.put("Details", details);
                 for (String a : properties.keySet()) prop.put(a, properties.get(a));
                 lores.put("Ability", abi);
@@ -49,7 +49,7 @@ public class CustomWeaponsDataManager {
                 for (String i : ing.keySet())
                     ingredients.put(i, ing.getString(i));
                 List<String> shapes = new ArrayList<>();
-                if (recipe.get("Shapes") != null) for (String s : (List<String>) recipe.get("Shapes")) shapes.add(s);
+                if (recipe.get("Shapes") != null) shapes.addAll((List<String>) recipe.get("Shapes"));
                 recipes.put("Shape", shapes);
                 recipes.put("Amount", recipe.getInteger("Amount"));
                 recipes.put("Ingredients", ingredients);
@@ -83,7 +83,7 @@ public class CustomWeaponsDataManager {
                 abi.put("Name", ability.getString("Name"));
                 List<String> details = new ArrayList<>();
                 if (ability.get("Details") != null)
-                    for (String s : (List<String>) ability.get("Details")) details.add(s);
+                    details.addAll((List<String>) ability.get("Details"));
                 abi.put("Details", details);
                 for (String a : properties.keySet()) prop.put(a, properties.get(a));
                 lores.put("Ability", abi);

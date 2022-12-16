@@ -15,8 +15,8 @@ import org.bukkit.event.weather.WeatherChangeEvent;
 import java.io.File;
 
 public class ServerEvents implements Listener {
-    public BossBar bossbar;
-    public PacketInjector injector;
+    public final BossBar bossbar;
+    public final PacketInjector injector;
     public ServerEvents() {
         bossbar = Bukkit.createBossBar(ChatColor.GOLD + "Kuudra", BarColor.RED, BarStyle.SEGMENTED_12);
         this.injector = new PacketInjector();

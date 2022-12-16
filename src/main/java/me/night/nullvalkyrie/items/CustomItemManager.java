@@ -21,7 +21,7 @@ import java.util.*;
 import static me.night.nullvalkyrie.database.CustomWeaponsDataManager.getWeapon;
 
 public class CustomItemManager {
-    public static HashMap<String, NamespacedKey> keys = new HashMap<>();
+    public static final HashMap<String, NamespacedKey> keys = new HashMap<>();
 
     public static ItemStack produceItem(String itemName) {
         HashMap<String, Object> weapon = getWeapon(itemName);

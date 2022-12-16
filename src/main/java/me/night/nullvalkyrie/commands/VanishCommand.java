@@ -1,5 +1,6 @@
 package me.night.nullvalkyrie.commands;
 
+import me.night.nullvalkyrie.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -22,13 +23,13 @@ public class VanishCommand extends Command {
             if (vanished.contains(player.getUniqueId())) {
                 vanished.remove(player.getUniqueId());
                 for (Player target : Bukkit.getOnlinePlayers()) {
-                    target.showPlayer(player);
+                    target.showPlayer(Main.getPlugin(Main.class), player);
                 }
                 player.sendMessage(ChatColor.GREEN + "You are now seen by people");
             } else {
                 vanished.add(player.getUniqueId());
                 for (Player target : Bukkit.getOnlinePlayers()) {
-                    target.hidePlayer(player);
+                    target.hidePlayer(Main.getPlugin(Main.class), player);
                 }
                 player.sendMessage(ChatColor.GREEN + "You are now vanished");
             }

@@ -18,7 +18,7 @@ import java.text.DecimalFormat;
 import java.util.*;
 
 public class DamageEffectEvents implements Listener {
-    public World world = Bukkit.getWorld("world");
+    public final World world = Bukkit.getWorld("world");
     public final Map<Entity, Integer> indicators = new HashMap<>();
     private final DecimalFormat formatter = new DecimalFormat("#");
 

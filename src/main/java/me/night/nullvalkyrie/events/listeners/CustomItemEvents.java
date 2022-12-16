@@ -230,9 +230,8 @@ public class CustomItemEvents implements Listener {
 
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent e) {
-        if (e.getEntity() instanceof Player) {
-            Player player = (Player) e.getEntity();
-//            if ((player.getHealth() - e.getDamage()) <= 0) {
+        if (e.getEntity() instanceof Player player) {
+            //            if ((player.getHealth() - e.getDamage()) <= 0) {
 //                e.setCancelled(true);
 //                Location loc = player.getWorld().getBlockAt(-3, 23, -3).getLocation();
 //                player.teleport(loc);
@@ -335,7 +334,7 @@ public class CustomItemEvents implements Listener {
         }
     }
 
-    ProtocolManager manager = ProtocolLibrary.getProtocolManager();
+    final ProtocolManager manager = ProtocolLibrary.getProtocolManager();
 
     public void sendBlockDamage(Player player, Block block) {
         Location location = block.getLocation();
