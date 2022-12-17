@@ -88,7 +88,7 @@ public class CustomItemEvents implements Listener {
                     if (weaponMeta != null) {
                         PersistentDataContainer container = weaponMeta.getPersistentDataContainer();
                         NamespacedKey ammoKey = CustomItemManager.keys.get(name + ".ammo");
-                        int ammo = container.get(ammoKey, PersistentDataType.INTEGER);
+                        int ammo = container.get(ammoKey, PersistentDataType.INTEGER) != null ? container.get(ammoKey, PersistentDataType.INTEGER) : 0;
                         container.set(ammoKey, PersistentDataType.INTEGER, ammo - 1);
                         int max = container.get(CustomItemManager.keys.get(name + ".max"), PersistentDataType.INTEGER);
                         weapon.setItemMeta(weaponMeta);

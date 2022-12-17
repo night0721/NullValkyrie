@@ -89,12 +89,15 @@ public class CustomItemManager {
         }
         item.setItemMeta(itemMeta);
         HashMap<String, Object> recipes = (HashMap<String, Object>) weapon.get("Recipes");
-        List<String> shapes = (List<String>) recipes.get("Shape");
-        HashMap<String, String> ind = (HashMap<String, String>) recipes.get("Ingredients");
-        HashMap<Character, Material> indgredients = new HashMap<>();
-        for (String i : ind.keySet())
-            indgredients.put(i.charAt(0), Material.matchMaterial(ind.get(i)));
-        setItemRecipe((String) weapon.get("Name"), item, shapes, indgredients, (int) recipes.get("Amount"));
+        if (recipes.get("Shape") != null) {
+            List<String> shapes = (List<String>) recipes.get("Shape");
+            HashMap<String, String> ind = (HashMap<String, String>) recipes.get("Ingredients");
+            HashMap<Character, Material> indgredients = new HashMap<>();
+            for (String i : ind.keySet())
+                indgredients.put(i.charAt(0), Material.matchMaterial(ind.get(i)));
+            setItemRecipe((String) weapon.get("Name"), item, shapes, indgredients, (int) recipes.get("Amount"));
+
+        }
         return item;
     }
 

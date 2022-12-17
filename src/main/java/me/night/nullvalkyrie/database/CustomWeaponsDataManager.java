@@ -40,19 +40,21 @@ public class CustomWeaponsDataManager {
                 for (String a : attributes.keySet()) attr.put(a, attributes.get(a));
                 Document pdc = (Document) doc.get("PDC");
                 HashMap<String, Object> pdcdata = new HashMap<>();
-                for (String i : pdc.keySet())
-                    pdcdata.put(i, pdc.get(i));
+                if (pdc != null)
+                    for (String a : pdc.keySet()) pdcdata.put(a, pdc.get(a));
                 Document recipe = (Document) doc.get("Recipes");
                 HashMap<String, Object> recipes = new HashMap<>();
-                Document ing = (Document) recipe.get("Ingredients");
-                HashMap<String, String> ingredients = new HashMap<>();
-                for (String i : ing.keySet())
-                    ingredients.put(i, ing.getString(i));
-                List<String> shapes = new ArrayList<>();
-                if (recipe.get("Shapes") != null) shapes.addAll((List<String>) recipe.get("Shapes"));
-                recipes.put("Shape", shapes);
-                recipes.put("Amount", recipe.getInteger("Amount"));
-                recipes.put("Ingredients", ingredients);
+                if (recipe != null) {
+                    Document ing = (Document) recipe.get("Ingredients");
+                    HashMap<String, String> ingredients = new HashMap<>();
+                    for (String i : ing.keySet())
+                        ingredients.put(i, ing.getString(i));
+                    List<String> shapes = new ArrayList<>();
+                    if (recipe.get("Shapes") != null) shapes.addAll((List<String>) recipe.get("Shapes"));
+                    recipes.put("Shape", shapes);
+                    recipes.put("Amount", recipe.getInteger("Amount"));
+                    recipes.put("Ingredients", ingredients);
+                }
                 item.put("Name", name);
                 item.put("Material", Material.matchMaterial(doc.getString("Material")));
                 item.put("Type", doc.getString("Type"));
