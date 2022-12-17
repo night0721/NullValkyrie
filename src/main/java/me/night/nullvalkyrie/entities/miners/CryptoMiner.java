@@ -2,27 +2,21 @@ package me.night.nullvalkyrie.entities.miners;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import com.mojang.datafixers.util.Pair;
 import me.night.nullvalkyrie.util.Skin;
 import me.night.nullvalkyrie.util.Util;
-import net.minecraft.network.protocol.game.PacketPlayOutEntityEquipment;
 import net.minecraft.network.protocol.game.PacketPlayOutPlayerInfo;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.EntityPlayer;
 import net.minecraft.server.level.WorldServer;
 import net.minecraft.server.network.PlayerConnection;
-import net.minecraft.world.entity.EnumItemSlot;
 import org.apache.commons.codec.binary.Base64;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_19_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_19_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_19_R1.inventory.CraftItemStack;
 import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
@@ -39,7 +33,7 @@ public class CryptoMiner {
     protected Material type;
     protected int level;
     protected double rate;
-    protected long lastclaim;
+    protected final long lastclaim;
 
     public CryptoMiner(String name, Material type, int level, double rate, long lastclaim) {
         this.name = name; // Name of the miner
@@ -94,10 +88,8 @@ public class CryptoMiner {
         System.out.println(generated);
     }
 
-    public static void spawn(Player player, String name, String url) {
-        Location loc = player.getLocation();
-        loc.setX(Math.round(loc.getX() * 2) / 2.0);
-        loc.setZ(Math.round(loc.getZ() * 2) / 2.0);
+    public void spawn(Player player, String url) {
+        Location loc = player.getLocation().getWorld().getBlockAt(player.getLocation()).getLocation().add(0.5, 0, 0.5);
         if (player.getLocation().getWorld() == null) return;
         ArmorStand stand = player.getLocation().getWorld().spawn(loc, ArmorStand.class);
         stand.setGravity(false);
@@ -105,7 +97,7 @@ public class CryptoMiner {
         stand.setSmall(true);
         stand.setArms(true);
         stand.setVisible(true);
-        ItemStack head = new ItemStack(Material.PLAYER_HEAD, 1, (short) 3);
+        ItemStack head = new ItemStack(Material.PLAYER_HEAD, 1);
         SkullMeta meta = (SkullMeta) head.getItemMeta();
         if (meta == null) return;
         GameProfile profile = new GameProfile(UUID.randomUUID(), null);
@@ -134,27 +126,108 @@ public class CryptoMiner {
         bootdata.setColor(org.bukkit.Color.fromRGB(2, 2, 58));
         boot.setItemMeta(bootdata);
         ItemStack pick = new ItemStack(Material.GOLDEN_PICKAXE);
-        List<Pair<EnumItemSlot, net.minecraft.world.item.ItemStack>> list = new ArrayList<>();
-        list.add(new Pair<>(EnumItemSlot.a, CraftItemStack.asNMSCopy(pick)));
-        list.add(new Pair<>(EnumItemSlot.c, CraftItemStack.asNMSCopy(boot)));
-        list.add(new Pair<>(EnumItemSlot.d, CraftItemStack.asNMSCopy(leg)));
-        list.add(new Pair<>(EnumItemSlot.e, CraftItemStack.asNMSCopy(chest)));
-        list.add(new Pair<>(EnumItemSlot.f, CraftItemStack.asNMSCopy(head)));
-
-        GameProfile gameProfile = new GameProfile(UUID.randomUUID(), Util.color(name));
+        stand.getEquipment().setItemInMainHand(pick);
+        stand.getEquipment().setHelmet(head);
+        stand.getEquipment().setChestplate(chest);
+        stand.getEquipment().setLeggings(leg);
+        stand.getEquipment().setBoots(boot);
+        GameProfile gameProfile = new GameProfile(UUID.randomUUID(), Util.color(this.name));
         String[] skin = Skin.getSkin("Shiba_");
         gameProfile.getProperties().put("textures", new Property("textures", skin[0], skin[1]));
         MinecraftServer server = ((CraftServer) Bukkit.getServer()).getServer();
         WorldServer w = ((CraftWorld) player.getLocation().getWorld()).getHandle();
         EntityPlayer miner = new EntityPlayer(server, w, gameProfile, null);
-        // TODO: remove the icon from tablist
         // TODO:  how to make a armor stand turn
         PlayerConnection pc = ((org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer) player).getHandle().b;
-        pc.a(new PacketPlayOutEntityEquipment(stand.getEntityId(), list));
         pc.a(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.a, miner));
-        double radius = 3;
         World world = miner.getBukkitEntity().getWorld();
-        // write a loop to get nearby 24 blocks using radius 2
-        int x, y, z = 0;
+        List<Location> locs = new ArrayList<>();
+        for (int x = (int) stand.getLocation().getX() - 3; x <= stand.getLocation().getX() + 2; x++) {
+            for (int z = (int) stand.getLocation().getZ() - 2; z <= stand.getLocation().getZ() + 2; z++) {
+                for (int y = (int) stand.getLocation().getY() - 1; y <= stand.getLocation().getY() - 1; y++) {
+                    if (world.getBlockAt(x, y, z).getType() == this.type)
+                        locs.add(world.getBlockAt(x, y, z).getLocation());
+                }
+            }
+        }
+        locs.remove(world.getBlockAt(stand.getLocation().subtract(0, -1, 0)).getLocation());
+        Location closest = locs.get(0);
+        for (Location location : locs) {
+            if (location.distance(stand.getLocation()) < closest.distance(stand.getLocation())) closest = location;
+        }
+        ArrayList<ItemStack> items = new ArrayList<>();
+        ThreadLocalRandom random = ThreadLocalRandom.current();
+        if (closest.getBlock().getType() == this.type) {
+            closest.getBlock().getDrops().clear();
+            int lower = 0;
+            int upper = 0;
+            if (this.level == 1) {
+                lower = 1;
+                upper = 3;
+            } else if (this.level == 2) {
+                lower = 2;
+                upper = 5;
+            } else if (this.level == 3) {
+                lower = 3;
+                upper = 7;
+            } else if (this.level == 4) {
+                lower = 4;
+                upper = 9;
+            } else if (this.level == 5) {
+                lower = 5;
+                upper = 11;
+            } else if (this.level == 6) {
+                lower = 6;
+                upper = 13;
+            } else if (this.level == 7) {
+                lower = 7;
+                upper = 15;
+            } else if (this.level == 8) {
+                lower = 8;
+                upper = 17;
+            } else if (this.level == 9) {
+                lower = 9;
+                upper = 19;
+            } else if (this.level == 10) {
+                lower = 10;
+                upper = 21;
+            } else if (this.level == 11) {
+                lower = 11;
+                upper = 23;
+            } else if (this.level == 12) {
+                lower = 12;
+                upper = 25;
+            } else if (this.level == 13) {
+                lower = 13;
+                upper = 27;
+            } else if (this.level == 14) {
+                lower = 14;
+                upper = 29;
+            } else if (this.level == 15) {
+                lower = 15;
+                upper = 31;
+            } else if (this.level == 16) {
+                lower = 16;
+                upper = 33;
+            } else if (this.level == 17) {
+                lower = 17;
+                upper = 35;
+            } else if (this.level == 18) {
+                lower = 18;
+                upper = 37;
+            } else if (this.level == 19) {
+                lower = 19;
+                upper = 39;
+            } else if (this.level == 20) {
+                lower = 20;
+                upper = 41;
+            }
+            items.add(new ItemStack(this.type, random.nextInt(lower, upper)));
+            closest.getBlock().setType(Material.AIR);
+        }
+        // drop the items
+        for (ItemStack item : items) {
+            world.dropItemNaturally(closest, item);
+        }
     }
 }
