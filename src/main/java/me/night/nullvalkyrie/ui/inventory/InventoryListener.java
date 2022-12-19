@@ -18,7 +18,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class InventoryListener implements Listener {
-    RandomCollection<String> randomCollection;
+    private final RandomCollection<String> randomCollection;
     public InventoryListener() {
         randomCollection = new RandomCollection<>();
         for (Items e : Items.values()) {

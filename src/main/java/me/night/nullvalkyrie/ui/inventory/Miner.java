@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 public class Miner extends GUIManager {
-    public static String title = ChatColor.DARK_AQUA + "Crypto Miners";
+    public static final String title = ChatColor.DARK_AQUA + "Crypto Miners";
     @Override
     public void UI(Player player) {
         init(45, title);
