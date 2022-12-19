@@ -1,4 +1,4 @@
-package me.night.nullvalkyrie.items;
+package me.night.nullvalkyrie.entities.items;
 
 import com.google.common.collect.ArrayListMultimap;
 import org.bukkit.Material;

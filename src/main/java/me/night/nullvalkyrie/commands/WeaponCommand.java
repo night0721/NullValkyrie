@@ -1,7 +1,7 @@
 package me.night.nullvalkyrie.commands;
 
 import me.night.nullvalkyrie.database.CustomWeaponsDataManager;
-import me.night.nullvalkyrie.items.CustomItemManager;
+import me.night.nullvalkyrie.entities.items.CustomItemManager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

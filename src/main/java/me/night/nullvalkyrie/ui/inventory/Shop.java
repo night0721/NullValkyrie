@@ -1,7 +1,7 @@
 package me.night.nullvalkyrie.ui.inventory;
 
 import me.night.nullvalkyrie.database.ShopDataManager;
-import me.night.nullvalkyrie.items.CustomItemManager;
+import me.night.nullvalkyrie.entities.items.CustomItemManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
