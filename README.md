@@ -21,6 +21,8 @@ git clone https://github.com/night0721/NullValkyrie.git
 cd NullValkyrie
 ```
 If you are using IntelliJ, you can import the project as a Maven project and install the dependencies by clicking button on the right side of the screen.
+After installing dependencies, you are able to use install/package command to compile the plugin to JAR, or instead, use build artifact.
+Then, you can add the plugin to your plugin folder and start the server to use it.
 
 ## Support
 
@@ -33,10 +35,6 @@ NullValkyrie is licensed under the CC-BY-NC-SA-4.0. See [LICENSE](https://github
 ## Credits
 
 - [night0721] - Discord: Ń1ght#4004
-
-
-After installing dependencies, you are able to use install/package command to compile the plugin to JAR, or instead, use build artifact.
-Then, you can add the plugin to your plugin folder and start the server to use it.
 
 ## Contribution
 
