@@ -1,9 +1,6 @@
 package me.night.nullvalkyrie.util;
 
-import java.util.HashMap;
-import java.util.NavigableMap;
-import java.util.Random;
-import java.util.TreeMap;
+import java.util.*;
 
 public class RandomCollection<E> {
 
@@ -36,7 +33,7 @@ public class RandomCollection<E> {
         return map.ceilingEntry(value).getValue();
     }
 
-    public double getChance(E v) {
+    public long getChance(E v) {
         double c = 0;
         for (E d : chance.keySet()) {
             if (d == v) {
@@ -44,6 +41,10 @@ public class RandomCollection<E> {
                 break;
             }
         }
-        return (c / total) * 100;
+        return Math.round((c / total) * 100);
+    }
+    // write a method to get all the values in the collection so you can iterate over them
+    public List<E> getAll() {
+        return new ArrayList<>(map.values());
     }
 }

@@ -3,6 +3,7 @@ package me.night.nullvalkyrie.ui.inventory;
 import me.night.nullvalkyrie.Main;
 import me.night.nullvalkyrie.enums.Items;
 import me.night.nullvalkyrie.util.RandomCollection;
+import me.night.nullvalkyrie.util.Util;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -18,13 +19,15 @@ import java.util.Collections;
 import java.util.List;
 
 public class InventoryListener implements Listener {
-    private final RandomCollection<String> randomCollection;
+    public static RandomCollection<String> randomCollection;
+
     public InventoryListener() {
         randomCollection = new RandomCollection<>();
         for (Items e : Items.values()) {
             randomCollection.add(e.getWeight(), e.getName());
         }
     }
+
     @EventHandler
     public void onClick(InventoryClickEvent e) {
         if (e.getCurrentItem() == null) return;
@@ -63,6 +66,11 @@ public class InventoryListener implements Listener {
             if (e.getRawSlot() == 0) {
                 player.closeInventory();
             } else if (e.getRawSlot() == 22) {
+                if (randomCollection.getAll().size() == 0) {
+                    player.closeInventory();
+                    player.sendMessage(ChatColor.RED + "You already got all the rewards!");
+                    return;
+                }
                 List<String> colors = List.of("WHITE", "ORANGE", "MAGENTA", "LIGHT_BLUE", "YELLOW", "LIME", "PINK", "GRAY", "LIGHT_GRAY", "CYAN", "PURPLE", "BLUE", "BROWN", "GREEN", "RED", "BLACK");
                 List<String> slot1 = new ArrayList<>(colors);
                 List<String> slot2 = new ArrayList<>(colors);
@@ -85,6 +93,7 @@ public class InventoryListener implements Listener {
                     int i = 0;
                     int ii = 0;
                     int time = 0;
+
                     @Override
                     public void run() {
                         if (colors.size() - 1 <= i) i = 0;
@@ -139,15 +148,39 @@ public class InventoryListener implements Listener {
                             LuckyDraw.GUI.setItem(slot, new ItemStack(Material.AIR));
                         }
                         String s = randomCollection.getRandom();
-                        randomCollection.remove(s);
-                        Items it = Items.getByName(s);
-                        ItemStack item = new ItemStack(it.getMaterial(), 1);
-                        ItemMeta meta = item.getItemMeta();
-                        if (meta == null) return;
-                        meta.setDisplayName(ChatColor.GOLD + it.getName());
-                        meta.setLore(List.of(it.getRarity().getDisplay()));
-                        item.setItemMeta(meta);
-                        player.getInventory().addItem(item);
+                        if (s != null) {
+                            randomCollection.remove(s);
+                            int slot = 0;
+                            for (Items e : Items.values())
+                                if (e.getName().equals(s))
+                                    slot = e.getSlot();
+                            LuckyDraw.GUI.remove(Items.getByName(s).getMaterial());
+                            ItemStack got = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
+                            ItemMeta gotmeta = got.getItemMeta();
+                            gotmeta.setDisplayName(ChatColor.RED + "You already got this reward!");
+                            got.setItemMeta(gotmeta);
+                            LuckyDraw.GUI.setItem(slot, got);
+                            for (String s1 : randomCollection.getAll()) {
+                                ItemStack item = new ItemStack(Items.getByName(s1).getMaterial());
+                                ItemMeta meta = item.getItemMeta();
+                                meta.setDisplayName(ChatColor.GREEN + Items.getByName(s1).getName());
+                                List<String> lore = meta.getLore() == null ? new ArrayList<>() : meta.getLore();
+                                lore.add(0, "");
+                                lore.add(1, Util.color("&bChance: " + randomCollection.getChance(s1) + "%"));
+                                lore.add(2, Items.getByName(s1).getRarity().getDisplay());
+                                meta.setLore(lore);
+                                item.setItemMeta(meta);
+                                LuckyDraw.GUI.setItem(Items.getByName(s1).getSlot(), item);
+                            }
+                            Items it = Items.getByName(s);
+                            ItemStack item = new ItemStack(it.getMaterial(), 1);
+                            ItemMeta meta = item.getItemMeta();
+                            if (meta == null) return;
+                            meta.setDisplayName(ChatColor.GOLD + it.getName());
+                            meta.setLore(List.of(it.getRarity().getDisplay()));
+                            item.setItemMeta(meta);
+                            player.getInventory().addItem(item);
+                        } else player.closeInventory();
                     }
                 }.runTaskLater(Main.getPlugin(Main.class), 5L * 20L);
 
