@@ -16,6 +16,7 @@ import net.minecraft.world.entity.EnumItemSlot;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_19_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_19_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_19_R1.inventory.CraftItemStack;
@@ -23,6 +24,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,7 +34,7 @@ public class NPCManager {
     public static List<EntityPlayer> getNPCs() {
         return NPCs;
     }
-    public static void createNPC(Player player, String name) { //name must be less than 16 characters including color codes **
+    public static void createNPC(Player player, String name) { // name must be less than 16 characters including color codes
         EntityPlayer sp = ((CraftPlayer) player).getHandle();
         MinecraftServer server = sp.c;
         WorldServer level = ((CraftWorld) player.getLocation().getWorld()).getHandle();
@@ -81,6 +83,19 @@ public class NPCManager {
             list.add(new Pair<>(EnumItemSlot.a, CraftItemStack.asNMSCopy(netheriteAxe)));
             list.add(new Pair<>(EnumItemSlot.b, CraftItemStack.asNMSCopy(anotherAxe)));
             pc.a(new PacketPlayOutEntityEquipment(npc.ae(), list));
+        }
+    }
+    public static void reloadNPC(List<HashMap<String, Object>> npcs) {
+        for (HashMap<String, Object> npc : npcs) {
+            Location location = new Location(Bukkit.getWorld((String) npc.get("world")), (int) npc.get("x"), (int) npc.get("y"), (int) npc.get("z"), (int) npc.get("yaw"), (int) npc.get("pitch"));
+            GameProfile gameProfile = new GameProfile(UUID.randomUUID(), Util.color((String) npc.get("name")));
+            gameProfile.getProperties().put("textures", new Property("textures", (String) npc.get("texture"), (String) npc.get("signature")));
+            MinecraftServer server = ((CraftServer) Bukkit.getServer()).getServer();
+            WorldServer w = ((CraftWorld) location.getWorld()).getHandle();
+            EntityPlayer ep = new EntityPlayer(server, w, gameProfile, null);
+            ep.a(location.getX(), location.getY(), location.getZ(), location.getPitch(), location.getPitch()); // NMS: 1.19.2 https://nms.screamingsandals.org/1.19.2/net/minecraft/world/entity/Entity.html absMoveTo
+            addNPCPacket(ep);
+            NPCs.add(ep);
         }
     }
 

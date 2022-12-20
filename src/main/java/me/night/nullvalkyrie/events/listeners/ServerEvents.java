@@ -9,6 +9,7 @@ import org.bukkit.boss.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 
@@ -25,6 +26,11 @@ public class ServerEvents implements Listener {
     public void onJoin(PlayerJoinEvent e) {
         bossbar.addPlayer(e.getPlayer());
         injector.addPlayer(e.getPlayer());
+    }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent e) {
+        injector.removePlayer(e.getPlayer());
     }
     @EventHandler
     public void onPing(ServerListPingEvent e) {

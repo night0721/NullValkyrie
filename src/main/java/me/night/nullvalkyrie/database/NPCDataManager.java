@@ -1,21 +1,12 @@
 package me.night.nullvalkyrie.database;
 
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
 import com.mongodb.client.MongoCursor;
-import me.night.nullvalkyrie.util.Util;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.EntityPlayer;
-import net.minecraft.server.level.WorldServer;
+import me.night.nullvalkyrie.entities.npcs.NPCManager;
 import org.bson.Document;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_19_R1.CraftServer;
-import org.bukkit.craftbukkit.v1_19_R1.CraftWorld;
 
-import java.util.UUID;
-
-import static me.night.nullvalkyrie.entities.npcs.NPCManager.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 
 public class NPCDataManager {
@@ -39,9 +30,11 @@ public class NPCDataManager {
     }
 
     public static void reloadNPC() {
+        List<HashMap<String, Object>> npcList = new ArrayList<>();
         try (MongoCursor<Document> cursor = DatabaseManager.getNPCsDB().find().cursor()) {
             while (cursor.hasNext()) {
                 Document document = cursor.next();
+                HashMap<String, Object> npc = new HashMap<>();
                 String name = document.getString("Name");
                 int x = document.getInteger("x");
                 int y = document.getInteger("y");
@@ -51,18 +44,18 @@ public class NPCDataManager {
                 String world = document.getString("world");
                 String texture = document.getString("texture");
                 String signature = document.getString("signature");
-                Location location = new Location(Bukkit.getWorld(world), x, y, z);
-                location.setPitch((float) pitch);
-                location.setYaw((float) yaw);
-                GameProfile gameProfile = new GameProfile(UUID.randomUUID(), Util.color(name));
-                gameProfile.getProperties().put("textures", new Property("textures", texture, signature));
-                MinecraftServer server = ((CraftServer) Bukkit.getServer()).getServer();
-                WorldServer w = ((CraftWorld) location.getWorld()).getHandle();
-                EntityPlayer npc = new EntityPlayer(server, w, gameProfile, null);
-                npc.a(location.getX(), location.getY(), location.getZ(), location.getPitch(), location.getPitch());
-                addNPCPacket(npc);
-                getNPCs().add(npc);
+                npc.put("name", name);
+                npc.put("x", x);
+                npc.put("y", y);
+                npc.put("z", z);
+                npc.put("pitch", pitch);
+                npc.put("yaw", yaw);
+                npc.put("world", world);
+                npc.put("texture", texture);
+                npc.put("signature", signature);
+                npcList.add(npc);
             }
         }
+        NPCManager.reloadNPC(npcList);
     }
 }
