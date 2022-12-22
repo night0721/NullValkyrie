@@ -27,6 +27,7 @@ public class DamageEffectEvents implements Listener {
         double damage = e.getFinalDamage();
         if (e.getEntity() instanceof Zombie) {
             Location loc = e.getEntity().getLocation().clone().add(getRandomOffset(), 1, getRandomOffset());
+            assert world != null;
             world.spawn(loc, ArmorStand.class, armorStand -> {
                 armorStand.setMarker(true);
                 armorStand.setVisible(false);
@@ -62,18 +63,18 @@ public class DamageEffectEvents implements Listener {
         }.runTaskTimer(Main.getPlugin(Main.class), 0L, 1L);
     }
 
-    public static boolean isSpawnable(Location loc) {
+    public boolean isSpawnable(Location loc) {
         Block feetBlock = loc.getBlock(), headBlock = loc.clone().add(0, 1, 0).getBlock(), upperBlock = loc.clone().add(0, 2, 0).getBlock();
         return feetBlock.isPassable() && !feetBlock.isLiquid() && headBlock.isPassable() && !headBlock.isLiquid() && upperBlock.isPassable() && !upperBlock.isLiquid();
     }
 
-    private static double getRandomOffset() {
+    private double getRandomOffset() {
         double random = Math.random();
         if (Math.random() > 0.5) random *= -1;
         return random;
     }
 
-    public static int getRandomWithNeg(int size) {
+    public int getRandomWithNeg(int size) {
         int random = (int) (Math.random() * (size + 1));
         if (Math.random() > 0.5) random *= -1;
         return random;
@@ -87,6 +88,7 @@ public class DamageEffectEvents implements Listener {
 
     public Location generateRandomCoordIsSpawnable(int size) {
         while (true) {
+            assert world != null;
             Location coord = generateRandomCoord(size, world);
             boolean spawnable = isSpawnable(coord);
             if (spawnable) {
