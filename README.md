@@ -1,6 +1,6 @@
 # NullValkyrie
 
-Welcome to the NullValkyrie repository! This project is designed to be a lightweight and efficient security tool for detecting and mitigating vulnerabilities in web applications.
+Welcome to the NullValkyrie repository! This project is designed to a multipurpose plugin with a lot of cool features which most of the modern servers have.
 
 ## Features
 
