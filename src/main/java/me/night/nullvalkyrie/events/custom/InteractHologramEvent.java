@@ -36,6 +36,6 @@ public class InteractHologramEvent extends Event implements Cancellable {
     public HandlerList getHandlers() {
         return HANDLERS;
     }
-
+    @SuppressWarnings("unused")
     public static HandlerList getHandlerList() { return HANDLERS; }
 }
