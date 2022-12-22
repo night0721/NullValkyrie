@@ -6,18 +6,19 @@ import com.mojang.authlib.properties.Property;
 import me.night.nullvalkyrie.enums.MinerType;
 import me.night.nullvalkyrie.util.Skin;
 import me.night.nullvalkyrie.util.Util;
-import net.minecraft.network.protocol.game.PacketPlayOutPlayerInfo;
+import net.minecraft.network.protocol.game.ClientboundPlayerInfoUpdatePacket;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.EntityPlayer;
-import net.minecraft.server.level.WorldServer;
-import net.minecraft.server.network.PlayerConnection;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import org.apache.commons.codec.binary.Base64;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_19_R1.CraftServer;
-import org.bukkit.craftbukkit.v1_19_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_19_R2.CraftServer;
+import org.bukkit.craftbukkit.v1_19_R2.CraftWorld;
+import org.bukkit.craftbukkit.v1_19_R2.entity.CraftPlayer;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -137,11 +138,11 @@ public class CryptoMiner {
         String[] skin = Skin.getSkin("Shiba_");
         gameProfile.getProperties().put("textures", new Property("textures", skin[0], skin[1]));
         MinecraftServer server = ((CraftServer) Bukkit.getServer()).getServer();
-        WorldServer w = ((CraftWorld) player.getLocation().getWorld()).getHandle();
-        EntityPlayer miner = new EntityPlayer(server, w, gameProfile, null);
-        // TODO:  how to make a armor stand turn
-        PlayerConnection pc = ((org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer) player).getHandle().b;
-        pc.a(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.a, miner));
+        ServerLevel w = ((CraftWorld) player.getLocation().getWorld()).getHandle();
+        ServerPlayer miner = new ServerPlayer(server, w, gameProfile);
+        // TODO:  fixing could not add to tab list
+        ServerGamePacketListenerImpl pc = ((CraftPlayer) player).getHandle().connection;
+        pc.send(new ClientboundPlayerInfoUpdatePacket(ClientboundPlayerInfoUpdatePacket.Action.ADD_PLAYER, miner));
         World world = miner.getBukkitEntity().getWorld();
         List<Location> locs = new ArrayList<>();
         for (int x = (int) stand.getLocation().getX() - 3; x <= stand.getLocation().getX() + 2; x++) {
