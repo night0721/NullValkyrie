@@ -10,6 +10,7 @@ import org.bukkit.scoreboard.*;
 
 import java.util.UUID;
 
+@SuppressWarnings("ConstantConditions")
 public class SideBarManager {
     private int taskID;
     public AnimatedSideBar board = null;
@@ -42,7 +43,7 @@ public class SideBarManager {
         else bankTeam = board.registerNewTeam("Bank");
         bankTeam.addEntry(ChatColor.BOLD.toString());
         bankTeam.setPrefix(ChatColor.BLUE + "Bank: ");
-        bankTeam.setSuffix(ChatColor.YELLOW + UserDataManager.getUser(player.getUniqueId().toString()).get("Bank").toString());
+        bankTeam.setSuffix(ChatColor.YELLOW + new UserDataManager().getUser(player.getUniqueId().toString()).get("Bank").toString());
         obj.getScore(ChatColor.BOLD.toString()).setScore(3);
         player.setScoreboard(board);
     }
@@ -91,6 +92,6 @@ public class SideBarManager {
 
     public void addBank(String uuid, Integer amount) {
         UUID uid = UUID.fromString(uuid);
-        Bukkit.getPlayer(uid).getScoreboard().getTeam("Bank").setSuffix(ChatColor.YELLOW.toString() + UserDataManager.getUser(uuid).get("Bank") + ChatColor.WHITE + "+(" + amount + ")");
+        Bukkit.getPlayer(uid).getScoreboard().getTeam("Bank").setSuffix(ChatColor.YELLOW.toString() + new UserDataManager().getUser(uuid).get("Bank") + ChatColor.WHITE + "+(" + amount + ")");
     }
 }

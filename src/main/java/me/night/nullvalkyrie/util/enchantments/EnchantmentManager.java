@@ -9,7 +9,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class EnchantmentManager {
-    public static List<Enchantment> enchants = new ArrayList<>();
+    public static final List<Enchantment> enchants = new ArrayList<>();
+
     public static void register() {
         List<Boolean> registeredList = new ArrayList<>();
         for (Enchantments enchantment : Enchantments.values()) {

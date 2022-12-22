@@ -11,27 +11,27 @@ import java.util.HashMap;
 public class MinerDataManager {
     public static void setMiner(String name, MinerType type, int level, double rate, boolean enabled, long lastclaim) {
         Document newDocument = new Document();
-        newDocument.put("ID", DatabaseManager.getMinersDB().countDocuments() + 1);
+        newDocument.put("ID", new DatabaseManager().getMinersDB().countDocuments() + 1);
         newDocument.put("Name", name);
         newDocument.put("Material", type.getName());
         newDocument.put("Level", level);
         newDocument.put("Rate", rate);
         newDocument.put("Enabled", enabled);
         newDocument.put("LastClaim", lastclaim);
-        DatabaseManager.getMinersDB().insertOne(newDocument);
+        new DatabaseManager().getMinersDB().insertOne(newDocument);
     }
 
     public static void setLastClaim(String name) {
-        Document document = DatabaseManager.getMinersDB().find(new Document("Name", name)).first();
+        Document document = new DatabaseManager().getMinersDB().find(new Document("Name", name)).first();
         if (document != null) {
             Bson updated = new Document("LastClaim", System.currentTimeMillis());
             Bson update = new Document("$set", updated);
-            DatabaseManager.getMinersDB().updateOne(document, update);
+            new DatabaseManager().getMinersDB().updateOne(document, update);
         }
     }
 
     public static long getLastClaim(long id) {
-        Document doc = DatabaseManager.getMinersDB().find(new Document("ID", id)).first();
+        Document doc = new DatabaseManager().getMinersDB().find(new Document("ID", id)).first();
         if (doc != null) {
             for (String key : doc.keySet()) {
                 if (key.equals("LastClaim")) return (long) doc.get(key);
@@ -41,7 +41,7 @@ public class MinerDataManager {
     }
 
     public static CryptoMiner getMiner(long id) {
-        Document doc = DatabaseManager.getMinersDB().find(new Document("ID", id)).first();
+        Document doc = new DatabaseManager().getMinersDB().find(new Document("ID", id)).first();
         if (doc != null) {
             return new CryptoMiner(doc.getString("Name"), MinerType.getByName(doc.getString("Material")), doc.getInteger("Level"), doc.getDouble("Rate"), doc.getLong("LastClaim"));
         }
@@ -50,7 +50,7 @@ public class MinerDataManager {
 
     public static HashMap<Long, CryptoMiner> getMiners() {
         HashMap<Long, CryptoMiner> list = new HashMap<>();
-        try (MongoCursor<Document> cursor = DatabaseManager.getMinersDB().find().cursor()) {
+        try (MongoCursor<Document> cursor = new DatabaseManager().getMinersDB().find().cursor()) {
             while (cursor.hasNext()) {
                 Document doc = cursor.next();
                 list.put(doc.getLong("ID"), new CryptoMiner(doc.getString("Name"), MinerType.getByName(doc.getString("Material")), doc.getInteger("Level"), doc.getDouble("Rate"), doc.getLong("LastClaim")));

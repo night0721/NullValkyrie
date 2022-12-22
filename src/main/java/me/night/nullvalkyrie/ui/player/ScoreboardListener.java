@@ -1,6 +1,7 @@
 package me.night.nullvalkyrie.ui.player;
 
 import me.night.nullvalkyrie.database.RankDataManager;
+import me.night.nullvalkyrie.database.UserDataManager;
 import me.night.nullvalkyrie.enums.Rank;
 import me.night.nullvalkyrie.entities.npcs.NPCManager;
 import org.bukkit.Bukkit;
@@ -12,12 +13,11 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import static me.night.nullvalkyrie.database.UserDataManager.createUserBank;
-
+@SuppressWarnings("ConstantConditions")
 public class ScoreboardListener implements Listener {
 
-    public static NameTagManager nameTagManager;
-    public static SideBarManager sideBarManager;
+    public NameTagManager nameTagManager;
+    public SideBarManager sideBarManager;
     private final BelowNameManager belowNameManager;
 
     public ScoreboardListener() {
@@ -31,8 +31,8 @@ public class ScoreboardListener implements Listener {
         Player player = e.getPlayer();
         if (!player.hasPlayedBefore()) {
             e.getPlayer().sendTitle(ChatColor.RED + "Welcome to Vanadium!", ChatColor.GREEN + "LOL", 20, 100, 20);
-            RankDataManager.setRank(player.getUniqueId(), Rank.ROOKIE);
-            createUserBank(e.getPlayer().getUniqueId().toString());
+            RankDataManager.setRank(player.getUniqueId(), Rank.ROOKIE, this);
+            new UserDataManager().createUserBank(e.getPlayer().getUniqueId().toString());
         }
         e.getPlayer().setPlayerListHeaderFooter(ChatColor.AQUA + "You are playing on " + ChatColor.GREEN + "127.0.0.1", ChatColor.GOLD + "Ranks, boosters, & more!" + ChatColor.AQUA + "127.0.0.1");
         nameTagManager.setNametags(player);

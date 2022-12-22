@@ -9,12 +9,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-
+@SuppressWarnings("unchecked")
 public class CustomWeaponsDataManager {
-
-    public static HashMap<String, Object> getWeapon(String itemName) {
+    public HashMap<String, Object> getWeapon(String itemName) {
         HashMap<String, Object> item = new HashMap<>();
-        try (MongoCursor<Document> cursor = DatabaseManager.getCustomWeaponsDB().find(Filters.eq("Name", itemName)).cursor()) {
+        try (MongoCursor<Document> cursor = new DatabaseManager().getCustomWeaponsDB().find(Filters.eq("Name", itemName)).cursor()) {
             while (cursor.hasNext()) {
                 Document doc = cursor.next();
                 String name = doc.getString("Name");
@@ -26,8 +25,7 @@ public class CustomWeaponsDataManager {
                 HashMap<String, Object> prop = new HashMap<>();
                 abi.put("Name", ability.getString("Name"));
                 List<String> details = new ArrayList<>();
-                if (ability.get("Details") != null)
-                    details.addAll((List<String>) ability.get("Details"));
+                if (ability.get("Details") != null) details.addAll((List<String>) ability.get("Details"));
                 abi.put("Details", details);
                 for (String a : properties.keySet()) prop.put(a, properties.get(a));
                 lores.put("Ability", abi);
@@ -40,8 +38,7 @@ public class CustomWeaponsDataManager {
                 for (String a : attributes.keySet()) attr.put(a, attributes.get(a));
                 Document pdc = (Document) doc.get("PDC");
                 HashMap<String, Object> pdcdata = new HashMap<>();
-                if (pdc != null)
-                    for (String a : pdc.keySet()) pdcdata.put(a, pdc.get(a));
+                if (pdc != null) for (String a : pdc.keySet()) pdcdata.put(a, pdc.get(a));
                 Document recipe = (Document) doc.get("Recipes");
                 HashMap<String, Object> recipes = new HashMap<>();
                 if (recipe != null) {
@@ -71,7 +68,7 @@ public class CustomWeaponsDataManager {
 
     public static HashMap<String, Object> getWeapons() {
         HashMap<String, Object> list = new HashMap<>();
-        try (MongoCursor<Document> cursor = DatabaseManager.getCustomWeaponsDB().find().cursor()) {
+        try (MongoCursor<Document> cursor = new DatabaseManager().getCustomWeaponsDB().find().cursor()) {
             while (cursor.hasNext()) {
                 Document doc = cursor.next();
                 HashMap<String, Object> item = new HashMap<>();
@@ -84,8 +81,7 @@ public class CustomWeaponsDataManager {
                 HashMap<String, Object> prop = new HashMap<>();
                 abi.put("Name", ability.getString("Name"));
                 List<String> details = new ArrayList<>();
-                if (ability.get("Details") != null)
-                    details.addAll((List<String>) ability.get("Details"));
+                if (ability.get("Details") != null) details.addAll((List<String>) ability.get("Details"));
                 abi.put("Details", details);
                 for (String a : properties.keySet()) prop.put(a, properties.get(a));
                 lores.put("Ability", abi);

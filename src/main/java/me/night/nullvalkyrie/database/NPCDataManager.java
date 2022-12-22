@@ -11,7 +11,7 @@ import java.util.List;
 
 public class NPCDataManager {
     public static void setNPC(String name, int x, int y, int z, int pitch, int yaw, String world, String texture, String signature) {
-        Document document = DatabaseManager.getNPCsDB().find(new Document("Name", name)).first();
+        Document document = new DatabaseManager().getNPCsDB().find(new Document("Name", name)).first();
         if (document != null) {
             System.out.println("A NPC with this name already exist");
         } else {
@@ -25,13 +25,13 @@ public class NPCDataManager {
             newDocument.put("world", world);
             newDocument.put("texture", texture);
             newDocument.put("signature", signature);
-            DatabaseManager.getNPCsDB().insertOne(newDocument);
+            new DatabaseManager().getNPCsDB().insertOne(newDocument);
         }
     }
 
     public static void reloadNPC() {
         List<HashMap<String, Object>> npcList = new ArrayList<>();
-        try (MongoCursor<Document> cursor = DatabaseManager.getNPCsDB().find().cursor()) {
+        try (MongoCursor<Document> cursor = new DatabaseManager().getNPCsDB().find().cursor()) {
             while (cursor.hasNext()) {
                 Document document = cursor.next();
                 HashMap<String, Object> npc = new HashMap<>();

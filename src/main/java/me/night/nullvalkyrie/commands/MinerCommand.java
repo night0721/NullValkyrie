@@ -11,7 +11,6 @@ import org.bukkit.util.StringUtil;
 
 import java.util.*;
 
-import static me.night.nullvalkyrie.entities.miners.CryptoMiner.generate;
 
 public class MinerCommand extends Command {
 
@@ -28,8 +27,6 @@ public class MinerCommand extends Command {
             }
             if (args[0].equalsIgnoreCase("list")) {
                 new Miner().UI(player);
-                int seconds = (int) (new Date().getTime() - MinerDataManager.getLastClaim(1)) / 1000;
-                generate(50, seconds);
             } else if (args[0].equalsIgnoreCase("new")) {
                 String name = args[2];
                 MinerType type = MinerType.getByName(args[1]);
@@ -43,6 +40,8 @@ public class MinerCommand extends Command {
             } else if (args[0].equalsIgnoreCase("claim")) {
                 MinerDataManager.setLastClaim(args[1]);
                 player.sendMessage(ChatColor.GREEN + "Claimed");
+                int seconds = (int) (new Date().getTime() - MinerDataManager.getLastClaim(1)) / 1000;
+                CryptoMiner.generate(50, seconds);
             }
         }
     }

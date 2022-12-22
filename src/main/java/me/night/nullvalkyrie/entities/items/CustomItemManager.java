@@ -1,6 +1,7 @@
 package me.night.nullvalkyrie.entities.items;
 
 import me.night.nullvalkyrie.Main;
+import me.night.nullvalkyrie.database.CustomWeaponsDataManager;
 import me.night.nullvalkyrie.enums.Rarity;
 import me.night.nullvalkyrie.util.Util;
 import org.bukkit.Bukkit;
@@ -15,23 +16,21 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-import java.io.File;
 import java.util.*;
-
-import static me.night.nullvalkyrie.database.CustomWeaponsDataManager.getWeapon;
 
 public class CustomItemManager {
     public static final HashMap<String, NamespacedKey> keys = new HashMap<>();
 
+    @SuppressWarnings("unchecked")
     public static ItemStack produceItem(String itemName) {
-        HashMap<String, Object> weapon = getWeapon(itemName);
+        HashMap<String, Object> weapon = new CustomWeaponsDataManager().getWeapon(itemName);
         ItemStack item = new ItemStack((Material) weapon.get("Material"));
         List<String> propertiesList = new ArrayList<>();
         List<String> itemAbility = new ArrayList<>();
         HashMap<String, Object> enchants = (HashMap<String, Object>) weapon.get("Enchants");
         HashMap<String, Object> attributes = (HashMap<String, Object>) weapon.get("Attributes");
         for (String enchant : enchants.keySet())
-            item.addUnsafeEnchantment(Enchantment.getByKey(NamespacedKey.minecraft(enchant)), (Integer) enchants.get(enchant));
+            item.addUnsafeEnchantment(Objects.requireNonNull(Enchantment.getByKey(NamespacedKey.minecraft(enchant))), (Integer) enchants.get(enchant));
         HashMap<String, Object> lore = (HashMap<String, Object>) weapon.get("Lore");
         HashMap<String, Object> ability = (HashMap<String, Object>) lore.get("Ability");
         HashMap<String, Object> properties = (HashMap<String, Object>) lore.get("Properties");
@@ -112,11 +111,5 @@ public class CustomItemManager {
             recipe.setIngredient(abcs.get(ei), ingredients.get(abcs.get(ei)));
         if (Bukkit.getRecipe(nsk) != null) Bukkit.removeRecipe(nsk);
         Bukkit.addRecipe(recipe);
-    }
-
-    public static void updateYamlFilesToPlugin(String path) {
-        File file = new File(Main.getPlugin(Main.class).getDataFolder(), path);
-        if (!file.exists()) Main.getPlugin(Main.class).saveResource(path, true);
-        else Main.getPlugin(Main.class).saveResource(path, true);
     }
 }

@@ -46,7 +46,7 @@ public class WeaponCommand extends Command {
             HashMap<String, Object> hh = CustomWeaponsDataManager.getWeapons();
             ArrayList<String> cc = new ArrayList<>();
             for (String s : hh.keySet()) {
-                HashMap<String, Object> item = (HashMap<String, Object>) hh.get(s);
+                @SuppressWarnings("unchecked") HashMap<String, Object> item = (HashMap<String, Object>) hh.get(s);
                 if (Objects.equals(item.get("Type"), "Weapon")) {
                     cc.add((String) item.get("Name"));
                 }
