@@ -3,11 +3,11 @@ package me.night.nullvalkyrie.events.listeners;
 import me.night.nullvalkyrie.events.custom.RightClickNPCEvent;
 import me.night.nullvalkyrie.entities.npcs.NPCManager;
 import me.night.nullvalkyrie.util.Util;
-import net.minecraft.network.protocol.game.PacketPlayOutEntity;
-import net.minecraft.network.protocol.game.PacketPlayOutEntityHeadRotation;
-import net.minecraft.server.network.PlayerConnection;
+import net.minecraft.network.protocol.game.ClientboundMoveEntityPacket;
+import net.minecraft.network.protocol.game.ClientboundRotateHeadPacket;
+import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_19_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,7 +17,7 @@ public class NPCEvents implements Listener {
     @EventHandler
     public void onClick(RightClickNPCEvent e) {
         Player player = e.getPlayer();
-        if (e.getNPC().getBukkitEntity().getName().equalsIgnoreCase(Util.color("&1&lRB18"))) {
+        if (e.getNPC().getBukkitEntity().getName().contains("SAI")) {
             player.sendMessage(Util.color("Hi"));
         }
     }
@@ -29,9 +29,9 @@ public class NPCEvents implements Listener {
             location.setDirection(e.getPlayer().getLocation().subtract(location).toVector());
             float yaw = location.getYaw();
             float pitch = location.getPitch();
-            PlayerConnection con = ((CraftPlayer) e.getPlayer()).getHandle().b;
-            con.a(new PacketPlayOutEntityHeadRotation(npc, (byte) ((yaw % 360) * 256 / 360)));
-            con.a(new PacketPlayOutEntity.PacketPlayOutEntityLook(npc.ae(), (byte) ((yaw % 360) * 256 / 360), (byte) ((pitch % 360) * 256 / 360), false));
+            ServerGamePacketListenerImpl con = ((CraftPlayer) e.getPlayer()).getHandle().connection;
+            con.send(new ClientboundRotateHeadPacket(npc, (byte) ((yaw % 360) * 256 / 360)));
+            con.send(new ClientboundMoveEntityPacket.Rot(npc.getBukkitEntity().getEntityId(), (byte) ((yaw % 360) * 256 / 360), (byte) ((pitch % 360) * 256 / 360), false));
         });
     }
 }
