@@ -5,11 +5,9 @@ import org.bson.Document;
 
 public class DatabaseManager {
     public static MongoDatabase database;
-
-    public DatabaseManager() {
+    public void connect() {
         database = MongoClients.create(System.getenv("MONGODB_URI")).getDatabase("NullValkyrie");
     }
-
     public MongoCollection<Document> getMinersDB() {
         return database.getCollection("miners");
     }

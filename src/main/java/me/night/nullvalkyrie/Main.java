@@ -18,7 +18,7 @@ public final class Main extends JavaPlugin {
     @Override
     public void onEnable() {
         EnchantmentManager.register();
-        new DatabaseManager();
+        new DatabaseManager().connect();
         new CommandManager();
         Bukkit.getPluginManager().registerEvents(new ServerEvents(), this);
         Bukkit.getPluginManager().registerEvents(new InventoryListener(), this);
