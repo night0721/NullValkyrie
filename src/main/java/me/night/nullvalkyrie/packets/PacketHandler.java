@@ -8,8 +8,8 @@ import me.night.nullvalkyrie.entities.npcs.NPCManager;
 import me.night.nullvalkyrie.events.custom.InteractHologramEvent;
 import me.night.nullvalkyrie.events.custom.RightClickNPCEvent;
 import me.night.nullvalkyrie.util.Util;
-import net.minecraft.network.protocol.game.PacketPlayInUseEntity;
-import net.minecraft.server.level.EntityPlayer;
+import net.minecraft.network.protocol.game.ServerboundInteractPacket;
+import net.minecraft.server.level.ServerPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
@@ -31,7 +31,7 @@ public class PacketHandler extends ChannelDuplexHandler {
     @Override
     public void channelRead(ChannelHandlerContext c, Object packet) throws Exception {
         if (packet.getClass().getSimpleName().equalsIgnoreCase("PacketPlayInUseEntity")) {
-            PacketPlayInUseEntity pk = (PacketPlayInUseEntity) packet;
+            ServerboundInteractPacket pk = (ServerboundInteractPacket) packet;
             int entityID = (int) Util.getFieldValue(packet, "a");
             boolean sneak = (boolean) Util.getFieldValue(packet, "c");
             Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(Main.class), () -> {
@@ -42,15 +42,14 @@ public class PacketHandler extends ChannelDuplexHandler {
                 }
             }, 0);
             Object data = Util.getFieldValue(pk, "b");
-            if (data.toString().split("\\$")[1].charAt(0) == 'e') {
+            if (data.toString().split("\\$")[1].charAt(0) == 'e')
                 return;
-            }
             try {
                 Object hand = Util.getFieldValue(data, "a");
                 if (!hand.toString().equals("MAIN_HAND")) return;
                 //Right Click
-                for (EntityPlayer npcs : NPCManager.getNPCs()) {
-                    if (npcs.ae() == entityID && sneak) {
+                for (ServerPlayer npcs : NPCManager.getNPCs()) {
+                    if (npcs.getBukkitEntity().getEntityId() == entityID && sneak) {
                         Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(Main.class), () -> Bukkit.getPluginManager().callEvent(new RightClickNPCEvent(player, npcs)), 0);
 
                     }
