@@ -12,6 +12,7 @@ import java.util.UUID;
 
 public class RankDataManager {
     public static void setRank(UUID uuid, Rank rank, ScoreboardListener... listener) {
+        // TODO: fix not working in rank command
         Document document = new DatabaseManager().getRanksDB().find(new Document("UUID", uuid.toString())).first();
         if (document != null) {
             Bson updated = new Document("Rank", rank.name());
