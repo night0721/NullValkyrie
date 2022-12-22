@@ -1,6 +1,7 @@
 package me.night.nullvalkyrie.ui.inventory;
 
 import me.night.nullvalkyrie.Main;
+import me.night.nullvalkyrie.database.UserDataManager;
 import me.night.nullvalkyrie.enums.Items;
 import me.night.nullvalkyrie.util.RandomCollection;
 import me.night.nullvalkyrie.util.Util;
@@ -17,7 +18,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
+@SuppressWarnings("ConstantConditions")
 public class InventoryListener implements Listener {
     public static RandomCollection<String> randomCollection;
 
@@ -71,6 +72,7 @@ public class InventoryListener implements Listener {
                     player.sendMessage(ChatColor.RED + "You already got all the rewards!");
                     return;
                 }
+                new UserDataManager().updateUserBank(player.getUniqueId().toString(), -100);
                 List<String> colors = List.of("WHITE", "ORANGE", "MAGENTA", "LIGHT_BLUE", "YELLOW", "LIME", "PINK", "GRAY", "LIGHT_GRAY", "CYAN", "PURPLE", "BLUE", "BROWN", "GREEN", "RED", "BLACK");
                 List<String> slot1 = new ArrayList<>(colors);
                 List<String> slot2 = new ArrayList<>(colors);
