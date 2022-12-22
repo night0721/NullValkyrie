@@ -40,7 +40,3 @@ NullValkyrie is licensed under the CC-BY-NC-SA-4.0. See [LICENSE](https://github
 
 We welcome contributions to the NullValkyrie project! If you have any ideas for improvements or new features, please feel free to fork the project and create a pull request or open an issue.
 All contributions are welcome, including translations, documentation, and code.
-
-## License
-
-NullValkyrie is licensed under the MIT License. See [LICENSE](https://github.com/night0721/NullValkyrie/blob/master/LICENSE) for more information.
