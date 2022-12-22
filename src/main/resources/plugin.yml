@@ -1,7 +1,7 @@
 name: NullValkyrie
 version: '${project.version}'
 main: me.night.nullvalkyrie.Main
-api-version: 1.18
+api-version: 1.19
 authors: [ NightKaly, Leocthl ]
 description: Null Valkyrie
 website: https://github.com/night0721/nullvalkyrie
