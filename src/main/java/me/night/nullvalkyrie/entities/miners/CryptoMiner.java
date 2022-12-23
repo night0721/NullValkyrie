@@ -6,11 +6,9 @@ import com.mojang.authlib.properties.Property;
 import me.night.nullvalkyrie.enums.MinerType;
 import me.night.nullvalkyrie.util.Skin;
 import me.night.nullvalkyrie.util.Util;
-import net.minecraft.network.protocol.game.ClientboundPlayerInfoUpdatePacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import org.apache.commons.codec.binary.Base64;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -18,7 +16,6 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_19_R2.CraftServer;
 import org.bukkit.craftbukkit.v1_19_R2.CraftWorld;
-import org.bukkit.craftbukkit.v1_19_R2.entity.CraftPlayer;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -140,9 +137,6 @@ public class CryptoMiner {
         MinecraftServer server = ((CraftServer) Bukkit.getServer()).getServer();
         ServerLevel w = ((CraftWorld) player.getLocation().getWorld()).getHandle();
         ServerPlayer miner = new ServerPlayer(server, w, gameProfile);
-        // TODO:  fixing could not add to tab list
-        ServerGamePacketListenerImpl pc = ((CraftPlayer) player).getHandle().connection;
-        pc.send(new ClientboundPlayerInfoUpdatePacket(ClientboundPlayerInfoUpdatePacket.Action.ADD_PLAYER, miner));
         World world = miner.getBukkitEntity().getWorld();
         List<Location> locs = new ArrayList<>();
         for (int x = (int) stand.getLocation().getX() - 3; x <= stand.getLocation().getX() + 2; x++) {
@@ -156,9 +150,8 @@ public class CryptoMiner {
         locs.remove(world.getBlockAt(stand.getLocation().subtract(0, -1, 0)).getLocation());
         if (locs.size() != 0) {
             Location closest = locs.get(0);
-            for (Location location : locs) {
+            for (Location location : locs)
                 if (location.distance(stand.getLocation()) < closest.distance(stand.getLocation())) closest = location;
-            }
             ArrayList<ItemStack> items = new ArrayList<>();
             ThreadLocalRandom random = ThreadLocalRandom.current();
             if (closest.getBlock().getType() == this.getType()) {

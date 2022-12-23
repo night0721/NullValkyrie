@@ -51,7 +51,6 @@ public class NPCManager {
     public static void addNPCPacket(ServerPlayer npc) {
         for (Player player : Bukkit.getOnlinePlayers()) {
             ServerGamePacketListenerImpl pc = ((CraftPlayer) player).getHandle().connection;
-            pc.send(new ClientboundPlayerInfoUpdatePacket(ClientboundPlayerInfoUpdatePacket.Action.ADD_PLAYER, npc));
             pc.send(new ClientboundAddPlayerPacket(npc));
             pc.send(new ClientboundRotateHeadPacket(npc, (byte) (npc.getBukkitYaw() * 256 / 360)));
             SynchedEntityData watcher = npc.getEntityData();
@@ -71,7 +70,6 @@ public class NPCManager {
     public static void addJoinPacket(Player player) {
         for (ServerPlayer npc : NPCs) {
             ServerGamePacketListenerImpl pc = ((CraftPlayer) player).getHandle().connection;
-            pc.send(new ClientboundPlayerInfoUpdatePacket(ClientboundPlayerInfoUpdatePacket.Action.ADD_PLAYER, npc));
             pc.send(new ClientboundAddPlayerPacket(npc));
             pc.send(new ClientboundRotateHeadPacket(npc, (byte) (npc.getBukkitYaw() * 256 / 360)));
             SynchedEntityData watcher = npc.getEntityData();
