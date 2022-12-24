@@ -1,4 +1,4 @@
-package me.night.nullvalkyrie.packets;
+package me.night.nullvalkyrie.packets.handle;
 
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -24,8 +24,8 @@ public class PacketHandler extends ChannelDuplexHandler {
     }
 
     @Override
-    public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
-        super.write(ctx, msg, promise);
+    public void write(ChannelHandlerContext ctx, Object packet, ChannelPromise promise) throws Exception {
+        super.write(ctx, packet, promise);
     }
 
     @Override

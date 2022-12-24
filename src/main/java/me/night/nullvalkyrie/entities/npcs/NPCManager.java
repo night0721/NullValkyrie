@@ -3,8 +3,9 @@ package me.night.nullvalkyrie.entities.npcs;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import com.mojang.datafixers.util.Pair;
-import me.night.nullvalkyrie.Main;
 import me.night.nullvalkyrie.database.NPCDataManager;
+import me.night.nullvalkyrie.packets.protocol.PacketPlayOutEntityMetadata;
+import me.night.nullvalkyrie.packets.protocol.PacketPlayOutSpawnEntity;
 import me.night.nullvalkyrie.util.*;
 import net.minecraft.network.protocol.game.*;
 import net.minecraft.network.syncher.*;
@@ -35,6 +36,7 @@ public class NPCManager {
         return NPCs;
     }
     public static void createNPC(Player player, String name) { // name must be less than 16 characters including color codes
+        // TODO: npc not even spawning rn
         ServerPlayer sp = ((CraftPlayer) player).getHandle();
         MinecraftServer server = sp.server;
         ServerLevel level = ((CraftWorld) player.getLocation().getWorld()).getHandle();
@@ -51,13 +53,11 @@ public class NPCManager {
     public static void addNPCPacket(ServerPlayer npc) {
         for (Player player : Bukkit.getOnlinePlayers()) {
             ServerGamePacketListenerImpl pc = ((CraftPlayer) player).getHandle().connection;
-            pc.send(new ClientboundAddPlayerPacket(npc));
+            new PacketPlayOutSpawnEntity(player, npc);
             pc.send(new ClientboundRotateHeadPacket(npc, (byte) (npc.getBukkitYaw() * 256 / 360)));
             SynchedEntityData watcher = npc.getEntityData();
             watcher.set(new EntityDataAccessor<>(17, EntityDataSerializers.BYTE), (byte) 127);
-            List<SynchedEntityData.DataValue<?>> list = watcher.getNonDefaultValues();
-            pc.send(new ClientboundSetEntityDataPacket(npc.getBukkitEntity().getEntityId(), list));
-            Bukkit.getScheduler().runTaskLaterAsynchronously(Main.getPlugin(Main.class), () -> pc.send(new ClientboundPlayerInfoRemovePacket(List.of(npc.getUUID()))), 50);
+            new PacketPlayOutEntityMetadata(player, npc, watcher.getNonDefaultValues());
             ItemStack netheriteAxe = new ItemStack(Material.NETHERITE_AXE);
             ItemStack anotherAxe = new ItemStack(Material.NETHERITE_INGOT);
             List<Pair<EquipmentSlot, net.minecraft.world.item.ItemStack>> itemList = new ArrayList<>();
@@ -70,13 +70,11 @@ public class NPCManager {
     public static void addJoinPacket(Player player) {
         for (ServerPlayer npc : NPCs) {
             ServerGamePacketListenerImpl pc = ((CraftPlayer) player).getHandle().connection;
-            pc.send(new ClientboundAddPlayerPacket(npc));
+            new PacketPlayOutSpawnEntity(player, npc);
             pc.send(new ClientboundRotateHeadPacket(npc, (byte) (npc.getBukkitYaw() * 256 / 360)));
             SynchedEntityData watcher = npc.getEntityData();
             watcher.set(new EntityDataAccessor<>(17, EntityDataSerializers.BYTE), (byte) 127);
-            List<SynchedEntityData.DataValue<?>> list = watcher.getNonDefaultValues();
-            pc.send(new ClientboundSetEntityDataPacket(npc.getBukkitEntity().getEntityId(), list));
-            Bukkit.getScheduler().runTaskLaterAsynchronously(Main.getPlugin(Main.class), () -> pc.send(new ClientboundPlayerInfoRemovePacket(List.of(npc.getUUID()))), 50);
+            new PacketPlayOutEntityMetadata(player, npc, watcher.getNonDefaultValues());
             ItemStack netheriteAxe = new ItemStack(Material.NETHERITE_AXE);
             ItemStack anotherAxe = new ItemStack(Material.NETHERITE_INGOT);
             List<Pair<EquipmentSlot, net.minecraft.world.item.ItemStack>> itemList = new ArrayList<>();

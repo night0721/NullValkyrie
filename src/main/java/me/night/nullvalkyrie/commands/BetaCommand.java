@@ -1,5 +1,6 @@
 package me.night.nullvalkyrie.commands;
 
+import me.night.nullvalkyrie.entities.npcs.NPCManager;
 import me.night.nullvalkyrie.entities.pets.ZombiePet;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -33,6 +34,7 @@ public class BetaCommand extends Command {
             itemMeta2.setCustomModelData(1010101);
             item2.setItemMeta(itemMeta2);
             player.getInventory().addItem(item2);
+            NPCManager.createNPC(player, args[0]);
         }
 
     }

@@ -1,7 +1,7 @@
 package me.night.nullvalkyrie.events.listeners;
 
 import me.night.nullvalkyrie.events.custom.InteractHologramEvent;
-import me.night.nullvalkyrie.packets.PacketInjector;
+import me.night.nullvalkyrie.packets.handle.PacketInjector;
 import me.night.nullvalkyrie.util.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

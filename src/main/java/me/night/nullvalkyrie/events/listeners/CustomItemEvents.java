@@ -1,14 +1,10 @@
 package me.night.nullvalkyrie.events.listeners;
 
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.ProtocolManager;
-import com.comphenix.protocol.events.PacketContainer;
-import com.comphenix.protocol.wrappers.BlockPosition;
 import me.night.nullvalkyrie.entities.items.CustomItemManager;
 import me.night.nullvalkyrie.entities.items.Pickaxe;
 import me.night.nullvalkyrie.enums.Rarity;
 import me.night.nullvalkyrie.Main;
+import me.night.nullvalkyrie.packets.protocol.PacketPlayOutBlockBreakAnimation;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
@@ -26,7 +22,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class CustomItemEvents implements Listener {
@@ -327,26 +322,10 @@ public class CustomItemEvents implements Listener {
         int blockStage = blockStages.getOrDefault(block.getLocation(), 0);
         blockStage = blockStage == 10 ? 0 : blockStage + 1;
         blockStages.put(block.getLocation(), blockStage);
-        sendBlockDamage(player, block);
+        new PacketPlayOutBlockBreakAnimation(player, block.getLocation(), blockStages.get(block.getLocation()));
         if (blockStage == 0) {
             blockStages.remove(block.getLocation());
             block.breakNaturally();
-        }
-    }
-
-    final ProtocolManager manager = ProtocolLibrary.getProtocolManager();
-
-    public void sendBlockDamage(Player player, Block block) {
-        Location location = block.getLocation();
-        int locationId = location.getBlockX() + location.getBlockY() + location.getBlockZ();
-        PacketContainer packet = manager.createPacket(PacketType.Play.Server.BLOCK_BREAK_ANIMATION);
-        packet.getIntegers().write(0, locationId); // set entity ID to the location
-        packet.getBlockPositionModifier().write(0, new BlockPosition(location.toVector())); // set the block location
-        packet.getIntegers().write(1, blockStages.get(location)); // set the damage to blockStage
-        try {
-            manager.sendServerPacket(player, packet);
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
         }
     }
 }
