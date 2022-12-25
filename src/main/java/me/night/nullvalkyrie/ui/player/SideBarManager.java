@@ -1,6 +1,6 @@
 package me.night.nullvalkyrie.ui.player;
 
-import me.night.nullvalkyrie.Main;
+import me.night.nullvalkyrie.NullValkyrie;
 import me.night.nullvalkyrie.database.UserDataManager;
 import me.night.nullvalkyrie.util.Util;
 import org.bukkit.Bukkit;
@@ -50,7 +50,7 @@ public class SideBarManager {
 
     public void start(Player player) {
         board = new AnimatedSideBar(player.getUniqueId());
-        taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(Main.class), new Runnable() {
+        taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(NullValkyrie.getPlugin(NullValkyrie.class), new Runnable() {
             int count = 0;
 
             public void animate(String str) {

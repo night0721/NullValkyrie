@@ -1,6 +1,6 @@
 package me.night.nullvalkyrie.packets.protocol;
 
-import org.bukkit.craftbukkit.v1_19_R2.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 public class Channel {

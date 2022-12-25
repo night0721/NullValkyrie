@@ -1,6 +1,6 @@
 package me.night.nullvalkyrie.entities.items;
 
-import me.night.nullvalkyrie.Main;
+import me.night.nullvalkyrie.NullValkyrie;
 import me.night.nullvalkyrie.database.CustomWeaponsDataManager;
 import me.night.nullvalkyrie.enums.Rarity;
 import me.night.nullvalkyrie.util.Util;
@@ -84,7 +84,7 @@ public class CustomItemManager {
         HashMap<String, Object> pdcdata = (HashMap<String, Object>) weapon.get("PDC");
         for (String key : pdcdata.keySet()) {
             PersistentDataContainer container = itemMeta.getPersistentDataContainer();
-            NamespacedKey key1 = new NamespacedKey(Main.getPlugin(Main.class), key);
+            NamespacedKey key1 = new NamespacedKey(NullValkyrie.getPlugin(NullValkyrie.class), key);
             keys.put(Rarity.getRarity((String) weapon.get("Rarity")).getColor() + weapon.get("Name") + "." + key, key1);
             container.set(key1, PersistentDataType.INTEGER, (int) pdcdata.get(key));
         }
@@ -103,7 +103,7 @@ public class CustomItemManager {
     }
 
     public static void setItemRecipe(String key, ItemStack i, List<String> shapes, HashMap<Character, Material> ingredients, int amount) {
-        NamespacedKey nsk = new NamespacedKey(Main.getPlugin(Main.class), key.replaceAll("\\s", ""));
+        NamespacedKey nsk = new NamespacedKey(NullValkyrie.getPlugin(NullValkyrie.class), key.replaceAll("\\s", ""));
         ShapedRecipe recipe = new ShapedRecipe(nsk, i);
         recipe.shape(shapes.get(0), shapes.get(1), shapes.get(2));
         List<Character> abcs = List.of('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I');

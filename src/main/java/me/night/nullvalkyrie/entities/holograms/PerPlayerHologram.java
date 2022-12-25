@@ -8,7 +8,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.decoration.ArmorStand;
-import org.bukkit.craftbukkit.v1_19_R2.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;
@@ -29,6 +29,6 @@ public class PerPlayerHologram {
         SynchedEntityData watcher = stand.getEntityData();
         watcher.set(new EntityDataAccessor<>(2, EntityDataSerializers.OPTIONAL_COMPONENT), Optional.of(Component.nullToEmpty(line)));
         watcher.set(new EntityDataAccessor<>(3, EntityDataSerializers.BOOLEAN), true);
-        new PacketPlayOutEntityMetadata(player, stand, watcher.getNonDefaultValues());
+        new PacketPlayOutEntityMetadata(player, stand, watcher);
     }
 }

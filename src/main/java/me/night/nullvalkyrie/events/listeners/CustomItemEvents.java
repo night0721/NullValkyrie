@@ -3,7 +3,7 @@ package me.night.nullvalkyrie.events.listeners;
 import me.night.nullvalkyrie.entities.items.CustomItemManager;
 import me.night.nullvalkyrie.entities.items.Pickaxe;
 import me.night.nullvalkyrie.enums.Rarity;
-import me.night.nullvalkyrie.Main;
+import me.night.nullvalkyrie.NullValkyrie;
 import me.night.nullvalkyrie.packets.protocol.PacketPlayOutBlockBreakAnimation;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -245,7 +245,7 @@ public class CustomItemEvents implements Listener {
 //                        player.setHealth(20);
 //                        player.teleport(generateRandomCoord(9, Bukkit.getWorld("world")));
 //                    }
-//                }.runTaskLater(Main.getPlugin(Main.class), 100L);
+//                }.runTaskLater(NullValkyrie.getPlugin(NullValkyrie.class), 100L);
 //                countDown(player, new int[]{5});
 //            }
         }
@@ -255,7 +255,7 @@ public class CustomItemEvents implements Listener {
     private int taskID;
 
     public void countDown(Player player, int[] a) {
-        taskID = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(Main.class), () -> {
+        taskID = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(NullValkyrie.getPlugin(NullValkyrie.class), () -> {
             player.sendTitle(ChatColor.RED + "YOU DIED!", ChatColor.GREEN + "You will revive in " + a[0] + " seconds", 0, 20, 0);
             a[0]--;
             if (a[0] == 0) {

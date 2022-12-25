@@ -1,6 +1,6 @@
 package me.night.nullvalkyrie.events.listeners;
 
-import me.night.nullvalkyrie.Main;
+import me.night.nullvalkyrie.NullValkyrie;
 import me.night.nullvalkyrie.util.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -60,7 +60,7 @@ public class DamageEffectEvents implements Listener {
                 }
                 removal.forEach(stands::remove);
             }
-        }.runTaskTimer(Main.getPlugin(Main.class), 0L, 1L);
+        }.runTaskTimer(NullValkyrie.getPlugin(NullValkyrie.class), 0L, 1L);
     }
 
     public boolean isSpawnable(Location loc) {

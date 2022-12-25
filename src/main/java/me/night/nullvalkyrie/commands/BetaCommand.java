@@ -1,10 +1,9 @@
 package me.night.nullvalkyrie.commands;
 
-import me.night.nullvalkyrie.entities.npcs.NPCManager;
 import me.night.nullvalkyrie.entities.pets.ZombiePet;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_19_R2.CraftWorld;
+import org.bukkit.craftbukkit.v1_19_R1.CraftWorld;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -34,7 +33,6 @@ public class BetaCommand extends Command {
             itemMeta2.setCustomModelData(1010101);
             item2.setItemMeta(itemMeta2);
             player.getInventory().addItem(item2);
-            NPCManager.createNPC(player, args[0]);
         }
 
     }

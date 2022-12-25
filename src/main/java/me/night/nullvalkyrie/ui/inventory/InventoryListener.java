@@ -1,6 +1,6 @@
 package me.night.nullvalkyrie.ui.inventory;
 
-import me.night.nullvalkyrie.Main;
+import me.night.nullvalkyrie.NullValkyrie;
 import me.night.nullvalkyrie.database.UserDataManager;
 import me.night.nullvalkyrie.enums.Items;
 import me.night.nullvalkyrie.util.RandomCollection;
@@ -142,7 +142,7 @@ public class InventoryListener implements Listener {
                         ii++;
                         time++;
                     }
-                }.runTaskTimer(Main.getPlugin(Main.class), 1L, 5L);
+                }.runTaskTimer(NullValkyrie.getPlugin(NullValkyrie.class), 1L, 5L);
                 new BukkitRunnable() {
                     @Override
                     public void run() {
@@ -184,7 +184,7 @@ public class InventoryListener implements Listener {
                             player.getInventory().addItem(item);
                         } else player.closeInventory();
                     }
-                }.runTaskLater(Main.getPlugin(Main.class), 5L * 20L);
+                }.runTaskLater(NullValkyrie.getPlugin(NullValkyrie.class), 5L * 20L);
 
             }
         }
