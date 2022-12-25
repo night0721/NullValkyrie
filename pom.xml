@@ -6,7 +6,7 @@
 
     <groupId>me.night</groupId>
     <artifactId>NullValkyrie</artifactId>
-    <version>1.1.01</version>
+    <version>1.1.02</version>
     <packaging>jar</packaging>
 
     <name>NullValkyrie</name>
@@ -19,7 +19,7 @@
     <url>https://github.com/night0721/nullvalkyrie</url>
 
     <build>
-        <finalName>${project.name}-${project.version}</finalName>
+        <finalName>${project.name}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -51,6 +51,7 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.4</version>
                 <configuration>
+                    <finalName>${project.name}</finalName>
                     <outputDirectory>E:\Files\SB\plugins</outputDirectory>
                 </configuration>
             </plugin>
@@ -134,17 +135,6 @@
             <artifactId>mongo-java-driver</artifactId>
             <version>3.12.11</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.comphenix.protocol</groupId>
-            <artifactId>ProtocolLib</artifactId>
-            <version>4.7.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.github.cdimascio</groupId>
-            <artifactId>dotenv-java</artifactId>
-            <version>2.3.1</version>
         </dependency>
     </dependencies>
 </project>

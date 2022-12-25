@@ -1,15 +1,12 @@
 name: NullValkyrie
 version: '${project.version}'
-main: me.night.nullvalkyrie.Main
+main: me.night.nullvalkyrie.NullValkyrie
 api-version: 1.19
 authors: [ NightKaly, Leocthl ]
 description: Null Valkyrie
 website: https://github.com/night0721/nullvalkyrie
-depend: [ ProtocolLib ]
 permissions:
   nv.command.use:
     default: true
   nv.rank.add:
     default: op
-libraries:
-  - "io.github.cdimascio:dotenv-java:2.3.1"
