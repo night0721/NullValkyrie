@@ -35,8 +35,8 @@ public class NPCManager {
     public static List<ServerPlayer> getNPCs() {
         return NPCs;
     }
+    @SuppressWarnings("ConstantConditions")
     public static void createNPC(Player player, String name) { // name must be less than 16 characters including color codes
-        // TODO: npc not even spawning rn
         ServerPlayer sp = ((CraftPlayer) player).getHandle();
         MinecraftServer server = sp.server;
         ServerLevel level = ((CraftWorld) player.getLocation().getWorld()).getHandle();
@@ -48,8 +48,9 @@ public class NPCManager {
         npc.setPos(location.getX(), location.getY(), location.getZ());
         addNPCPacket(npc);
         NPCs.add(npc);
-        NPCDataManager.setNPC(name, (int) player.getLocation().getX(), (int) player.getLocation().getY(), (int) player.getLocation().getZ(), (int) player.getLocation().getPitch(), (int) player.getLocation().getYaw(), player.getLocation().getWorld().getName(), skin[0], skin[1]);
+        NPCDataManager.setNPC(name, player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ(), (int) player.getLocation().getPitch(), (int) player.getLocation().getYaw(), player.getLocation().getWorld().getName(), skin[0], skin[1]);
     }
+
     public static void addNPCPacket(ServerPlayer npc) {
         for (Player player : Bukkit.getOnlinePlayers()) {
             ServerGamePacketListenerImpl pc = ((CraftPlayer) player).getHandle().connection;
@@ -87,9 +88,10 @@ public class NPCManager {
             pc.send(new ClientboundSetEquipmentPacket(npc.getBukkitEntity().getEntityId(), itemList));
         }
     }
+    @SuppressWarnings("ConstantConditions")
     public static void reloadNPC(List<HashMap<String, Object>> npcs) {
         for (HashMap<String, Object> npc : npcs) {
-            Location location = new Location(Bukkit.getWorld((String) npc.get("world")), (int) npc.get("x"), (int) npc.get("y"), (int) npc.get("z"), (int) npc.get("yaw"), (int) npc.get("pitch"));
+            Location location = new Location(Bukkit.getWorld((String) npc.get("world")), (double) npc.get("x"), (double) npc.get("y"), (double) npc.get("z"), (int) npc.get("yaw"), (int) npc.get("pitch"));
             GameProfile gameProfile = new GameProfile(UUID.randomUUID(), Util.color((String) npc.get("name")));
             gameProfile.getProperties().put("textures", new Property("textures", (String) npc.get("texture"), (String) npc.get("signature")));
             MinecraftServer server = ((CraftServer) Bukkit.getServer()).getServer();

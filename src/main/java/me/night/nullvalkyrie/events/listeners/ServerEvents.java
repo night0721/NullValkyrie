@@ -29,7 +29,6 @@ public class ServerEvents implements Listener {
     public void onJoin(PlayerJoinEvent e) {
         bossbar.addPlayer(e.getPlayer());
         injector.addPlayer(e.getPlayer());
-        e.getPlayer().setResourcePack("https://www.dropbox.com/s/7y7p93xzhar6vvw/%C2%A7b%C2%A7lNKRP%201.19.3.zip?dl=1");
     }
 
     @EventHandler

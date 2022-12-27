@@ -5,11 +5,13 @@ import me.night.nullvalkyrie.entities.miners.CryptoMiner;
 import me.night.nullvalkyrie.enums.MinerType;
 import org.bson.Document;
 import org.bson.conversions.Bson;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 
 import java.util.HashMap;
 
 public class MinerDataManager {
-    public static void setMiner(String name, MinerType type, int level, double rate, boolean enabled, long lastclaim) {
+    public static void setMiner(String name, MinerType type, int level, double rate, boolean enabled, long lastclaim, Location location) {
         Document newDocument = new Document();
         newDocument.put("ID", new DatabaseManager().getMinersDB().countDocuments() + 1);
         newDocument.put("Name", name);
@@ -18,6 +20,9 @@ public class MinerDataManager {
         newDocument.put("Rate", rate);
         newDocument.put("Enabled", enabled);
         newDocument.put("LastClaim", lastclaim);
+        newDocument.put("x", location.getX());
+        newDocument.put("y", location.getY());
+        newDocument.put("z", location.getZ());
         new DatabaseManager().getMinersDB().insertOne(newDocument);
     }
 
@@ -40,20 +45,12 @@ public class MinerDataManager {
         return 0;
     }
 
-    public static CryptoMiner getMiner(long id) {
-        Document doc = new DatabaseManager().getMinersDB().find(new Document("ID", id)).first();
-        if (doc != null) {
-            return new CryptoMiner(doc.getString("Name"), MinerType.getByName(doc.getString("Material")), doc.getInteger("Level"), doc.getDouble("Rate"), doc.getLong("LastClaim"));
-        }
-        return null;
-    }
-
     public static HashMap<Long, CryptoMiner> getMiners() {
         HashMap<Long, CryptoMiner> list = new HashMap<>();
         try (MongoCursor<Document> cursor = new DatabaseManager().getMinersDB().find().cursor()) {
             while (cursor.hasNext()) {
                 Document doc = cursor.next();
-                list.put(doc.getLong("ID"), new CryptoMiner(doc.getString("Name"), MinerType.getByName(doc.getString("Material")), doc.getInteger("Level"), doc.getDouble("Rate"), doc.getLong("LastClaim")));
+                list.put(doc.getLong("ID"), new CryptoMiner(doc.getString("Name"), MinerType.getByName(doc.getString("Material")), doc.getInteger("Level"), doc.getDouble("Rate"), doc.getLong("LastClaim"), new Location(Bukkit.getWorld("world"), doc.getDouble("x"), doc.getDouble("y"), doc.getDouble("z"))));
             }
             return list;
         }

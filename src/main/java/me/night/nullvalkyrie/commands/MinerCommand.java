@@ -34,8 +34,8 @@ public class MinerCommand extends Command {
                 double rate = 0.4;
                 long time = System.currentTimeMillis();
                 assert type != null;
-                MinerDataManager.setMiner(name, type, level, rate, true, time);
-                CryptoMiner miner = new CryptoMiner(name, type, level, rate, time);
+                MinerDataManager.setMiner(name, type, level, rate, true, time, player.getLocation());
+                CryptoMiner miner = new CryptoMiner(name, type, level, rate, time, player.getLocation());
                 miner.spawn(player);
             } else if (args[0].equalsIgnoreCase("claim")) {
                 MinerDataManager.setLastClaim(args[1]);

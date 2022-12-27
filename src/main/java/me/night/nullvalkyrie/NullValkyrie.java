@@ -1,7 +1,8 @@
 package me.night.nullvalkyrie;
 
+import me.night.nullvalkyrie.entities.miners.CryptoMiner;
 import me.night.nullvalkyrie.events.listeners.*;
-import me.night.nullvalkyrie.tasks.AlwaysDayTask;
+import me.night.nullvalkyrie.game.tasks.AlwaysDayTask;
 import me.night.nullvalkyrie.ui.inventory.InventoryListener;
 import me.night.nullvalkyrie.database.NPCDataManager;
 import me.night.nullvalkyrie.discord.DiscordClientManager;
@@ -11,7 +12,6 @@ import me.night.nullvalkyrie.commands.*;
 import me.night.nullvalkyrie.database.DatabaseManager;
 import org.bukkit.*;
 import org.bukkit.plugin.java.JavaPlugin;
-
 
 public final class NullValkyrie extends JavaPlugin {
     @Override
@@ -27,6 +27,7 @@ public final class NullValkyrie extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new NPCEvents(), this);
         new DiscordClientManager();
         NPCDataManager.reloadNPC();
+        CryptoMiner.reloadMiner();
         new AlwaysDayTask().runTaskTimer(this, 0, 100);
     }
 }

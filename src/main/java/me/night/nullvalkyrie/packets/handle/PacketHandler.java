@@ -52,8 +52,7 @@ public class PacketHandler extends ChannelDuplexHandler {
             List<SynchedEntityData.DataItem<?>> list = pk.getUnpackedData();
             SynchedEntityData.DataItem<Float> value = (SynchedEntityData.DataItem<Float>) list.get(9);
             System.out.println(value.getAccessor());
-            ThreadLocalRandom random = ThreadLocalRandom.current();
-            float health = random.nextFloat(5F,20F);
+            float health = ThreadLocalRandom.current().nextInt(5,20);
             list.set(9, new SynchedEntityData.DataItem<>(new EntityDataAccessor<>(value.getAccessor().getId(), EntityDataSerializers.FLOAT), health));
         }
         super.write(ctx, packet, promise);

@@ -2,6 +2,7 @@ package me.night.nullvalkyrie.ui.player;
 
 import me.night.nullvalkyrie.database.RankDataManager;
 import me.night.nullvalkyrie.database.UserDataManager;
+import me.night.nullvalkyrie.entities.miners.CryptoMiner;
 import me.night.nullvalkyrie.enums.Rank;
 import me.night.nullvalkyrie.entities.npcs.NPCManager;
 import org.bukkit.Bukkit;
@@ -30,6 +31,7 @@ public class ScoreboardListener implements Listener {
     public void onJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
         if (!player.hasPlayedBefore()) {
+            e.getPlayer().setResourcePack("https://www.dropbox.com/s/7y7p93xzhar6vvw/%C2%A7b%C2%A7lNKRP%201.19.3.zip?dl=1");
             e.getPlayer().sendTitle(ChatColor.RED + "Welcome to Vanadium!", ChatColor.GREEN + "LOL", 20, 100, 20);
             RankDataManager.setRank(player.getUniqueId(), Rank.ROOKIE, this);
             new UserDataManager().createUserBank(e.getPlayer().getUniqueId().toString());
@@ -44,6 +46,7 @@ public class ScoreboardListener implements Listener {
         if (NPCManager.getNPCs() == null) return;
         if (NPCManager.getNPCs().isEmpty()) return;
         NPCManager.addJoinPacket(e.getPlayer());
+        CryptoMiner.onJoin(e.getPlayer());
     }
 
     @EventHandler

@@ -10,7 +10,7 @@ import java.util.List;
 
 
 public class NPCDataManager {
-    public static void setNPC(String name, int x, int y, int z, int pitch, int yaw, String world, String texture, String signature) {
+    public static void setNPC(String name, double x, double y, double z, int pitch, int yaw, String world, String texture, String signature) {
         Document document = new DatabaseManager().getNPCsDB().find(new Document("Name", name)).first();
         if (document != null) {
             System.out.println("A NPC with this name already exist");
@@ -36,9 +36,9 @@ public class NPCDataManager {
                 Document document = cursor.next();
                 HashMap<String, Object> npc = new HashMap<>();
                 String name = document.getString("Name");
-                int x = document.getInteger("x");
-                int y = document.getInteger("y");
-                int z = document.getInteger("z");
+                double x = document.getDouble("x");
+                double y = document.getDouble("y");
+                double z = document.getDouble("z");
                 int pitch = document.getInteger("pitch");
                 int yaw = document.getInteger("yaw");
                 String world = document.getString("world");

@@ -1,4 +1,4 @@
-package me.night.nullvalkyrie.tasks;
+package me.night.nullvalkyrie.game.tasks;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
