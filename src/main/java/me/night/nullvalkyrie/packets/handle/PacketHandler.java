@@ -66,16 +66,6 @@ public class PacketHandler extends ChannelDuplexHandler {
         if (packet.getClass().getSimpleName().equalsIgnoreCase("PacketPlayInUseEntity")) {
             ServerboundInteractPacket pk = (ServerboundInteractPacket) packet;
             int entityID = (int) Util.getFieldValue(packet, "a");
-//            if (pk.getType() == ServerboundInteractPacket.Action.INTERACT) {
-//                Entity entity = ((CraftWorld) player.getWorld()).getHandle().getEntity(entityID);
-//                if (entity == null) return;
-//                if (entity instanceof ArmorStand) {
-//                    Bukkit.getPluginManager().callEvent(new InteractHologramEvent(player, entity));
-//                }
-//                if (NPCManager.isNPC(entity)) {
-//                    Bukkit.getPluginManager().callEvent(new RightClickNPCEvent(player, entity));
-//                }
-//            }
             boolean sneak = (boolean) Util.getFieldValue(packet, "c");
             Bukkit.getScheduler().scheduleSyncDelayedTask(NullValkyrie.getPlugin(NullValkyrie.class), () -> {
                 net.minecraft.world.entity.decoration.ArmorStand[] stands = PerPlayerHologram.getHolograms().get(entityID);
@@ -86,18 +76,15 @@ public class PacketHandler extends ChannelDuplexHandler {
                 }
             }, 0);
             Object data = Util.getFieldValue(pk, "b");
-            if (data.toString().split("\\$")[1].charAt(0) == 'e')
-                return;
+            if (data.toString().split("\\$")[1].charAt(0) == 'e') return;
             try {
                 Object hand = Util.getFieldValue(data, "a");
                 if (!hand.toString().equals("MAIN_HAND")) return;
+                ServerPlayer npc = NPCManager.getNPC(entityID);
+                if (npc == null) return;
                 //Right Click
-                for (ServerPlayer npcs : NPCManager.getNPCs().values()) {
-                    if (npcs.getBukkitEntity().getEntityId() == entityID && sneak) {
-                        Bukkit.getScheduler().scheduleSyncDelayedTask(NullValkyrie.getPlugin(NullValkyrie.class), () -> Bukkit.getPluginManager().callEvent(new RightClickNPCEvent(player, npcs)), 0);
-
-                    }
-                }
+                if (npc.getBukkitEntity().getEntityId() == entityID && sneak)
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(NullValkyrie.getPlugin(NullValkyrie.class), () -> Bukkit.getPluginManager().callEvent(new RightClickNPCEvent(player, npc)), 0);
             } catch (NoSuchFieldException x) {
                 //Left Click
             }

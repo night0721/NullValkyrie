@@ -102,5 +102,7 @@ public class NPCManager {
             NPCs.put(ep.getId(), ep);
         }
     }
-
+    public static ServerPlayer getNPC(int id) {
+        return NPCs.get(id);
+    }
 }

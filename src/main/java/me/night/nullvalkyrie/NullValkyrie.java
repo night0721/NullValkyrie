@@ -24,7 +24,7 @@ public final class NullValkyrie extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new ScoreboardListener(), this);
         Bukkit.getPluginManager().registerEvents(new CustomItemEvents(), this);
         Bukkit.getPluginManager().registerEvents(new DamageEffectEvents(), this);
-        Bukkit.getPluginManager().registerEvents(new NPCEvents(), this);
+        Bukkit.getPluginManager().registerEvents(new CustomEvents(), this);
         new DiscordClientManager();
         NPCDataManager.reloadNPC();
         CryptoMiner.reloadMiner();
