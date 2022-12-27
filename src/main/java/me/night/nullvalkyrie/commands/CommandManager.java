@@ -18,5 +18,6 @@ public class CommandManager {
         new BetaCommand();
         new MinerCommand();
         new LuckyDrawCommand();
+        new NPCCommand();
     }
 }
