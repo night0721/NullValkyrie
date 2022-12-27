@@ -30,9 +30,9 @@ import java.util.List;
 import java.util.UUID;
 
 public class NPCManager {
-    private static final List<ServerPlayer> NPCs = new ArrayList<>();
+    private static final HashMap<Integer, ServerPlayer> NPCs = new HashMap<>();
 
-    public static List<ServerPlayer> getNPCs() {
+    public static HashMap<Integer, ServerPlayer> getNPCs() {
         return NPCs;
     }
     @SuppressWarnings("ConstantConditions")
@@ -47,7 +47,7 @@ public class NPCManager {
         Location location = player.getLocation();
         npc.setPos(location.getX(), location.getY(), location.getZ());
         addNPCPacket(npc);
-        NPCs.add(npc);
+        NPCs.put(npc.getId(), npc);
         NPCDataManager.setNPC(name, player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ(), (int) player.getLocation().getPitch(), (int) player.getLocation().getYaw(), player.getLocation().getWorld().getName(), skin[0], skin[1]);
     }
 
@@ -71,7 +71,7 @@ public class NPCManager {
     }
 
     public static void addJoinPacket(Player player) {
-        for (ServerPlayer npc : NPCs) {
+        for (ServerPlayer npc : NPCs.values()) {
             ServerGamePacketListenerImpl pc = ((CraftPlayer) player).getHandle().connection;
             pc.send(new ClientboundPlayerInfoPacket(ClientboundPlayerInfoPacket.Action.ADD_PLAYER, npc));
             pc.send(new ClientboundAddPlayerPacket(npc));
@@ -99,7 +99,7 @@ public class NPCManager {
             ServerPlayer ep = new ServerPlayer(server, w, gameProfile, null);
             ep.setPos(location.getX(), location.getY(), location.getZ()); // NMS: 1.19.2 https://nms.screamingsandals.org/1.19.2/net/minecraft/world/entity/Entity.html absMoveTo
             addNPCPacket(ep);
-            NPCs.add(ep);
+            NPCs.put(ep.getId(), ep);
         }
     }
 

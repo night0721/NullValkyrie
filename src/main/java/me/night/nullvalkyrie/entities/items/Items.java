@@ -1,5 +1,6 @@
-package me.night.nullvalkyrie.enums;
+package me.night.nullvalkyrie.entities.items;
 
+import me.night.nullvalkyrie.entities.miners.Rarity;
 import org.bukkit.Material;
 
 public enum Items {

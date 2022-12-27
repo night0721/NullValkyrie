@@ -1,6 +1,5 @@
-package me.night.nullvalkyrie.enums;
+package me.night.nullvalkyrie.util.enchantments;
 
-import me.night.nullvalkyrie.util.enchantments.EnchantmentManager;
 import org.bukkit.enchantments.Enchantment;
 
 public enum Enchantments {

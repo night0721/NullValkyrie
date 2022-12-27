@@ -3,7 +3,7 @@ package me.night.nullvalkyrie.ui.player;
 import me.night.nullvalkyrie.database.RankDataManager;
 import me.night.nullvalkyrie.database.UserDataManager;
 import me.night.nullvalkyrie.entities.miners.CryptoMiner;
-import me.night.nullvalkyrie.enums.Rank;
+import me.night.nullvalkyrie.util.Rank;
 import me.night.nullvalkyrie.entities.npcs.NPCManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

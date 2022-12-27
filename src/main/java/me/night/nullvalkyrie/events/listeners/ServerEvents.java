@@ -1,5 +1,6 @@
 package me.night.nullvalkyrie.events.listeners;
 
+import me.night.nullvalkyrie.entities.holograms.PerPlayerHologram;
 import me.night.nullvalkyrie.events.custom.InteractHologramEvent;
 import me.night.nullvalkyrie.packets.handle.PacketInjector;
 import me.night.nullvalkyrie.util.Util;
@@ -48,12 +49,11 @@ public class ServerEvents implements Listener {
             ee.printStackTrace();
         }
     }
-
     @EventHandler
     public void onClickHologram(InteractHologramEvent e) {
         if (e.getHologram().getCustomName() == null) return;
-        if (e.getHologram().getCustomName().equals(ChatColor.GOLD + "Click me to change!!!")) {
-            // TODO: change hologram things
+        if (e.getHologram().getCustomName().equals(ChatColor.GOLD + ChatColor.BOLD.toString() + "CLICK")) {
+            e.getHologram().getNearbyEntities(0, 5, 0).forEach(entity -> new PerPlayerHologram(e.getPlayer(), new String[]{ChatColor.RED + "Player Info:", ChatColor.GOLD + "Name: " + ChatColor.AQUA + e.getPlayer().getName(), ChatColor.BLUE + "IP: " + e.getPlayer().getAddress()}));
         }
     }
 

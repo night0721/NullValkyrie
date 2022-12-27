@@ -2,7 +2,7 @@ package me.night.nullvalkyrie.database;
 
 import com.mongodb.client.MongoCursor;
 import me.night.nullvalkyrie.entities.miners.CryptoMiner;
-import me.night.nullvalkyrie.enums.MinerType;
+import me.night.nullvalkyrie.entities.miners.MinerType;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bukkit.Bukkit;

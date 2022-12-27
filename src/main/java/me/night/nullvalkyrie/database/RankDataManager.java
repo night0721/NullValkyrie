@@ -1,7 +1,7 @@
 package me.night.nullvalkyrie.database;
 
 import com.mongodb.client.MongoCursor;
-import me.night.nullvalkyrie.enums.Rank;
+import me.night.nullvalkyrie.util.Rank;
 import me.night.nullvalkyrie.ui.player.ScoreboardListener;
 import org.bson.Document;
 import org.bson.conversions.Bson;

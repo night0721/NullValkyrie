@@ -1,7 +1,7 @@
 package me.night.nullvalkyrie.commands;
 
 import me.night.nullvalkyrie.database.RankDataManager;
-import me.night.nullvalkyrie.enums.Rank;
+import me.night.nullvalkyrie.util.Rank;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;

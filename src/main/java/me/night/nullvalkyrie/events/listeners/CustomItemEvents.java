@@ -2,7 +2,7 @@ package me.night.nullvalkyrie.events.listeners;
 
 import me.night.nullvalkyrie.entities.items.CustomItemManager;
 import me.night.nullvalkyrie.entities.items.Pickaxe;
-import me.night.nullvalkyrie.enums.Rarity;
+import me.night.nullvalkyrie.entities.miners.Rarity;
 import me.night.nullvalkyrie.NullValkyrie;
 import me.night.nullvalkyrie.packets.protocol.PacketPlayOutBlockBreakAnimation;
 import net.md_5.bungee.api.ChatMessageType;

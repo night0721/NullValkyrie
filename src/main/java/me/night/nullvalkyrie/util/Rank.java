@@ -1,4 +1,4 @@
-package me.night.nullvalkyrie.enums;
+package me.night.nullvalkyrie.util;
 
 import org.bukkit.ChatColor;
 

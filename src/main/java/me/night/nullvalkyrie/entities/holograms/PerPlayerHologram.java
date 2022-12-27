@@ -11,24 +11,36 @@ import net.minecraft.world.entity.decoration.ArmorStand;
 import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
 import java.util.Optional;
 
 public class PerPlayerHologram {
+    public static HashMap<Integer, ArmorStand[]> holograms = new HashMap<>();
+
     public PerPlayerHologram(Player player, String[] lines) {
-        double c = (lines.length) * 0.3 - 0.15;
-        for (String line : lines) {
-            spawnLine(player.getLocation().getY() + c, player, line);
+        spawnLine(player, lines);
+    }
+
+    private void spawnLine(Player player, String[] lines) {
+        double c = (lines.length) * 0.3 - 0.8;
+        ArmorStand[] stands = new ArmorStand[lines.length];
+        for (int i = 0; i < lines.length; i++) {
+            ServerPlayer p = ((CraftPlayer) player).getHandle();
+            ArmorStand stand = new ArmorStand(p.getLevel(), player.getLocation().getX(), player.getLocation().getY() + c, player.getLocation().getZ());
+            stand.setInvisible(true);
+            new PacketPlayOutSpawnEntity(player, stand);
+            stands[i] = stand;
+            SynchedEntityData watcher = stand.getEntityData();
+            watcher.set(new EntityDataAccessor<>(2, EntityDataSerializers.OPTIONAL_COMPONENT), Optional.of(Component.nullToEmpty(lines[i])));
+            watcher.set(new EntityDataAccessor<>(3, EntityDataSerializers.BOOLEAN), true);
+            new PacketPlayOutEntityMetadata(player, stand, watcher);
             c -= 0.3;
+            if (lines.length == i + 1)
+                holograms.put(stand.getBukkitEntity().getEntityId(), stands);
         }
     }
-    private void spawnLine(double y, Player player, String line) {
-        ServerPlayer p = ((CraftPlayer) player).getHandle();
-        ArmorStand stand = new ArmorStand(p.level, player.getLocation().getX(), y, player.getLocation().getZ());
-        stand.setInvisible(true);
-        new PacketPlayOutSpawnEntity(player, stand);
-        SynchedEntityData watcher = stand.getEntityData();
-        watcher.set(new EntityDataAccessor<>(2, EntityDataSerializers.OPTIONAL_COMPONENT), Optional.of(Component.nullToEmpty(line)));
-        watcher.set(new EntityDataAccessor<>(3, EntityDataSerializers.BOOLEAN), true);
-        new PacketPlayOutEntityMetadata(player, stand, watcher);
+
+    public static HashMap<Integer, ArmorStand[]> getHolograms() {
+        return holograms;
     }
 }

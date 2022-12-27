@@ -2,7 +2,7 @@ package me.night.nullvalkyrie.commands;
 
 import me.night.nullvalkyrie.database.MinerDataManager;
 import me.night.nullvalkyrie.entities.miners.CryptoMiner;
-import me.night.nullvalkyrie.enums.MinerType;
+import me.night.nullvalkyrie.entities.miners.MinerType;
 import me.night.nullvalkyrie.ui.inventory.Miner;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;

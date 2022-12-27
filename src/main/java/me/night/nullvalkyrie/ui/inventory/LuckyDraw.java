@@ -1,6 +1,6 @@
 package me.night.nullvalkyrie.ui.inventory;
 
-import me.night.nullvalkyrie.enums.Items;
+import me.night.nullvalkyrie.entities.items.Items;
 import me.night.nullvalkyrie.util.Util;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

@@ -5,9 +5,7 @@ import com.mojang.authlib.properties.Property;
 import com.mojang.datafixers.util.Pair;
 import me.night.nullvalkyrie.NullValkyrie;
 import me.night.nullvalkyrie.database.MinerDataManager;
-import me.night.nullvalkyrie.enums.MinerType;
 import me.night.nullvalkyrie.packets.protocol.PacketPlayOutEntityMetadata;
-import me.night.nullvalkyrie.util.Skin;
 import me.night.nullvalkyrie.util.Util;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.protocol.game.ClientboundPlayerInfoPacket;
@@ -21,7 +19,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.decoration.ArmorStand;
-import org.apache.commons.codec.binary.Base64;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -110,20 +107,18 @@ public class CryptoMiner {
     public void spawn(Player player) {
         ArmorStand stand = new ArmorStand(((CraftWorld) this.getLocation().getWorld()).getHandle(), this.getLocation().getX() + 0.5, this.getLocation().getY(), this.getLocation().getZ() + 0.5);
         stand.setInvulnerable(true);
-        stand.setPos(this.getLocation().getX() + 0.5, this.getLocation().getY(), this.getLocation().getZ() + 0.5);
         ItemStack head = new ItemStack(Material.PLAYER_HEAD, 1);
         SkullMeta meta = (SkullMeta) head.getItemMeta();
         if (meta == null) return;
         GameProfile profile = new GameProfile(UUID.randomUUID(), null);
-        byte[] encodedData = Base64.encodeBase64(String.format("{textures:{SKIN:{url:\"%s\"}}}", this.getMinerType().getHeadTexture()).getBytes());
-        profile.getProperties().put("textures", new Property("textures", new String(encodedData)));
+        // url method: new String(Base64.encodeBase64(String.format("{textures:{SKIN:{url:\"%s\"}}}", this.getMinerType().getHeadTexture()).getBytes()));
+        profile.getProperties().put("textures", new Property("textures", this.getMinerType().getHeadTexture()));
         try {
             Util.setFieldValue(meta, "profile", profile);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
         head.setItemMeta(meta);
-
         ItemStack chest = new ItemStack(Material.LEATHER_CHESTPLATE);
         LeatherArmorMeta chestdata = (LeatherArmorMeta) chest.getItemMeta();
         if (chestdata == null) return;
@@ -148,8 +143,7 @@ public class CryptoMiner {
         list.add(new Pair<>(EquipmentSlot.MAINHAND, CraftItemStack.asNMSCopy(pick)));
 
         GameProfile gameProfile = new GameProfile(UUID.randomUUID(), Util.color(this.name));
-        String[] skin = Skin.getSkin("Shiba_");
-        gameProfile.getProperties().put("textures", new Property("textures", skin[0], skin[1]));
+        gameProfile.getProperties().put("textures", new Property("textures", this.type.getHeadTexture()));
         MinecraftServer server = ((CraftServer) Bukkit.getServer()).getServer();
         ServerLevel w = ((CraftWorld) player.getLocation().getWorld()).getHandle();
         ServerPlayer m = new ServerPlayer(server, w, gameProfile, null);
@@ -175,7 +169,6 @@ public class CryptoMiner {
             for (int z = (int) this.getLocation().getZ() - 2; z <= this.getLocation().getZ() + 2; z++) {
                 for (int y = (int) this.getLocation().getY() - 1; y <= this.getLocation().getY() - 1; y++) {
                     this.getLocation().setY(17.0F);
-                    System.out.println(x + " " + y + " " + z);
                     if (this.getLocation().getWorld().getBlockAt(x, y, z).getType() == this.getType()) {
                         locs.add(this.getLocation().getWorld().getBlockAt(x, y, z).getLocation());
                     }
@@ -208,7 +201,6 @@ public class CryptoMiner {
 
     public static void onJoin(Player player) {
         for (CryptoMiner miner : MinerDataManager.getMiners().values()) {
-            System.out.println(miner.getName());
             miner.spawn(player);
         }
     }

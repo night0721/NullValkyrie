@@ -1,6 +1,5 @@
 package me.night.nullvalkyrie.util.enchantments;
 
-import me.night.nullvalkyrie.enums.Enchantments;
 import org.bukkit.enchantments.Enchantment;
 
 import java.lang.reflect.Field;

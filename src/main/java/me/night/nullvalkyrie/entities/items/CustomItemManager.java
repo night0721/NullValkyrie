@@ -2,7 +2,7 @@ package me.night.nullvalkyrie.entities.items;
 
 import me.night.nullvalkyrie.NullValkyrie;
 import me.night.nullvalkyrie.database.CustomWeaponsDataManager;
-import me.night.nullvalkyrie.enums.Rarity;
+import me.night.nullvalkyrie.entities.miners.Rarity;
 import me.night.nullvalkyrie.util.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
