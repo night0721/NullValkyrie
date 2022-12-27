@@ -31,3 +31,18 @@ public final class NullValkyrie extends JavaPlugin {
         new AlwaysDayTask().runTaskTimer(this, 0, 100);
     }
 }
+// TODO: Add corpse body when player dies
+// TODO: vault to store item
+// TODO: withdraw command
+// TODO: deposit command
+// TODO: add more items using player heads, scraping textures from https://www.freshcoal.com/search.php
+// TODO: custom recipes using exactChoice
+// TODO: pets using player heads, giving abilities to player
+// TODO: market command to show items a player is selling
+// TODO: custom model data on block, such as mithril ore to mine
+// TODO: skills and abilities system
+// TODO: auto generated mobs in dungeons
+// TODO: rewards when reached milestones, quests
+// TODO: teleportation to different places, to different npcs, hub
+// TODO: using pdc to store quests, skills, abilities, etc
+// TODO: guilds
