@@ -1,6 +1,6 @@
 # NullValkyrie
 
-Welcome to the NullValkyrie repository! This project is designed to a multipurpose plugin with a lot of cool features which most of the modern servers have.
+NullValkyrie is multipurpose Minecraft plugin with a lot of features where most modern servers have.
 
 ## Features
 
@@ -14,7 +14,7 @@ Welcome to the NullValkyrie repository! This project is designed to a multipurpo
 
 ## Getting Started
 
-To get started with NullValkyrie, simply clone the repository and install the dependencies using Maven:
+To get started with the project, simply clone the repository and install the dependencies using Maven:
 
 ```cmd
 git clone https://github.com/night0721/NullValkyrie.git
@@ -26,17 +26,13 @@ Then, you can add the plugin to your plugin folder and start the server to use i
 
 ## Support
 
-If you need support, you can join the Discord server: https://discord.gg/qTfXU3yuuN or DM me on Discord: Ń1ght#4004
+If you need support, you can join the []Discord server](https://discord.gg/SbQHChmGcp) or DM me on Discord: night.dev
 
 ## License
 
-NullValkyrie is licensed under the CC-BY-NC-SA-4.0. See [LICENSE](https://github.com/night0721/NullValkyrie/blob/master/LICENSE) for more information.
-
-## Credits
-
-- [night0721] - Discord: Ń1ght#4004
+NullValkyrie is licensed under the GNU Public LICENSE v3.0. See [LICENSE](https://github.com/night0721/NullValkyrie/blob/master/LICENSE) for more information.
 
 ## Contribution
 
-We welcome contributions to the NullValkyrie project! If you have any ideas for improvements or new features, please feel free to fork the project and create a pull request or open an issue.
+If you have any ideas for improvements or new features, please feel free to fork the project and create a pull request or open an issue.
 All contributions are welcome, including translations, documentation, and code.
