@@ -26,11 +26,11 @@ Then, you can add the plugin to your plugin folder and start the server to use i
 
 ## Support
 
-If you need support, you can join the []Discord server](https://discord.gg/SbQHChmGcp) or DM me on Discord: night.dev
+If you need support, you can join the [Discord server](https://discord.gg/SbQHChmGcp) or DM me on Discord: night.dev
 
 ## License
 
-NullValkyrie is licensed under the GNU Public LICENSE v3.0. See [LICENSE](https://github.com/night0721/NullValkyrie/blob/master/LICENSE) for more information.
+NullValkyrie is licensed under the GNU Public License v3.0. See [LICENSE](https://github.com/night0721/NullValkyrie/blob/master/LICENSE) for more information.
 
 ## Contribution
 
