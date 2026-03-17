@@ -1,5 +1,5 @@
 # NullValkyrie
-NullValkyrie is multipurpose Minecraft plugin with a lot of features where most modern servers have.
+Multipurpose plugin for Minecraft 1.19 Spigot servers with features where popular servers have.
 
 # Features
 - Custom items to use and play
@@ -11,20 +11,10 @@ NullValkyrie is multipurpose Minecraft plugin with a lot of features where most 
 - Custom NPCs to do all kind of things
 
 # Building
-To get started with the project, simply clone the repository and install the dependencies using Maven:
-
-```sh
-git clone https://github.com/night0721/NullValkyrie
-cd NullValkyrie
-```
-
-If you are using IntelliJ, you can import the project as a Maven project and install the dependencies by clicking button on the right side of the screen.
-After installing dependencies, you are able to use install/package command to compile the plugin to JAR, or instead, use build artifact.
-Then, you can add the plugin to your plugin folder and start the server to use it.
+If you are using IntelliJ, you can import the project as a Maven project and use build artifact to build the jar file. Then, you can add the plugin jar to your plugin folder and start the server to use it.
 
 # Contributions
-If you have any ideas for improvements or new features, please feel free to fork the project and create a pull request or open an issue.
-All contributions are welcome, including translations, documentation, and code.
+Contributions are welcomed, feel free to open a pull request.
 
 # License
-NullValkyrie is licensed under the GNU Public License v3.0. See [LICENSE](https://github.com/night0721/NullValkyrie/blob/master/LICENSE) for more information.
+This project is licensed under the GNU Public License v3.0. See [LICENSE](https://github.com/night0721/NullValkyrie/blob/master/LICENSE) for more information.
